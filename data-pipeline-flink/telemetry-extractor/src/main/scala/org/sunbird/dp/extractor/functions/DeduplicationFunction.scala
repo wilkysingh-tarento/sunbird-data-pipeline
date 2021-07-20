@@ -2,8 +2,6 @@ package org.sunbird.dp.extractor.functions
 
 import java.util
 import org.sunbird.dp.core.util.JSONUtil
-
-import java.io.{PrintWriter, StringWriter}
 // import com.google.gson.Gson
 import org.apache.flink.api.common.typeinfo.TypeInformation
 import org.apache.flink.configuration.Configuration
@@ -57,9 +55,7 @@ class DeduplicationFunction(config: TelemetryExtractorConfig, @transient var ded
       case ex: Exception => {
         logger.info("ERROR")
         logger.info("Exception: " + ex.getMessage)
-        val sw = new StringWriter
-        ex.printStackTrace(new PrintWriter(sw))
-        logger.error(sw.toString)
+        logger.error(ex.getStackTrace.mkString("\n"))
         metrics.incCounter(config.failedBatchCount)
         context.output(config.failedBatchEventOutputTag, batchEvents)
       }
