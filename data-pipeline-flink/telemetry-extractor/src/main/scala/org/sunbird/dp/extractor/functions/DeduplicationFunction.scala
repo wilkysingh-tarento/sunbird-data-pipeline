@@ -57,7 +57,7 @@ class DeduplicationFunction(config: TelemetryExtractorConfig, @transient var ded
         logger.info("ERROR")
         logger.info("Exception: " + ex.getMessage)
         val sw = new StringWriter
-        exception.printStackTrace(new PrintWriter(sw))
+        ex.printStackTrace(new PrintWriter(sw))
         logger.error(sw.toString)
         metrics.incCounter(config.failedBatchCount)
         context.output(config.failedBatchEventOutputTag, batchEvents)
