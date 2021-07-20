@@ -332,7 +332,7 @@
             {
               "type": "path",
               "name": "content_version",
-              "expr": "$.contentdata.pkgversion"
+              "expr": "$.contentdata.pkgversion"contentdata
             },
             {
               "type": "path",
