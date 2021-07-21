@@ -126,6 +126,9 @@ base_config: |
       host = "{{ core_cassandra_host }}"
       port = "9042"
     }
+    dialcode {
+        linkable.primaryCategory = []
+    }
 
 ingest-router:
   ingest-router: |+
