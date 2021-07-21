@@ -53,14 +53,13 @@ class DeduplicationFunction(config: TelemetryExtractorConfig, @transient var ded
         dedupEngine.getRedisConnection.close()
         throw jedisEx
       }
-      case jedisEx: JedisConnectionException => {
-        logger.info("Exception when connecting to redis " + jedisEx.getMessage)
+      case jedisConEx: JedisConnectionException => {
+        logger.info("Exception when connecting to redis " + jedisConEx.getMessage)
         dedupEngine.getRedisConnection.close()
-        throw jedisEx
+        throw jedisConEx
       }
       case ex: Exception => {
         logger.error("Unexpected Error", ex)
-        dedupEngine.getRedisConnection.close()
         metrics.incCounter(config.failedBatchCount)
         context.output(config.failedBatchEventOutputTag, batchEvents)
       }
