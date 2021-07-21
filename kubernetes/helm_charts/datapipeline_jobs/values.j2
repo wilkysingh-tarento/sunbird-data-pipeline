@@ -196,7 +196,7 @@ telemetry-extractor:
           contentstore.id = 5
         }
         host = {{ redis_meta_content_host }}
-        port = {{ redis_meta_content_port }}
+        port = 6379
       }
     redact.events.list = ["ASSESS","RESPONSE"]
 
@@ -286,10 +286,10 @@ de-normalization:
       device.host = {{ redis_meta_device_host }}
       user.host = {{ redis_meta_user_host }}
       dialcode.host = {{ redis_meta_dialcode_host }}
-      content.port = {{ redis_meta_content_port }}
-      device.port = {{ redis_meta_device_port }}
-      user.port = {{ redis_meta_user_port }}
-      dialcode.port = {{ redis_meta_dialcode_port }}
+      content.port = 6379
+      device.port = 6379
+      user.port = 6379
+      dialcode.port = 6379
     }
     # config version
     user_denorm_version = v2
@@ -387,10 +387,10 @@ de-normalization-secondary:
       device.host = {{ redis_meta_device_host }}
       user.host = {{ redis_meta_user_host }}
       dialcode.host = {{ redis_meta_dialcode_host }}
-      content.port = {{ redis_meta_content_port }}
-      device.port = {{ redis_meta_device_port }}
-      user.port = {{ redis_meta_user_port }}
-      dialcode.port = {{ redis_meta_dialcode_port }}
+      content.port = 6379
+      device.port = 6379
+      user.port = 6379
+      dialcode.port = 6379
     }
     # config version
     user_denorm_version = v2
@@ -443,10 +443,10 @@ de-normalization-primary:
       device.host = {{ redis_meta_device_host }}
       user.host = {{ redis_meta_user_host }}
       dialcode.host = {{ redis_meta_dialcode_host }}
-      content.port = {{ redis_meta_content_port }}
-      device.port = {{ redis_meta_device_port }}
-      user.port = {{ redis_meta_user_port }}
-      dialcode.port = {{ redis_meta_dialcode_port }}
+      content.port = 6379
+      device.port = 6379
+      user.port = 6379
+      dialcode.port = 6379
     }
     # config version
     user_denorm_version = v2
@@ -499,10 +499,10 @@ summary-denormalization:
       device.host = {{ redis_meta_device_host }}
       user.host = {{ redis_meta_user_host }}
       dialcode.host = {{ redis_meta_dialcode_host }}
-      content.port = {{ redis_meta_content_port }}
-      device.port = {{ redis_meta_device_port }}
-      user.port = {{ redis_meta_user_port }}
-      dialcode.port = {{ redis_meta_dialcode_port }}
+      content.port = 6379
+      device.port = 6379
+      user.port = 6379
+      dialcode.port = 6379
     }
     # config version
     user_denorm_version = v2
@@ -579,7 +579,7 @@ device-profile-updater:
         devicestore.id = 2
       }
       host = {{ redis_meta_device_host }}
-      port = {{ redis_meta_device_port }}
+      port = 6379
     }
     postgres {
       database = "{{ postgres.db_name }}",
@@ -612,8 +612,8 @@ content-cache-updater:
       }
       content.host = {{ redis_meta_content_host }}
       dialcode.host = {{ redis_meta_dialcode_host }}
-      content.port = {{ redis_meta_content_port }}
-      dialcode.port = {{ redis_meta_dialcode_port }}
+      content.port = 6379
+      dialcode.port = 6379
     }
     dialcode {
       api {
@@ -646,7 +646,7 @@ user-cache-updater:
         userstore.id = 4
       }
       host = {{ redis_meta_user_host }}
-      port = {{ redis_meta_user_port }}
+      port = 6379
     }
     lms-cassandra {
       keyspace = "{{ middleware_cassandra_keyspace }}"
@@ -684,7 +684,7 @@ user-cache-updater-v2:
         userstore.id = 12
       }
       host = {{ redis_meta_user_host }}
-      port = {{ redis_meta_user_port }}
+      port = 6379
     }
     user-read {
      api {
@@ -787,10 +787,10 @@ error-denormalization:
       device.host = {{ redis_meta_device_host }}
       user.host = {{ redis_meta_user_host }}
       dialcode.host = {{ redis_meta_dialcode_host }}
-      content.port = {{ redis_meta_content_port }}
-      device.port = {{ redis_meta_device_port }}
-      user.port = {{ redis_meta_user_port }}
-      dialcode.port = {{ redis_meta_dialcode_port }}
+      content.port = 6379
+      device.port = 6379
+      user.port = 6379
+      dialcode.port = 6379
     }
     # config version
     user_denorm_version = v2
