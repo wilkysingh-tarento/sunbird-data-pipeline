@@ -68,14 +68,18 @@ class DenormalizationWindowFunction(config: DenormalizationConfig)(implicit val 
     override def process(key: Int, context: ProcessWindowFunction[Event, Event, Int, GlobalWindow]#Context, elements: lang.Iterable[Event], metrics: Metrics): Unit = {
 
         val eventsList = elements.asScala.toList
+        logger.info("DEBUG: process()")
         val filteredEventsList: List[Event] = eventsList.filter { event =>
             if (event.isOlder(config.ignorePeriodInMonths)) { // Skip events older than configured value (default: 3 months)
+                logger.info("DEBUG: older than 3 months")
                 metrics.incCounter(config.eventsExpired)
                 false
             } else {
                 if ("ME_WORKFLOW_SUMMARY" == event.eid() || !(event.eid().contains("SUMMARY") || config.eventsToskip.contains(event.eid()))) {
+                    logger.info("DEBUG: not skipped")
                     true
                 } else {
+                    logger.info("DEBUG: skipped")
                     metrics.incCounter(config.eventsSkipped)
                     false
                 }
@@ -88,6 +92,8 @@ class DenormalizationWindowFunction(config: DenormalizationConfig)(implicit val 
 
         val eventCacheData = parseLookupIds(events)
         val eventsDenormMeta = denormCache.getDenormData(eventCacheData._2)
+
+        logger.info("DEBUG: denormalize()")
 
         eventCacheData._1.foreach {
             eventData =>
@@ -105,6 +111,7 @@ class DenormalizationWindowFunction(config: DenormalizationConfig)(implicit val 
                 dialcodeDenormalization.denormalize(event, cacheData, metrics)
                 contentDenormalization.denormalize(event, cacheData, metrics)
                 locationDenormalization.denormalize(event, metrics)
+                logger.info("DEBUG: denormalize() foreach")
                 context.output(config.denormEventsTag, event)
         }
     }
