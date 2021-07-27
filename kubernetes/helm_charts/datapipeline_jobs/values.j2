@@ -81,7 +81,7 @@ base_config: |
     }
     job {
       env = "{{ env_name }}"
-      enable.distributed.checkpointing = false
+      enable.distributed.checkpointing = true
       statebackend {
         blob {
           storage {
