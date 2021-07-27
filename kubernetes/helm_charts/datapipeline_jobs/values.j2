@@ -3,8 +3,12 @@ imagepullsecrets: {{ imagepullsecrets }}
 dockerhub: {{ dockerhub }}
 repository: {{flink_repository|default('sunbird-datapipeline')}}
 image_tag: {{ image_tag }}
+
+
 azure_account: {{ azure_account }}
 azure_secret: {{ azure_secret }}
+
+
 serviceMonitor:
   enabled: {{ service_monitor_enabled | lower}}
 replicaCount: {{taskmana_replicacount|default(1)}}
@@ -77,7 +81,7 @@ base_config: |
     }
     job {
       env = "{{ env_name }}"
-      enable.distributed.checkpointing = true
+      enable.distributed.checkpointing = false
       statebackend {
         blob {
           storage {

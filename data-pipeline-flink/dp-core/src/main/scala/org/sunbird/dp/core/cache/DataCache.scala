@@ -31,7 +31,7 @@ class DataCache(val config: BaseJobConfig, val redisConnect: RedisConnect, val d
     try {
       convertToComplexDataTypes(hgetAll(key))
     } catch {
-      case ex: JedisException =>
+      case ex@(_: JedisConnectionException | _: JedisException) =>
         logger.error("Exception when retrieving data from redis cache", ex)
         this.redisConnection.close()
         this.redisConnection = redisConnect.getConnection(dbIndex)
@@ -80,7 +80,7 @@ class DataCache(val config: BaseJobConfig, val redisConnect: RedisConnect, val d
     try {
       get(key)
     } catch {
-      case ex: JedisException =>
+      case ex@(_: JedisConnectionException | _: JedisException) =>
         logger.error("Exception when retrieving data from redis cache", ex)
         this.redisConnection.close()
         this.redisConnection = redisConnect.getConnection(dbIndex)
@@ -117,7 +117,7 @@ class DataCache(val config: BaseJobConfig, val redisConnect: RedisConnect, val d
     } catch {
       // Write testcase for catch block
       // $COVERAGE-OFF$ Disabling scoverage
-      case ex: JedisException => {
+      case ex@(_: JedisConnectionException | _: JedisException) => {
         println("dataCache")
         logger.error("Exception when inserting data to redis cache", ex)
         this.redisConnection.close()
@@ -150,7 +150,7 @@ class DataCache(val config: BaseJobConfig, val redisConnect: RedisConnect, val d
     try {
       sMembers(key)
     } catch {
-      case ex: JedisException =>
+      case ex@(_: JedisConnectionException | _: JedisException) =>
         logger.error("Exception when retrieving data from redis cache", ex)
         this.redisConnection.close()
         this.redisConnection = redisConnect.getConnection(dbIndex)

@@ -70,15 +70,19 @@ class DenormalizationWindowFunction(config: DenormalizationConfig)(implicit val 
         val eventsList = elements.asScala.toList
         val filteredEventsList: List[Event] = eventsList.filter { event =>
             if (event.isOlder(config.ignorePeriodInMonths)) { // Skip events older than configured value (default: 3 months)
+                logger.info(s"Event Dropped: Event older than configured value (default: 3 months)")
                 metrics.incCounter(config.eventsExpired)
                 false
+            } else if (event.eid().contains("SUMMARY") && event.eid() != "ME_WORKFLOW_SUMMARY") { // Skip events with eid containing SUMMARY except when eid=ME_WORKFLOW_SUMMARY
+                logger.info(s"Event Dropped: Event is a SUMMARY event other than ME_WORKFLOW_SUMMARY")
+                metrics.incCounter(config.eventsSkipped)
+                false
+            } else if (config.eventsToskip.contains(event.eid())) { // Skip events if eid in skip.events, default = ["INTERRUPT"]
+                logger.info(s"Event Dropped: Event eid is present in config.eventsToskip, default = ['INTERRUPT']")
+                metrics.incCounter(config.eventsSkipped)
+                false
             } else {
-                if ("ME_WORKFLOW_SUMMARY" == event.eid() || !(event.eid().contains("SUMMARY") || config.eventsToskip.contains(event.eid()))) {
-                    true
-                } else {
-                    metrics.incCounter(config.eventsSkipped)
-                    false
-                }
+                true
             }
         }
         denormalize(filteredEventsList, context, metrics)
