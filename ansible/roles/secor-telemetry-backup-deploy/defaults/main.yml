@@ -10,6 +10,8 @@ telemetry_ingestion_topic: "{{ env }}.telemetry.ingest"
 secor:
   properties: ['secor.azure', 'secor.common', 'secor', 'secor.partition', 'log4j']
   artifact_dir: /mount/secor
+  artifact_ver: "0.29"
+  artifact_name: "secor"
 
 secor_service_name:
   failed-telemetry-backup:
