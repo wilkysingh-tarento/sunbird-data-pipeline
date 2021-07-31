@@ -861,10 +861,10 @@
     },
     "ioConfig":
     {
-        "topic": "<env>.events.summary",
+        "topic": "{{env}}.druid.events.summary",
         "consumerProperties":
         {
-            "bootstrap.servers": "broker_ip:broker_port"
+            "bootstrap.servers": "{{kafka_brokers}}"
         },
         "taskCount": 1,
         "replicas": 1,

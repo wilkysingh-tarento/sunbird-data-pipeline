@@ -138,7 +138,7 @@
     }
   },
   "ioConfig": {
-    "topic": "{{env}}.events.error",
+    "topic": "{{env}}.druid.events.error",
     "consumerProperties": {
       "bootstrap.servers": "{{kafka_brokers}}"
     },
