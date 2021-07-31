@@ -145,7 +145,7 @@ default_druid_configs:
    #Druid broker node configuration
    druid_broker_min_heap_size: 1024m
    druid_broker_max_heap_size: 2048m
-   druid_broker_max_direct_size: 2048m
+   druid_broker_max_direct_size: 2560m
    druid_broker_http_numConnections: 5
    druid_broker_server_http_numThread: 25
    druid_broker_processing_bufferBytes: 536870912
