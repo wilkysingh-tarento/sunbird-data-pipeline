@@ -15,6 +15,7 @@ druid_checksum: "a68c63ddf92a0939315bd8b79fbdd5fae712e888d1a0e0466f0a87a8e8f1270
 #Common Varibles
 
 druid_zookeeper_host: "{{ groups[cluster+'-zookeeper']|join(':2181,')}}:2181"
+druid_postgres_user: druid
 #druid_postgres_host: "{{ groups['druid-postgres'][0] }}"
 
 
