@@ -4,14 +4,7 @@
   become: yes
   roles: 
     - {role: jdk-1.8.0_121, when: "'java' in deploy"}
--
-  name: Fix zookeper-upgrade python issue (workaround)
-  hosts: "{{ remote }}-zookeeper"
-  become: yes
-  roles:
-    - {role: zookeeper-upgrade-python-fix, when: "'zookeeper' in deploy"}
-  vars:
-    zookeeper_group: "{{ groups[remote+'-zookeeper'] }}"
+
 -
   name: Install java and zookeeper cluster for druid
   hosts: "{{ remote }}-zookeeper"
