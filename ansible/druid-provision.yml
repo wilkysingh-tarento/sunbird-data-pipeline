@@ -4,7 +4,15 @@
   become: yes
   roles: 
     - {role: jdk-1.8.0_121, when: "'java' in deploy"}
-
+-
+  name: Add deadsnakes repo
+  hosts: "{{ remote }}-zookeeper"
+  apt_repository: repo="ppa:deadsnakes/ppa"
+  become: yes
+-
+  name: Python predependency
+  hosts: "{{ remote }}-zookeeper"
+  raw: sudo apt update && sudo apt install -y python python-pkg-resources python-pip
 -
   name: Install java and zookeeper cluster for druid
   hosts: "{{ remote }}-zookeeper"
