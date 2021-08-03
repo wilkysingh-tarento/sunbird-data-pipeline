@@ -2,9 +2,6 @@
   become: yes
   gather_facts: no
   pre_tasks:
-   - name: Add deadsnakes repo
-     apt_repository: repo="ppa:deadsnakes/ppa"
-     become: true
    - name: Python predependency
      raw: sudo apt update && sudo apt install -y python python-pkg-resources python-pip
   vars_files:
