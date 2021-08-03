@@ -1,6 +1,6 @@
 druid_path : "/data/druid"
 druid_overlord_host: "{{ groups['overlord'][0] }}"
-druid_overlord_port: 8090
+druid_overlord_port: {{druid_overlord_port}}
 druid_home: "/home/druid"
 druid_coordinator_host: "{{ groups['coordinator'][0] }}"
 druid_coordinator_port: 8081
