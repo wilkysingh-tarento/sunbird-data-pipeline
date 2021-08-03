@@ -1,7 +1,6 @@
 ---
 - name: Install prerequisites
-  apt: name=python-software-properties state=present
-  become: true
+  raw: sudo apt update && sudo apt install -y python-software-properties
 
 - name: Add deadsnakes repo
   apt_repository: repo="ppa:/deadsnakes/ppa"
