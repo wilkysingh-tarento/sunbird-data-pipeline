@@ -1,10 +1,14 @@
 ---
+- name: Install prerequisites
+  apt: name=python-software-properties state=present
+  become: true
+
 - name: Add deadsnakes repo
-  apt_repository: repo="ppa:deadsnakes/ppa"
+  apt_repository: repo="ppa:/deadsnakes/ppa"
   become: yes
 
 - name: Python predependency
-  raw: sudo apt update && sudo apt install -y python python-pkg-resources python-pip
+  raw: sudo apt update && sudo apt install -y python python-dev python-pkg-resources python-pip
 
 - name: Update apt cache
   apt: update_cache=yes cache_valid_time={{apt_cache_timeout}}
