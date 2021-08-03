@@ -5,14 +5,13 @@
   roles: 
     - {role: jdk-1.8.0_121, when: "'java' in deploy"}
 -
-  name: Add deadsnakes repo
+  name: Fix zookeper-upgrade python issue (workaround)
   hosts: "{{ remote }}-zookeeper"
-  apt_repository: repo="ppa:deadsnakes/ppa"
   become: yes
--
-  name: Python predependency
-  hosts: "{{ remote }}-zookeeper"
-  raw: sudo apt update && sudo apt install -y python python-pkg-resources python-pip
+  roles:
+    - {role: zookeeper-upgrade-python-fix, when: "'zookeeper' in deploy"}
+  vars:
+    zookeeper_group: "{{ groups[remote+'-zookeeper'] }}"
 -
   name: Install java and zookeeper cluster for druid
   hosts: "{{ remote }}-zookeeper"
