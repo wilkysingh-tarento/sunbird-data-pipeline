@@ -30,7 +30,8 @@ class PipelinePreprocessorFunction(config: PipelinePreprocessorConfig,
       config.shareEventsRouterMetricCount,
       config.shareItemEventsMetircsCount,
       config.denormSecondaryEventsRouterMetricsCount,
-      config.denormPrimaryEventsRouterMetricsCount
+      config.denormPrimaryEventsRouterMetricsCount,
+      config.cbAuditEventRouterMetricCount
     ) ::: deduplicationMetrics
   }
 
@@ -86,6 +87,9 @@ class PipelinePreprocessorFunction(config: PipelinePreprocessorConfig,
             context.output(config.denormSecondaryEventsRouteOutputTag, event)
             metrics.incCounter(metric = config.denormSecondaryEventsRouterMetricsCount)
           }
+          else if ("CB_AUDIT".equalsIgnoreCase(event.eid())) {
+            metrics.incCounter(metric = config.cbAuditEventRouterMetricCount) // //   metric for cb_audit events
+          }
           else {
             context.output(config.denormPrimaryEventsRouteOutputTag, event)
             metrics.incCounter(metric = config.denormPrimaryEventsRouterMetricsCount)
@@ -101,6 +105,8 @@ class PipelinePreprocessorFunction(config: PipelinePreprocessorConfig,
               metrics.incCounter(metric = config.primaryRouterMetricCount) // // Since we are are sinking the SHARE Event into primary router topic
             case "ERROR" =>
               context.output(config.errorEventOutputTag, event)
+            case "CB_AUDIT" =>
+              context.output(config.cbAuditRouteEventsOutputTag, event)  // cbAudit event are not routed to denorm topic
             case _ => context.output(config.primaryRouteEventsOutputTag, event)
               metrics.incCounter(metric = config.primaryRouterMetricCount)
           }
