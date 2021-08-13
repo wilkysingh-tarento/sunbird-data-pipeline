@@ -221,6 +221,7 @@ pipeline-preprocessor:
       output.duplicate.topic = {{ env_name }}.telemetry.duplicate
       output.denorm.secondary.route.topic = {{ env_name }}.telemetry.unique.secondary
       output.denorm.primary.route.topic = {{ env_name }}.telemetry.unique.primary
+      output.cb.audit.route.topic = {{ env_name }}.telemetry.cb.audit
       groupId = {{ env_name }}-pipeline-preprocessor-group
     }
     task {
