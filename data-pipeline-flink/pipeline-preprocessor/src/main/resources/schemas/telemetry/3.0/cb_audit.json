@@ -16,9 +16,6 @@
     },
     {
       "properties": {
-        "eid": {
-          "id": "http://api.ekstep.org/telemetry/eid"
-        },
         "edata": {
           "id": "http://api.ekstep.org/telemetry/edata",
           "type": "object",
