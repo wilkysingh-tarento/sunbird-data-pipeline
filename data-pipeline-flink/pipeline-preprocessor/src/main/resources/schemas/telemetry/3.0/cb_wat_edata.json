@@ -1,5 +1,4 @@
 {
-  "id": "http://api.ekstep.org/telemetry/cb-wat-edata",
   "type": "object",
   "required": [
     "state",

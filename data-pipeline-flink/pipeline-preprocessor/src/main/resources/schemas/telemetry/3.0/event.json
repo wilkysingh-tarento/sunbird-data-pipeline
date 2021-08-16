@@ -48,7 +48,7 @@
       "$ref": "resource:/schemas/telemetry/3.0/exdata.json"
     },
     {
-      "$ref": "resource:/schemas/telemetry/3.0/cbaudit.json"
+      "$ref": "resource:/schemas/telemetry/3.0/cb_audit.json"
     }
   ]
 }

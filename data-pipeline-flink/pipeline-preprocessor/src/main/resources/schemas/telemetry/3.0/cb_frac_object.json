@@ -33,8 +33,8 @@
       "id": "http://api.ekstep.org/telemetry/cb-frac-object/org",
       "type": "string"
     },
-    "subtype": {
-      "id": "http://api.ekstep.org/telemetry/cb-frac-object/subtype",
+    "sub_type": {
+      "id": "http://api.ekstep.org/telemetry/cb-frac-object/sub_type",
       "type": "string"
     }
   }

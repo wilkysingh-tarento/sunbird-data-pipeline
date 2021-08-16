@@ -10,6 +10,7 @@
     "cb_object": {
       "id": "643cb47c-3e8a-4d5e-9fd4-45302a9ae09a",
       "type": "WorkOrder",
+      "ver": "1.0",
       "name": "Work order - Finance wing",
       "org": "New NHTest"
     },

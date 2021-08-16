@@ -1,5 +1,4 @@
 {
-  "id": "http://api.ekstep.org/telemetry/cb-frac-edata",
   "type": "object",
   "required": [
     "state",

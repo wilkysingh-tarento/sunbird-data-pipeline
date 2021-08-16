@@ -10,6 +10,7 @@
     "cb_object": {
       "id": "9a99e795-c652-4c0d-9f9f-960c737e15f3",
       "type": "Competency",
+      "ver": "1.0",
       "name": "Tech",
       "org": "ISTM",
       "sub_type": "Functional"
