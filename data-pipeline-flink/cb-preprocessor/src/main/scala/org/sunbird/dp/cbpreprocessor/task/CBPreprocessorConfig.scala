@@ -1,17 +1,17 @@
-package org.sunbird.dp.preprocessor.task
+package org.sunbird.dp.cbpreprocessor.task
 
 import com.typesafe.config.Config
 import org.apache.flink.api.common.typeinfo.TypeInformation
 import org.apache.flink.api.java.typeutils.TypeExtractor
 import org.apache.flink.streaming.api.scala.OutputTag
 import org.sunbird.dp.core.job.BaseJobConfig
-import org.sunbird.dp.preprocessor.domain.Event
+import org.sunbird.dp.cbpreprocessor.domain.Event
 
 import scala.collection.JavaConverters._
 
-class PipelinePreprocessorConfig(override val config: Config) extends BaseJobConfig(config, "PipelinePreprocessorJob") {
+class CBPreprocessorConfig(override val config: Config) extends BaseJobConfig(config, "PipelinePreprocessorJob") {
 
-  private val serialVersionUID = 2905979434303791379L
+  private val serialVersionUID = 2905979434303791379L  // TODO: change this?
 
   implicit val eventTypeInfo: TypeInformation[Event] = TypeExtractor.getForClass(classOf[Event])
   implicit val stringTypeInfo: TypeInformation[String] = TypeExtractor.getForClass(classOf[String])
@@ -24,11 +24,11 @@ class PipelinePreprocessorConfig(override val config: Config) extends BaseJobCon
   // Kafka Topic Configuration
   val kafkaInputTopic: String = config.getString("kafka.input.topic")
 
-  val kafkaPrimaryRouteTopic: String = config.getString("kafka.output.primary.route.topic")
   val kafkaLogRouteTopic: String = config.getString("kafka.output.log.route.topic")
   val kafkaErrorRouteTopic: String = config.getString("kafka.output.error.route.topic")
   val kafkaAuditRouteTopic: String = config.getString("kafka.output.audit.route.topic")
-  val kafkaCbAuditRouteTopic: String = config.getString("kafka.output.cb.audit.route.topic")
+  //val kafkaCbAuditRouteTopic: String = config.getString("kafka.output.cb.audit.route.topic")
+  val kafkaCbAuditRouteTopic: String = "dev.telemetry.cb.audit"
 
   val kafkaFailedTopic: String = config.getString("kafka.output.failed.topic")
   val kafkaDuplicateTopic: String = config.getString("kafka.output.duplicate.topic")
