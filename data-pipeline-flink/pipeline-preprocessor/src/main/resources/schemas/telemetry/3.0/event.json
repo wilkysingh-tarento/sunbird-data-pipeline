@@ -46,6 +46,9 @@
     },
     {
       "$ref": "resource:/schemas/telemetry/3.0/exdata.json"
+    },
+    {
+      "$ref": "resource:/schemas/telemetry/3.0/cbaudit.json"
     }
   ]
 }
