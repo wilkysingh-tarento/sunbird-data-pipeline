@@ -10,11 +10,12 @@ let frac_event = {
     "state": "Draft",  // Draft/Published etc.
     "props": ["WAT/FRAC"],
     "cb_object": {
-      "id": "9a99e795-c652-4c0d-9f9f-960c737e15f3",  // COMPETENCY/ACTIVITY/ROLE id
-      "type": "",  // type=COMPETENCY/ACTIVITY/ROLE
-      "name": "",  // COMPETENCY/ACTIVITY/ROLE name
-      "org": "",  // eg. ISTM
-      "sub_type": ""  // only present for competency, e.g Functional, empty string for others
+      "id": "9a99e795-c652-4c0d-9f9f-960c737e15f3",  // Competency/Activity/Role id
+      "type": "Competency",  // type=Competency/Activity/Role
+      "ver": "1.0", // 1.0 for now
+      "name": "Coding",  // Competency/Activity/Role name
+      "org": "ISTM",  // org, eg. ISTM
+      "sub_type": "Functional"  // only present for competency, e.g Functional, empty string for others
     }
   },
   "ver": "3.0",
@@ -30,8 +31,8 @@ let frac_event = {
   },
   "mid": "CB.d0152fb1-cd84-4309-882a-88b1df0e1648",  // mid="CB.<uuid>"
   "object": {
-    "id": "9a99e795-c652-4c0d-9f9f-960c737e15f3",  // COMPETENCY/ACTIVITY/ROLE id
-    "type": ""  // COMPETENCY/ACTIVITY/ROLE
+    "id": "9a99e795-c652-4c0d-9f9f-960c737e15f3",  // Competency/Activity/Role id
+    "type": "Competency"  // Competency/Activity/Role
   }
 }
 
@@ -49,6 +50,7 @@ let wat_event = {
     "cb_object": {
       "id": "643cb47c-3e8a-4d5e-9fd4-45302a9ae09a",  // work order id
       "type": "WorkOrder",  // WorkOrder
+      "ver": "1.0",
       "name": "Work order - Finance wing",
       "org": "New NHTest"
     },
