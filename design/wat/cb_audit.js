@@ -20,7 +20,7 @@ let frac_event = {
   "ver": "3.0",
   "ets": 1628845042921,
   "context": {
-    "channel": "",  // channel id if present, else null
+    "channel": "013260789496258560586",  // must be present
     "pdata": {
       "id": "dev.FRac.portal",
       "pid": "FRac",
@@ -143,7 +143,7 @@ let wat_event = {
   "ver": "3.0",
   "ets": 1628845042921,
   "context": {
-    "channel": "013260789496258560586",
+    "channel": "013260789496258560586", // must be present
     "pdata": {
       "id": "<env>.mdo.portal",
       "pid": "mdo",

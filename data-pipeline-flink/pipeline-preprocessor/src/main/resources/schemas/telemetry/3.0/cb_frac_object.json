@@ -11,30 +11,30 @@
   "additionalProperties": false,
   "properties": {
     "id": {
-      "id": "http://api.ekstep.org/telemetry/cbobject/id",
+      "id": "http://api.ekstep.org/telemetry/cb-frac-object/id",
       "type": "string"
     },
     "type": {
-      "id": "http://api.ekstep.org/telemetry/cbobject/type",
+      "id": "http://api.ekstep.org/telemetry/cb-frac-object/type",
       "enum": ["Competency", "Activity", "Role"]
     },
     "ver": {
-      "id": "http://api.ekstep.org/telemetry/cbobject/ver",
+      "id": "http://api.ekstep.org/telemetry/cb-frac-object/ver",
       "type": "string"
     },
     "rollup": {
       "$ref": "resource:/schemas/telemetry/3.0/rollup.json"
     },
     "name": {
-      "id": "http://api.ekstep.org/telemetry/cbobject/name",
+      "id": "http://api.ekstep.org/telemetry/cb-frac-object/name",
       "type": "string"
     },
     "org": {
-      "id": "http://api.ekstep.org/telemetry/cbobject/org",
+      "id": "http://api.ekstep.org/telemetry/cb-frac-object/org",
       "type": "string"
     },
     "subtype": {
-      "id": "http://api.ekstep.org/telemetry/cbobject/subtype",
+      "id": "http://api.ekstep.org/telemetry/cb-frac-object/subtype",
       "type": "string"
     }
   }
