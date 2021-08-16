@@ -28,8 +28,7 @@ class PipelinePreprocessorConfig(override val config: Config) extends BaseJobCon
   val kafkaLogRouteTopic: String = config.getString("kafka.output.log.route.topic")
   val kafkaErrorRouteTopic: String = config.getString("kafka.output.error.route.topic")
   val kafkaAuditRouteTopic: String = config.getString("kafka.output.audit.route.topic")
-  //val kafkaCbAuditRouteTopic: String = config.getString("kafka.output.cb.audit.route.topic")
-  val kafkaCbAuditRouteTopic: String = "dev.telemetry.cb.audit"
+  val kafkaCbAuditRouteTopic: String = config.getString("kafka.output.cb.audit.route.topic")
 
   val kafkaFailedTopic: String = config.getString("kafka.output.failed.topic")
   val kafkaDuplicateTopic: String = config.getString("kafka.output.duplicate.topic")
