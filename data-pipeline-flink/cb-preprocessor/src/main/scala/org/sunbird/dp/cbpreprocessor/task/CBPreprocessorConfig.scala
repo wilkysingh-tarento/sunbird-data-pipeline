@@ -9,7 +9,7 @@ import org.sunbird.dp.cbpreprocessor.domain.Event
 
 import scala.collection.JavaConverters._
 
-class CBPreprocessorConfig(override val config: Config) extends BaseJobConfig(config, "PipelinePreprocessorJob") {
+class CBPreprocessorConfig(override val config: Config) extends BaseJobConfig(config, "CBPreprocessorJob") {
 
   private val serialVersionUID = 2905979434303791379L  // TODO: change this?
 
@@ -66,11 +66,8 @@ class CBPreprocessorConfig(override val config: Config) extends BaseJobConfig(co
   val uniqueEventsMetricsCount = "unique-event-count"
   val validationSkipMetricsCount = "validation-skipped-event-count"
 
-  // ShareEventsFlatten count
-  val shareItemEventsMetircsCount = "share-item-event-success-count"
-
   // Consumers
-  val pipelinePreprocessorConsumer = "pipeline-preprocessor-consumer"
+  val cbPreprocessorConsumer = "cb-preprocessor-consumer"
 
   // Functions
   val telemetryValidationFunction = "TelemetryValidationFunction"

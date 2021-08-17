@@ -6,13 +6,11 @@ import org.apache.flink.streaming.api.functions.ProcessFunction
 import org.slf4j.LoggerFactory
 import org.sunbird.dp.core.cache.{DedupEngine, RedisConnect}
 import org.sunbird.dp.core.job.{BaseProcessFunction, Metrics}
-import org.sunbird.dp.preprocessor.domain.Event
-import org.sunbird.dp.preprocessor.task.PipelinePreprocessorConfig
-import org.sunbird.dp.preprocessor.util.{ShareEventsFlattener, TelemetryValidator}
+import org.sunbird.dp.cbpreprocessor.domain.Event
+import org.sunbird.dp.cbpreprocessor.task.CBPreprocessorConfig
 
-class CBPreprocessorFunction(config: PipelinePreprocessorConfig,
-                             @transient var telemetryValidator: TelemetryValidator = null,
-                             @transient var shareEventsFlattener: ShareEventsFlattener = null,
+class CBPreprocessorFunction(config: CBPreprocessorConfig,
+                             @transient var cbEventsFlattener: CBEventsFlattener = null,
                              @transient var dedupEngine: DedupEngine = null)
                             (implicit val eventTypeInfo: TypeInformation[Event])
   extends BaseProcessFunction[Event, Event](config) {
@@ -23,14 +21,9 @@ class CBPreprocessorFunction(config: PipelinePreprocessorConfig,
     List(config.validationFailureMetricsCount,
       config.validationSuccessMetricsCount,
       config.duplicationSkippedEventMetricsCount,
-      config.primaryRouterMetricCount,
       config.logEventsRouterMetricsCount,
       config.errorEventsRouterMetricsCount,
       config.auditEventRouterMetricCount,
-      config.shareEventsRouterMetricCount,
-      config.shareItemEventsMetircsCount,
-      config.denormSecondaryEventsRouterMetricsCount,
-      config.denormPrimaryEventsRouterMetricsCount,
       config.cbAuditEventRouterMetricCount
     ) ::: deduplicationMetrics
   }
@@ -41,13 +34,8 @@ class CBPreprocessorFunction(config: PipelinePreprocessorConfig,
       val redisConnect = new RedisConnect(config.redisHost, config.redisPort, config)
       dedupEngine = new DedupEngine(redisConnect, config.dedupStore, config.cacheExpirySeconds)
     }
-
-    if (telemetryValidator == null) {
-      telemetryValidator = new TelemetryValidator(config)
-    }
-
-    if(shareEventsFlattener == null) {
-      shareEventsFlattener = new ShareEventsFlattener(config)
+    if (cbEventsFlattener == null) {
+      cbEventsFlattener = CBEventsFlattener(config)
     }
   }
 
@@ -63,61 +51,22 @@ class CBPreprocessorFunction(config: PipelinePreprocessorConfig,
   override def processElement(event: Event,
                               context: ProcessFunction[Event, Event]#Context,
                               metrics: Metrics): Unit = {
-    val isValid = telemetryValidator.validate(event, context, metrics)
+    val hasWorkOrderData = event.hasWorkOrderData()  // TODO: implement
 
-    if (isValid) {
-      if (event.eid().equalsIgnoreCase("LOG")) {
-        context.output(config.logEventsOutputTag, event)
-        metrics.incCounter(metric = config.logEventsRouterMetricsCount)
-      }
-      else {
-        val isUnique = if (isDuplicateCheckRequired(event.producerId())) {
-          deDuplicate[Event, Event](event.mid(), event, context, config.duplicateEventsOutputTag,
-            flagName = config.DEDUP_FLAG_NAME)(dedupEngine, metrics)
+    if (hasWorkOrderData) {
+      val events = cbEventsFlattener.flatten(event) // TODO: correct signature
+      events.ForEach(cbEvent => {
+        if (cbEvent.isPublished()) {
+          context.output(config.publishedWorkOrderEventsOutputTag, event)
+          metrics.incCounter(metric = config.publishedCBEventsMetricsCount)
         } else {
-          event.markSkipped(config.DEDUP_SKIP_FLAG_NAME)
-          metrics.incCounter(uniqueEventMetricCount)
-          true
+          context.output(config.otherWorkOrderEventsOutputTag, event)
+          metrics.incCounter(metric = config.otherWorkOrderEventsMetricsCount)
         }
-
-        if (isUnique) {
-
-          if (config.secondaryEvents.contains(event.eid())) {
-            context.output(config.denormSecondaryEventsRouteOutputTag, event)
-            metrics.incCounter(metric = config.denormSecondaryEventsRouterMetricsCount)
-          } else if ("ERROR".equalsIgnoreCase(event.eid())) {
-            // do nothing, do not send to denormPrimaryEventsRouteOutputTag
-          } else if ("CB_AUDIT".equalsIgnoreCase(event.eid())) {
-            // do nothing, do not send to denormPrimaryEventsRouteOutputTag
-          } else {
-            // all others can be sent to denormPrimaryEventsRouteOutputTag
-            context.output(config.denormPrimaryEventsRouteOutputTag, event)
-            metrics.incCounter(metric = config.denormPrimaryEventsRouterMetricsCount)
-          }
-
-          event.eid() match {
-            case "AUDIT" =>
-              context.output(config.auditRouteEventsOutputTag, event)
-              metrics.incCounter(metric = config.auditEventRouterMetricCount)
-              metrics.incCounter(metric = config.primaryRouterMetricCount) // Since we are are sinking the AUDIT Event into primary router topic
-            case "SHARE" =>
-              shareEventsFlattener.flatten(event, context, metrics)
-              metrics.incCounter(metric = config.shareEventsRouterMetricCount)
-              metrics.incCounter(metric = config.primaryRouterMetricCount) // // Since we are are sinking the SHARE Event into primary router topic
-            case "ERROR" =>
-              context.output(config.errorEventOutputTag, event)
-              metrics.incCounter(metric = config.errorEventsRouterMetricsCount)
-            case "CB_AUDIT" =>
-              context.output(config.cbAuditRouteEventsOutputTag, event)  // cbAudit event are not routed to denorm topic
-              metrics.incCounter(metric = config.cbAuditEventRouterMetricCount) // //   metric for cb_audit events
-            case _ =>
-              context.output(config.primaryRouteEventsOutputTag, event)
-              metrics.incCounter(metric = config.primaryRouterMetricCount)
-          }
-
-
-        }
-      }
+      })
+    } else {
+      context.output(config.CBEventsOutputTag, event)
+      metrics.incCounter(metric = config.CBEventsMetricsCount)
     }
 
   }
