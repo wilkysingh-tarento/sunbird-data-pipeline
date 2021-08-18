@@ -5,12 +5,12 @@ import java.util
 import org.apache.commons.lang3.StringUtils
 import org.joda.time.format.DateTimeFormat
 import org.sunbird.dp.core.domain.{Events, EventsPath}
-import org.sunbird.dp.preprocessor.task.PipelinePreprocessorConfig
+import org.sunbird.dp.cbpreprocessor.task.CBPreprocessorConfig
 
 class Event(eventMap: util.Map[String, Any]) extends Events(eventMap) {
 
   private[this] val dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZoneUTC
-  private val jobName = "PipelinePreprocessor"
+  private val jobName = "CBPreprocessor"
 
   override def kafkaKey(): String = {
     did()
@@ -59,7 +59,7 @@ class Event(eventMap: util.Map[String, Any]) extends Events(eventMap) {
     telemetry.add("type", "events")
   }
 
-  def updateDefaults(config: PipelinePreprocessorConfig): Unit = {
+  def updateDefaults(config: CBPreprocessorConfig): Unit = {
     val channelString = telemetry.read[String](EventsPath.CONTEXT_CHANNEL_PATH).getOrElse(null)
     val channel = StringUtils.deleteWhitespace(channelString)
     if (channel == null || channel.isEmpty) {
@@ -86,5 +86,8 @@ class Event(eventMap: util.Map[String, Any]) extends Events(eventMap) {
 
   def rollup: util.Map[String, AnyRef] = telemetry.read[util.Map[String, AnyRef]](EventsPath.CONTEXT_ROLLUP_PATH).orNull
 
+  def cbObject: util.Map[String, AnyRef] = telemetry.read[util.Map[String, AnyRef]](s"${EventsPath.EDATA_PATH}.cb_object").orNull
+
+  def cbData: util.Map[String, AnyRef] = telemetry.read[util.Map[String, AnyRef]](s"${EventsPath.EDATA_PATH}.cb_data").orNull
 
 }

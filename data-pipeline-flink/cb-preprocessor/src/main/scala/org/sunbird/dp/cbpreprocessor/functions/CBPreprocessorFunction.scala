@@ -18,12 +18,8 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
   private[this] val logger = LoggerFactory.getLogger(classOf[CBPreprocessorFunction])
 
   override def metricsList(): List[String] = {
-    List(config.validationFailureMetricsCount,
-      config.validationSuccessMetricsCount,
+    List(
       config.duplicationSkippedEventMetricsCount,
-      config.logEventsRouterMetricsCount,
-      config.errorEventsRouterMetricsCount,
-      config.auditEventRouterMetricCount,
       config.cbAuditEventRouterMetricCount
     ) ::: deduplicationMetrics
   }
@@ -52,7 +48,7 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
                               context: ProcessFunction[Event, Event]#Context,
                               metrics: Metrics): Unit = {
 
-    // node, competency/role/activity/workorder state (Draft, Approved. Published)
+    // node, competency/role/activity/workorder state (Draft, Approved, Published)
     context.output(config.CBEventsOutputTag, event)
     metrics.incCounter(metric = config.CBEventsMetricsCount)
 

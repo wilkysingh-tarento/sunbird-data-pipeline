@@ -24,9 +24,6 @@ class CBPreprocessorConfig(override val config: Config) extends BaseJobConfig(co
   // Kafka Topic Configuration
   val kafkaInputTopic: String = config.getString("kafka.input.topic")
 
-  val kafkaLogRouteTopic: String = config.getString("kafka.output.log.route.topic")
-  val kafkaErrorRouteTopic: String = config.getString("kafka.output.error.route.topic")
-  val kafkaAuditRouteTopic: String = config.getString("kafka.output.audit.route.topic")
   val kafkaCbAuditOutputRouteTopic: String = config.getString("kafka.output.cb.audit.druid.route.topic")
 
   val kafkaFailedTopic: String = config.getString("kafka.output.failed.topic")
@@ -36,26 +33,15 @@ class CBPreprocessorConfig(override val config: Config) extends BaseJobConfig(co
 
   val includedProducersForDedup: List[String] = config.getStringList("dedup.producer.included.ids").asScala.toList
 
-  // Router stream out put tags
-  // val primaryRouteEventsOutputTag: OutputTag[Event] = OutputTag[Event]("primary-route-events")
-
-  // Audit, Log & Error Events output tag
+  //
   val auditRouteEventsOutputTag: OutputTag[Event] = OutputTag[Event]("audit-route-events")
   val cbAuditRouteEventsOutputTag: OutputTag[Event] = OutputTag[Event]("cb-audit-route-events")
-  val logEventsOutputTag: OutputTag[Event] = OutputTag[Event]("log-route-events")
-  val errorEventOutputTag: OutputTag[Event] = OutputTag[Event]("error-route-events")
 
   override val kafkaConsumerParallelism: Int = config.getInt("task.consumer.parallelism")
   val downstreamOperatorsParallelism: Int = config.getInt("task.downstream.operators.parallelism")
 
   // Router job metrics
   val primaryRouterMetricCount = "primary-route-success-count"
-  val auditEventRouterMetricCount = "audit-route-success-count"
-  val shareEventsRouterMetricCount = "share-route-success-count"
-  val logEventsRouterMetricsCount = "log-route-success-count"
-  val errorEventsRouterMetricsCount = "error-route-success-count"
-  val denormSecondaryEventsRouterMetricsCount = "denorm-secondary-route-success-count"
-  val denormPrimaryEventsRouterMetricsCount = "denorm-primary-route-success-count"
   val cbAuditEventRouterMetricCount = "cb-audit-route-success-count"
 
   // Validation job metrics
@@ -69,24 +55,11 @@ class CBPreprocessorConfig(override val config: Config) extends BaseJobConfig(co
   // Consumers
   val cbPreprocessorConsumer = "cb-preprocessor-consumer"
 
-  // Functions
-  val telemetryValidationFunction = "TelemetryValidationFunction"
-  val telemetryRouterFunction = "TelemetryRouterFunction"
-  val shareEventsFlattenerFunction = "ShareEventsFlattenerFunction"
-
   // Producers
   val primaryRouterProducer = "primary-route-sink"
-  val auditEventsPrimaryRouteProducer = "audit-events-primary-route-sink"
-  val shareEventsPrimaryRouteProducer = "share-events-primary-route-sink"
-  val shareItemsPrimaryRouterProducer = "share-items-primary-route-sink"
-  val logRouterProducer = "log-route-sink"
-  val errorRouterProducer = "error-route-sink"
-  val auditRouterProducer = "audit-route-sink"
   val cbAuditRouterProducer = "cb-audit-route-sink"
   val invalidEventProducer = "invalid-events-sink"
   val duplicateEventProducer = "duplicate-events-sink"
-  val denormSecondaryEventProducer = "denorm-secondary-events-sink"
-  val denormPrimaryEventProducer = "denorm-primary-events-sink"
 
   val defaultSchemaFile = "envelope.json"
 

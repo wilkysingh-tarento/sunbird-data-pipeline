@@ -9,19 +9,24 @@ import org.sunbird.dp.core.util.JSONUtil
 // import com.google.gson.Gson
 import org.apache.flink.streaming.api.functions.ProcessFunction
 import org.sunbird.dp.core.job.Metrics
-import org.sunbird.dp.preprocessor.domain._
-import org.sunbird.dp.preprocessor.task.PipelinePreprocessorConfig
-import org.sunbird.dp.preprocessor.domain.{Context => EventContext}
+import org.sunbird.dp.cbpreprocessor.domain._
+import org.sunbird.dp.cbpreprocessor.task.CBPreprocessorConfig
+import org.sunbird.dp.cbpreprocessor.domain.{Context => EventContext}
 
 import scala.util.Try
 
-class CBEventsFlattener(config: PipelinePreprocessorConfig) extends java.io.Serializable {
+class CBEventsFlattener(config: CBPreprocessorConfig) extends java.io.Serializable {
 
   private val serialVersionUID = 1167435095740381669L
   val objectMapper = new ObjectMapper()
 
   def flatten(event: Event, context: ProcessFunction[Event, Event]#Context, metrics: Metrics) = {
 
+    event.flattenedWorkOrderData().forEach(woData => {
+
+    })
+
+    // TODO: REPLACE
     event.edataItems().forEach(items => {
       val version = items.get("ver").asInstanceOf[String]
       val identifier = items.get("id").asInstanceOf[String]
@@ -53,6 +58,7 @@ class CBEventsFlattener(config: PipelinePreprocessorConfig) extends java.io.Seri
       }
       metrics.incCounter(config.shareItemEventsMetircsCount)
     })
+    // TODO: REPLACE, END
 
     event.markSuccess(config.SHARE_EVENTS_FLATTEN_FLAG_NAME)
     context.output(config.primaryRouteEventsOutputTag, event)

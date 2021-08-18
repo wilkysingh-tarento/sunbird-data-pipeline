@@ -17,8 +17,8 @@ import org.sunbird.dp.{BaseMetricsReporter, BaseTestSpec}
 import org.sunbird.dp.fixture.EventFixtures
 import org.sunbird.dp.core.job.FlinkKafkaConnector
 import org.sunbird.dp.core.util.JSONUtil
-import org.sunbird.dp.preprocessor.domain.Event
-import org.sunbird.dp.preprocessor.task.{PipelinePreprocessorConfig, PipelinePreprocessorStreamTask}
+import org.sunbird.dp.cbpreprocessor.domain.Event
+import org.sunbird.dp.cbpreprocessor.task.{CBPreprocessorConfig, CBPreprocessorStreamTask}
 import redis.embedded.RedisServer
 
 import scala.collection.JavaConverters._
@@ -38,7 +38,7 @@ class PipelineProcessorStreamTaskTestSpec extends BaseTestSpec {
 
   var redisServer: RedisServer = _
   val config: Config = ConfigFactory.load("test.conf")
-  val ppConfig: PipelinePreprocessorConfig = new PipelinePreprocessorConfig(config)
+  val ppConfig: CBPreprocessorConfig = new CBPreprocessorConfig(config)
 
   val gson = new Gson()
   val mockKafkaUtil: FlinkKafkaConnector = mock[FlinkKafkaConnector](Mockito.withSettings().serializable())

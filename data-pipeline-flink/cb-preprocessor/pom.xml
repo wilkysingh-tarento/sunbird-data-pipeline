@@ -154,7 +154,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.sunbird.dp.preprocessor.task.CBPreprocessorStreamTask</mainClass>
+                                    <mainClass>org.sunbird.dp.cbpreprocessor.task.CBPreprocessorStreamTask</mainClass>
                                 </transformer>
                                 <!-- append default configs -->
                                 <transformer
