@@ -19,7 +19,10 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
 
   override def metricsList(): List[String] = {
     List(
-      config.duplicationSkippedEventMetricsCount,
+      config.cbAuditEventMetricCount,
+      config.workOrderEventsMetricsCount,
+      config.publishedWorkOrderEventsMetricsCount,
+      config.workOrderDataRowMetricsCount,
       config.cbAuditEventRouterMetricCount
     ) ::: deduplicationMetrics
   }
@@ -50,14 +53,25 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
 
     // node, competency/role/activity/workorder state (Draft, Approved, Published)
     context.output(config.CBEventsOutputTag, event)
-    metrics.incCounter(metric = config.CBEventsMetricsCount)
+    metrics.incCounter(metric = config.cbAuditEventMetricCount)
 
-    if (event.hasWorkOrderData() && event.isPublished()) {  // TODO: implement hasWorkOrderData() and isPublished()
-        val events = cbEventsFlattener.flatten(event)  // TODO: correct signature
-        events.forEach(watEvent => {
-          context.output(config.entitiesnodeWorkOrderEventsOutputTag, event)
-          metrics.incCounter(metric = config.publishedCBEventsMetricsCount)
-        })
+    val hasWorkOrderData = event.hasWorkOrderData()  // TODO: implement hasWorkOrderData() and isPublished()
+    val isPublishedWorkOrder = hasWorkOrderData && event.isPublishedWorkOrder()
+
+    // increase counters
+    if (hasWorkOrderData) {
+      metrics.incCounter(metric = config.workOrderEventsMetricsCount)
+      if (isPublishedWorkOrder) {
+        metrics.incCounter(metric = config.publishedWorkOrderEventsMetricsCount)
+      }
+    }
+
+    if (isPublishedWorkOrder) {
+      val events = cbEventsFlattener.flatten(event, context, metrics)
+      events.forEach(watEvent => {
+        context.output(config.WorkOrderDataRowOutputTag, watEvent)
+        metrics.incCounter(metric = config.workOrderDataRowMetricsCount)
+      })
     }
   }
 

@@ -32,7 +32,15 @@ class CBPreprocessorStreamTask(config: CBPreprocessorConfig, kafkaConnector: Fli
         .rebalance()
         .process(new CBPreprocessorFunction(config)).setParallelism(config.downstreamOperatorsParallelism)
 
+    eventStream.getSideOutput(config.cbAuditRouteEventsOutputTag)
+      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaCbAuditRouteTopic))
+      .name(config.cbAuditRouterProducer).uid(config.cbAuditRouterProducer)
+      .setParallelism(config.downstreamOperatorsParallelism)
 
+    eventStream.getSideOutput(config.workOrderDataRowOutputTag)
+      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaCbAuditRouteTopic))
+      .name(config.cbAuditRouterProducer).uid(config.cbAuditRouterProducer)
+      .setParallelism(config.downstreamOperatorsParallelism)
 
 
 
