@@ -32,6 +32,23 @@ class CBPreprocessorStreamTask(config: CBPreprocessorConfig, kafkaConnector: Fli
         .rebalance()
         .process(new CBPreprocessorFunction(config)).setParallelism(config.downstreamOperatorsParallelism)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // TODO: REPLACE
     /**
      * Routing FRAC and WAT events to frac and wat

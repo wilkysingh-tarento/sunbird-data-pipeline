@@ -59,6 +59,17 @@
                     "submittedFromId": null,
                     "submittedToId": "",
                     "level": null
+                  },{
+                    "type": "ACTIVITY",
+                    "id": "id01",
+                    "name": "",
+                    "description": "Manager role",
+                    "status": null,
+                    "source": null,
+                    "parentRole": null,
+                    "submittedFromId": null,
+                    "submittedToId": "",
+                    "level": null
                   }
                 ],
                 "addedAt": 0,

@@ -51,24 +51,18 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
   override def processElement(event: Event,
                               context: ProcessFunction[Event, Event]#Context,
                               metrics: Metrics): Unit = {
-    val hasWorkOrderData = event.hasWorkOrderData()  // TODO: implement
 
-    if (hasWorkOrderData) {
-      val events = cbEventsFlattener.flatten(event) // TODO: correct signature
-      events.ForEach(cbEvent => {
-        if (cbEvent.isPublished()) {
-          context.output(config.publishedWorkOrderEventsOutputTag, event)
+    // node, competency/role/activity/workorder state (Draft, Approved. Published)
+    context.output(config.CBEventsOutputTag, event)
+    metrics.incCounter(metric = config.CBEventsMetricsCount)
+
+    if (event.hasWorkOrderData() && event.isPublished()) {  // TODO: implement hasWorkOrderData() and isPublished()
+        val events = cbEventsFlattener.flatten(event)  // TODO: correct signature
+        events.forEach(watEvent => {
+          context.output(config.entitiesnodeWorkOrderEventsOutputTag, event)
           metrics.incCounter(metric = config.publishedCBEventsMetricsCount)
-        } else {
-          context.output(config.otherWorkOrderEventsOutputTag, event)
-          metrics.incCounter(metric = config.otherWorkOrderEventsMetricsCount)
-        }
-      })
-    } else {
-      context.output(config.CBEventsOutputTag, event)
-      metrics.incCounter(metric = config.CBEventsMetricsCount)
+        })
     }
-
   }
 
 }
