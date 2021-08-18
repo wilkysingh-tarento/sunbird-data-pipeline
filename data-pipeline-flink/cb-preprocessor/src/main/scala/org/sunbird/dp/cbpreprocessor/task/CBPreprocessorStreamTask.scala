@@ -32,68 +32,17 @@ class CBPreprocessorStreamTask(config: CBPreprocessorConfig, kafkaConnector: Fli
         .rebalance()
         .process(new CBPreprocessorFunction(config)).setParallelism(config.downstreamOperatorsParallelism)
 
+    // all events to kafkaCbAuditRouteOutputTopic
     eventStream.getSideOutput(config.cbAuditRouteEventsOutputTag)
-      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaCbAuditRouteTopic))
+      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaCbAuditRouteOutputTopic))
       .name(config.cbAuditRouterProducer).uid(config.cbAuditRouterProducer)
       .setParallelism(config.downstreamOperatorsParallelism)
 
+    // work order rows generated from published work order events to kafkaWorkOrderRowOutputTopic
     eventStream.getSideOutput(config.workOrderDataRowOutputTag)
-      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaCbAuditRouteTopic))
-      .name(config.cbAuditRouterProducer).uid(config.cbAuditRouterProducer)
+      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaWorkOrderRowOutputTopic))
+      .name(config.cbAuditRouterWOProducer).uid(config.cbAuditRouterWOProducer)
       .setParallelism(config.downstreamOperatorsParallelism)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // TODO: REPLACE
-    /**
-     * Routing FRAC and WAT events to frac and wat
-     */
-    eventStream.getSideOutput(config.logEventsOutputTag)
-      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaLogRouteTopic))
-      .name(config.logRouterProducer).uid(config.logRouterProducer)
-      .setParallelism(config.downstreamOperatorsParallelism)
-
-    eventStream.getSideOutput(config.errorEventOutputTag)
-      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaErrorRouteTopic))
-      .name(config.errorRouterProducer).uid(config.errorRouterProducer)
-      .setParallelism(config.downstreamOperatorsParallelism)
-
-    /**
-     * Pushing "AUDIT" event into both sink and audit topic
-     */
-    eventStream.getSideOutput(config.auditRouteEventsOutputTag)
-      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaAuditRouteTopic))
-      .name(config.auditRouterProducer).uid(config.auditRouterProducer)
-      .setParallelism(config.downstreamOperatorsParallelism)
-
-    eventStream.getSideOutput(config.auditRouteEventsOutputTag)
-      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaPrimaryRouteTopic))
-      .name(config.auditEventsPrimaryRouteProducer).uid(config.auditEventsPrimaryRouteProducer)
-      .setParallelism(config.downstreamOperatorsParallelism)
-
-    /**
-     * pushing cbAudit events into cbAudit topic
-     */
-
-    eventStream.getSideOutput(config.cbAuditRouteEventsOutputTag)
-      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaCbAuditRouteTopic))
-      .name(config.cbAuditRouterProducer).uid(config.cbAuditRouterProducer)
-      .setParallelism(config.downstreamOperatorsParallelism)
-
-    // TODO: REPLACE, END
 
     env.execute(config.jobName)
   }
