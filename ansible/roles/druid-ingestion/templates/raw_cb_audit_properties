@@ -1,0 +1,121 @@
+{
+  "type": "kafka",
+  "dataSchema": {
+    "dataSource": "cb-audit-properties",
+    "parser": {
+      "type": "string",
+      "parseSpec": {
+        "format": "json",
+        "flattenSpec": {
+          "useFieldDiscovery": false,
+          "fields": [
+            {
+              "type": "path",
+              "name": "entity_id",
+               "expr": "$.edata.cb_object.id"
+            },
+            {
+              "type": "path",
+              "name": "Type",
+               "expr": "$.edata.cb_object.type"
+            },
+            {
+              "type": "path",
+              "name": "action_date",
+              "expr": "$.@timestamp"
+
+            },
+            {
+              "type": "path",
+              "name": "Name",
+              "expr": "$.edata.cb_object.name"
+            },
+            {
+              "type": "path",
+              "name": "Description",
+              "expr": "$.mid"
+            },
+            {
+              "type": "path",
+              "name": "Status",
+              "expr": "$.edata.state"
+            },
+            {
+              "type": "path",
+              "name": "Source",
+              "expr": "$.context.pdata.pid"
+            },
+            {
+              "type": "path",
+              "name": "mdo_name",
+              "expr": "$.edata.cb_data.mdo_name"
+            }
+          ]
+        },
+        "dimensionsSpec": {
+          "dimensions": [
+            {
+              "type": "string",
+              "name": "entity_id"
+            },
+            {
+              "type": "string",
+              "name": "position"
+            },
+            {
+              "type": "string",
+              "name": "position_id"
+            },
+            {
+              "type": "string",
+              "name": "role_name"
+            },
+            {
+              "type": "string",
+              "name": "role_id"
+            },
+            {
+              "type": "string",
+              "name": "child_type"
+            },
+            {
+              "type": "string",
+              "name": "Child_id"
+            },
+            {
+              "type": "string",
+              "name": "child_name"
+            }
+          ],
+          "dimensionsExclusions": []
+        },
+        "timestampSpec": {
+          "column": "syncts",
+          "format": "auto"
+        }
+      }
+    },
+    "metricsSpec": [],
+    "granularitySpec": {
+      "type": "uniform",
+      "segmentGranularity": "day",
+      "rollup": false
+    }
+  },
+  "ioConfig": {
+    "topic": "{{env}}.druid.cb.audit.telemetry",
+    "consumerProperties": {
+      "bootstrap.servers": "{{kafka_brokers}}"
+    },
+    "taskCount": "{{raw_cb_audit_events_taskcount}}",
+    "replicas": 1,
+    "taskDuration": "PT7200S",
+    "useEarliestOffset": true,
+    "completionTimeout" : "PT7200S"
+  },
+  "tuningConfig": {
+    "type": "kafka",
+    "reportParseExceptions": false,
+    "maxRowsPerSegment": "2000000"
+  }
+}
