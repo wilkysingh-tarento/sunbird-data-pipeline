@@ -27,6 +27,7 @@ class CBEventsFlattener(config: CBPreprocessorConfig) extends java.io.Serializab
     })
 
     // TODO: REPLACE
+    /*
     event.edataItems().forEach(items => {
       val version = items.get("ver").asInstanceOf[String]
       val identifier = items.get("id").asInstanceOf[String]
@@ -58,14 +59,16 @@ class CBEventsFlattener(config: CBPreprocessorConfig) extends java.io.Serializab
       }
       metrics.incCounter(config.shareItemEventsMetircsCount)
     })
+
+     */
     // TODO: REPLACE, END
 
-    event.markSuccess(config.SHARE_EVENTS_FLATTEN_FLAG_NAME)
-    context.output(config.primaryRouteEventsOutputTag, event)
+    // event.markSuccess(config.SHARE_EVENTS_FLATTEN_FLAG_NAME)
+    // context.output(config.primaryRouteEventsOutputTag, event)
 
   }
 
-
+  /*
   def generateShareItemEvents(event: Event, eventObj: EventObject, edataType: Option[String], paramSize: Option[Double] = None): String = {
     val shareItemEvent = ShareEvent(
       ActorObject(event.actorId(), event.actorType()),
@@ -79,7 +82,6 @@ class CBEventsFlattener(config: CBPreprocessorConfig) extends java.io.Serializab
       eventObj,
       event.eventTags
     )
-
     new Gson().toJson(shareItemEvent)
   }
 
@@ -92,6 +94,6 @@ class CBEventsFlattener(config: CBPreprocessorConfig) extends java.io.Serializab
       context.output(config.denormPrimaryEventsRouteOutputTag, shareItem)
       metrics.incCounter(metric = config.denormPrimaryEventsRouterMetricsCount)
     }
-  }
+  }*/
 
 }

@@ -10,8 +10,8 @@ import org.sunbird.dp.cbpreprocessor.domain.Event
 import org.sunbird.dp.cbpreprocessor.task.CBPreprocessorConfig
 
 class CBPreprocessorFunction(config: CBPreprocessorConfig,
-                             @transient var cbEventsFlattener: CBEventsFlattener = null,
-                             @transient var dedupEngine: DedupEngine = null)
+                             @transient var cbEventsFlattener: CBEventsFlattener = null)  // ,
+                             // @transient var dedupEngine: DedupEngine = null)
                             (implicit val eventTypeInfo: TypeInformation[Event])
   extends BaseProcessFunction[Event, Event](config) {
 
@@ -20,19 +20,24 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
   override def metricsList(): List[String] = {
     List(
       config.cbAuditEventMetricCount,
+      config.cbWorkOrderRowMetricCount,
+      config.cbAuditFailedMetricCount
+    )
+    /*List(
+      config.cbAuditEventMetricCount,
       config.workOrderEventsMetricsCount,
       config.publishedWorkOrderEventsMetricsCount,
       config.workOrderDataRowMetricsCount,
       config.cbAuditEventRouterMetricCount
-    ) ::: deduplicationMetrics
+    ) ::: deduplicationMetrics*/
   }
 
   override def open(parameters: Configuration): Unit = {
     super.open(parameters)
-    if (dedupEngine == null) {
-      val redisConnect = new RedisConnect(config.redisHost, config.redisPort, config)
-      dedupEngine = new DedupEngine(redisConnect, config.dedupStore, config.cacheExpirySeconds)
-    }
+    // if (dedupEngine == null) {
+    //  val redisConnect = new RedisConnect(config.redisHost, config.redisPort, config)
+    //  dedupEngine = new DedupEngine(redisConnect, config.dedupStore, config.cacheExpirySeconds)
+    // }
     if (cbEventsFlattener == null) {
       cbEventsFlattener = CBEventsFlattener(config)
     }
@@ -40,37 +45,37 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
 
   override def close(): Unit = {
     super.close()
-    dedupEngine.closeConnectionPool()
+    // dedupEngine.closeConnectionPool()
   }
 
-  def isDuplicateCheckRequired(producerId: String): Boolean = {
-    config.includedProducersForDedup.contains(producerId)
-  }
+//  def isDuplicateCheckRequired(producerId: String): Boolean = {
+//    config.includedProducersForDedup.contains(producerId)
+//  }
 
   override def processElement(event: Event,
                               context: ProcessFunction[Event, Event]#Context,
                               metrics: Metrics): Unit = {
 
     // node, competency/role/activity/workorder state (Draft, Approved, Published)
-    context.output(config.CBEventsOutputTag, event)
+    context.output(config.cbAuditEventsOutputTag, event)
     metrics.incCounter(metric = config.cbAuditEventMetricCount)
 
     val hasWorkOrderData = event.hasWorkOrderData()  // TODO: implement hasWorkOrderData() and isPublished()
     val isPublishedWorkOrder = hasWorkOrderData && event.isPublishedWorkOrder()
 
     // increase counters
-    if (hasWorkOrderData) {
-      metrics.incCounter(metric = config.workOrderEventsMetricsCount)
-      if (isPublishedWorkOrder) {
-        metrics.incCounter(metric = config.publishedWorkOrderEventsMetricsCount)
-      }
-    }
+    // if (hasWorkOrderData) {
+    //   metrics.incCounter(metric = config.workOrderEventsMetricsCount)
+    //  if (isPublishedWorkOrder) {
+    //    metrics.incCounter(metric = config.publishedWorkOrderEventsMetricsCount)
+    //  }
+    // }
 
     if (isPublishedWorkOrder) {
-      val events = cbEventsFlattener.flatten(event, context, metrics)
-      events.forEach(watEvent => {
-        context.output(config.WorkOrderDataRowOutputTag, watEvent)
-        metrics.incCounter(metric = config.workOrderDataRowMetricsCount)
+      val workOrderRows = cbEventsFlattener.flatten(event, context, metrics)
+      workOrderRows.forEach(woRow => {
+        context.output(config.cbWorkOrderRowOutputTag, woRow)
+        metrics.incCounter(metric = config.cbWorkOrderRowMetricCount)
       })
     }
   }

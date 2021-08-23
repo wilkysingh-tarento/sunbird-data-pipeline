@@ -90,4 +90,8 @@ class Event(eventMap: util.Map[String, Any]) extends Events(eventMap) {
 
   def cbData: util.Map[String, AnyRef] = telemetry.read[util.Map[String, AnyRef]](s"${EventsPath.EDATA_PATH}.cb_data").orNull
 
+  def hasWorkOrderData: Boolean = cbData() != null
+
+  def isPublishedWorkOrder: Boolean = hasWorkOrderData() && cbData().get("status") == "Published"
+
 }

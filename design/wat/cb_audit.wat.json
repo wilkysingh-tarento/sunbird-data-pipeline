@@ -34,6 +34,7 @@
       "competenciesCount": 1,
       "publishedPdfLink": null,
       "signedPdfLink": null,
+      "mdo_name": "New NHTest",
       "users": [
         {
           "id": "3f90ed64-2cba-4e14-8844-1ec53da454f8",
@@ -49,17 +50,6 @@
                 "source": null,
                 "childNodes": [
                   {
-                    "type": "ACTIVITY",
-                    "id": "id01",
-                    "name": "",
-                    "description": "Manager role",
-                    "status": null,
-                    "source": null,
-                    "parentRole": null,
-                    "submittedFromId": null,
-                    "submittedToId": "",
-                    "level": null
-                  },{
                     "type": "ACTIVITY",
                     "id": "id01",
                     "name": "",
@@ -109,8 +99,7 @@
           "createdAt": 1628845041770,
           "createdBy": "075e3a3f-1a56-4ea3-9042-c66e2288e60c"
         }
-      ],
-      "mdo_name": "New NHTest"
+      ]
     }
   },
   "ver": "3.0",

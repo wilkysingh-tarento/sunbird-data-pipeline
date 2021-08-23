@@ -16,51 +16,42 @@ class CBPreprocessorConfig(override val config: Config) extends BaseJobConfig(co
   implicit val eventTypeInfo: TypeInformation[Event] = TypeExtractor.getForClass(classOf[Event])
   implicit val stringTypeInfo: TypeInformation[String] = TypeExtractor.getForClass(classOf[String])
 
-  val schemaPath: String = config.getString("telemetry.schema.path")
-
-  val dedupStore: Int = config.getInt("redis.database.duplicationstore.id")
-  val cacheExpirySeconds: Int = config.getInt("redis.database.key.expiry.seconds")
+  // val schemaPath: String = config.getString("telemetry.schema.path")
 
   // Kafka Topic Configuration
   val kafkaInputTopic: String = config.getString("kafka.input.topic")
-
-  val kafkaCbAuditOutputRouteTopic: String = config.getString("kafka.output.cb.audit.druid.route.topic")
-
+  val kafkaOutputCbAuditTopic: String = config.getString("kafka.output.cb.audit.topic")
+  val kafkaOutputCbWorkOrderRowTopic: String = config.getString("kafka.output.cb.work.order.row.topic")
   val kafkaFailedTopic: String = config.getString("kafka.output.failed.topic")
-  val kafkaDuplicateTopic: String = config.getString("kafka.output.duplicate.topic")
 
   val defaultChannel: String = config.getString("default.channel")
 
-  val includedProducersForDedup: List[String] = config.getStringList("dedup.producer.included.ids").asScala.toList
-
-  //
-  val auditRouteEventsOutputTag: OutputTag[Event] = OutputTag[Event]("audit-route-events")
-  val cbAuditRouteEventsOutputTag: OutputTag[Event] = OutputTag[Event]("cb-audit-route-events")
+  // Output tags
+  val cbAuditEventsOutputTag: OutputTag[Event] = OutputTag[Event]("cb-audit-events")
+  val cbWorkOrderRowOutputTag: OutputTag[Event] = OutputTag[Event]("cb-work-order-row")
+  val cbFailedOutputTag: OutputTag[Event] = OutputTag[Event]("cb-failed-events")
 
   override val kafkaConsumerParallelism: Int = config.getInt("task.consumer.parallelism")
   val downstreamOperatorsParallelism: Int = config.getInt("task.downstream.operators.parallelism")
 
   // Router job metrics
-  val primaryRouterMetricCount = "primary-route-success-count"
-  val cbAuditEventRouterMetricCount = "cb-audit-route-success-count"
+  val cbWorkOrderRowMetricCount = "cb-work-order-row-count"
+  val cbAuditEventMetricCount = "cb-audit-route-success-count"
+  val cbAuditFailedMetricCount = "cb-audit-route-failed-count"
 
   // Validation job metrics
-  val validationSuccessMetricsCount = "validation-success-event-count"
-  val validationFailureMetricsCount = "validation-failed-event-count"
-  val duplicationEventMetricsCount = "duplicate-event-count"
-  val duplicationSkippedEventMetricsCount = "duplicate-skipped-event-count"
-  val uniqueEventsMetricsCount = "unique-event-count"
-  val validationSkipMetricsCount = "validation-skipped-event-count"
+  // val validationSuccessMetricsCount = "validation-success-event-count"
+  // val validationFailureMetricsCount = "validation-failed-event-count"
+  // val validationSkipMetricsCount = "validation-skipped-event-count"
 
   // Consumers
   val cbPreprocessorConsumer = "cb-preprocessor-consumer"
 
   // Producers
-  val primaryRouterProducer = "primary-route-sink"
-  val cbAuditRouterProducer = "cb-audit-route-sink"
-  val invalidEventProducer = "invalid-events-sink"
-  val duplicateEventProducer = "duplicate-events-sink"
+  val cbAuditProducer = "cb-audit-sink"
+  val cbWorkOrderRowProducer = "cb-work-order-row-sink"
+  val cbFailedEventProducer = "cb-failed-events-sink"
 
-  val defaultSchemaFile = "envelope.json"
+  // val defaultSchemaFile = "envelope.json"
 
 }

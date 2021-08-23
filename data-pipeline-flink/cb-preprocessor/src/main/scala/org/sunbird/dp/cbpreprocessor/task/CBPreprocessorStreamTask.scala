@@ -33,15 +33,21 @@ class CBPreprocessorStreamTask(config: CBPreprocessorConfig, kafkaConnector: Fli
         .process(new CBPreprocessorFunction(config)).setParallelism(config.downstreamOperatorsParallelism)
 
     // all events to kafkaCbAuditRouteOutputTopic
-    eventStream.getSideOutput(config.cbAuditRouteEventsOutputTag)
-      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaCbAuditRouteOutputTopic))
-      .name(config.cbAuditRouterProducer).uid(config.cbAuditRouterProducer)
+    eventStream.getSideOutput(config.cbAuditEventsOutputTag)
+      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaOutputCbAuditTopic))
+      .name(config.cbAuditProducer).uid(config.cbAuditProducer)
       .setParallelism(config.downstreamOperatorsParallelism)
 
-    // work order rows generated from published work order events to kafkaWorkOrderRowOutputTopic
-    eventStream.getSideOutput(config.workOrderDataRowOutputTag)
-      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaWorkOrderRowOutputTopic))
-      .name(config.cbAuditRouterWOProducer).uid(config.cbAuditRouterWOProducer)
+    // work order rows generated from published work order events to kafkaOutputCbWorkOrderRowTopic
+    eventStream.getSideOutput(config.cbWorkOrderRowOutputTag)
+      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaOutputCbWorkOrderRowTopic))
+      .name(config.cbWorkOrderRowProducer).uid(config.cbWorkOrderRowProducer)
+      .setParallelism(config.downstreamOperatorsParallelism)
+
+    // send failed events to kafkaFailedTopic
+    eventStream.getSideOutput(config.cbFailedOutputTag)
+      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaFailedTopic))
+      .name(config.cbFailedEventProducer).uid(config.cbFailedEventProducer)
       .setParallelism(config.downstreamOperatorsParallelism)
 
     env.execute(config.jobName)
