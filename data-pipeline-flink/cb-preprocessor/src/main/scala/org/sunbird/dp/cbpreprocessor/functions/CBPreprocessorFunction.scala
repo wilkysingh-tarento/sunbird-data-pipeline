@@ -4,15 +4,13 @@ import org.apache.flink.api.common.typeinfo.TypeInformation
 import org.apache.flink.configuration.Configuration
 import org.apache.flink.streaming.api.functions.ProcessFunction
 import org.slf4j.LoggerFactory
-import org.sunbird.dp.core.cache.{DedupEngine, RedisConnect}
+// import org.sunbird.dp.core.cache.{DedupEngine, RedisConnect}
 import org.sunbird.dp.core.job.{BaseProcessFunction, Metrics}
 import org.sunbird.dp.cbpreprocessor.domain.Event
 import org.sunbird.dp.cbpreprocessor.task.CBPreprocessorConfig
+// import org.sunbird.dp.cbpreprocessor.util.CBEventsFlattener
 
-class CBPreprocessorFunction(config: CBPreprocessorConfig,
-                             @transient var cbEventsFlattener: CBEventsFlattener = null)  // ,
-                             // @transient var dedupEngine: DedupEngine = null)
-                            (implicit val eventTypeInfo: TypeInformation[Event])
+class CBPreprocessorFunction(config: CBPreprocessorConfig)(implicit val eventTypeInfo: TypeInformation[Event])
   extends BaseProcessFunction[Event, Event](config) {
 
   private[this] val logger = LoggerFactory.getLogger(classOf[CBPreprocessorFunction])
@@ -38,9 +36,9 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
     //  val redisConnect = new RedisConnect(config.redisHost, config.redisPort, config)
     //  dedupEngine = new DedupEngine(redisConnect, config.dedupStore, config.cacheExpirySeconds)
     // }
-    if (cbEventsFlattener == null) {
-      cbEventsFlattener = CBEventsFlattener(config)
-    }
+    // if (cbEventsFlattener == null) {
+    //   cbEventsFlattener = CBEventsFlattener(config)
+    // }
   }
 
   override def close(): Unit = {
@@ -60,8 +58,8 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
     context.output(config.cbAuditEventsOutputTag, event)
     metrics.incCounter(metric = config.cbAuditEventMetricCount)
 
-    val hasWorkOrderData = event.hasWorkOrderData()  // TODO: implement hasWorkOrderData() and isPublished()
-    val isPublishedWorkOrder = hasWorkOrderData && event.isPublishedWorkOrder()
+    val hasWorkOrderData = event.hasWorkOrderData  // TODO: implement hasWorkOrderData() and isPublished()
+    val isPublishedWorkOrder = hasWorkOrderData && event.isPublishedWorkOrder
 
     // increase counters
     // if (hasWorkOrderData) {
@@ -72,11 +70,11 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
     // }
 
     if (isPublishedWorkOrder) {
-      val workOrderRows = cbEventsFlattener.flatten(event, context, metrics)
-      workOrderRows.forEach(woRow => {
-        context.output(config.cbWorkOrderRowOutputTag, woRow)
-        metrics.incCounter(metric = config.cbWorkOrderRowMetricCount)
-      })
+      // val workOrderRows = cbEventsFlattener.flatten(event, context, metrics)
+      // workOrderRows.forEach(woRow => {
+      //   context.output(config.cbWorkOrderRowOutputTag, woRow)
+      //   metrics.incCounter(metric = config.cbWorkOrderRowMetricCount)
+      // })
     }
   }
 
