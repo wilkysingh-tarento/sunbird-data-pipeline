@@ -26,6 +26,10 @@
               "name": "@timestamp"
             },
             {
+              "type": "root",
+              "name": "syncts"
+            },
+            {
               "type": "path",
               "name": "actor_id",
               "expr": "$.actor.id"
@@ -415,7 +419,7 @@
               "name": "Type"
             },
             {
-              "type": "long",
+              "type": "string",
               "name": "action_date"
             },
             {
@@ -437,6 +441,10 @@
             {
               "type": "string",
               "name": "mdo_name"
+            },
+            {
+               "type": "long",
+               "name": "syncts"
             }
           ],
           "dimensionsExclusions": []
