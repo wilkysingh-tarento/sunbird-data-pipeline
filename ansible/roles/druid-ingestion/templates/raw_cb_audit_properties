@@ -10,45 +10,78 @@
           "useFieldDiscovery": false,
           "fields": [
             {
+              "type": "root",
+              "name": "syncts"
+            },
+            {
               "type": "path",
               "name": "entity_id",
-               "expr": "$.edata.cb_object.id"
+              "expr": ""
             },
             {
               "type": "path",
-              "name": "Type",
-               "expr": "$.edata.cb_object.type"
+              "name": "position",
+              "expr": ""
             },
             {
               "type": "path",
-              "name": "action_date",
-              "expr": "$.@timestamp"
-
+              "name": "position_id",
+              "expr": ""
             },
             {
               "type": "path",
-              "name": "Name",
-              "expr": "$.edata.cb_object.name"
+              "name": "role_name",
+              "expr": ""
             },
             {
               "type": "path",
-              "name": "Description",
-              "expr": "$.mid"
+              "name": "role_id",
+              "expr": ""
+            },
+            {
+              "type": "path",
+              "name": "child_type",
+              "expr": ""
+            },
+            {
+              "type": "path",
+              "name": "Child_id",
+              "expr": ""
+            },
+            {
+              "type": "path",
+              "name": "child_name",
+              "expr": ""
             },
             {
               "type": "path",
               "name": "Status",
-              "expr": "$.edata.state"
+              "expr": ""
             },
             {
               "type": "path",
               "name": "Source",
-              "expr": "$.context.pdata.pid"
+              "expr": ""
+            },
+            {
+              "type": "path",
+              "name": "action_date",
+              "expr": ""
+            },
+            {
+              "type": "path",
+              "name": "action_by",
+              "expr": ""
             },
             {
               "type": "path",
               "name": "mdo_name",
-              "expr": "$.edata.cb_data.mdo_name"
+              "expr": ""
+            },
+            {
+              "type": "path",
+              "name": "Description",
+              "expr": ""
             }
           ]
         },
@@ -85,7 +118,36 @@
             {
               "type": "string",
               "name": "child_name"
+            },
+            {
+              "type": "string",
+              "name": "Status"
+            },
+            {
+              "type": "string",
+              "name": "Source"
+            },
+            {
+              "type": "string",
+              "name": "action_date"
+            },
+            {
+              "type": "string",
+              "name": "action_by"
+            },
+            {
+              "type": "string",
+              "name": "mdo_name"
+            },
+            {
+              "type": "string",
+              "name": "Description"
+            },
+            {
+               "type": "long",
+               "name": "syncts"
             }
+
           ],
           "dimensionsExclusions": []
         },
@@ -103,7 +165,7 @@
     }
   },
   "ioConfig": {
-    "topic": "{{env}}.druid.cb.audit.telemetry",
+    "topic": "{{env}}.druid.cb.audit",
     "consumerProperties": {
       "bootstrap.servers": "{{kafka_brokers}}"
     },
@@ -111,7 +173,7 @@
     "replicas": 1,
     "taskDuration": "PT7200S",
     "useEarliestOffset": true,
-    "completionTimeout" : "PT7200S"
+    "completionTimeout": "PT7200S"
   },
   "tuningConfig": {
     "type": "kafka",
