@@ -86,12 +86,12 @@ class Event(eventMap: util.Map[String, Any]) extends Events(eventMap) {
 
   def rollup: util.Map[String, AnyRef] = telemetry.read[util.Map[String, AnyRef]](EventsPath.CONTEXT_ROLLUP_PATH).orNull
 
-  def cbObject: util.Map[String, AnyRef] = telemetry.read[util.Map[String, AnyRef]](s"${EventsPath.EDATA_PATH}.cb_object").orNull
+  def cbObject: util.Map[String, Any] = telemetry.read[util.Map[String, Any]](s"${EventsPath.EDATA_PATH}.cb_object").orNull
 
-  def cbData: util.Map[String, AnyRef] = telemetry.read[util.Map[String, AnyRef]](s"${EventsPath.EDATA_PATH}.cb_data").orNull
+  def cbData: util.Map[String, Any] = telemetry.read[util.Map[String, Any]](s"${EventsPath.EDATA_PATH}.cb_data").orNull
 
   def hasWorkOrderData: Boolean = cbData != null
 
-  def isPublishedWorkOrder: Boolean = hasWorkOrderData && cbData.get("status") == "Published"
+  def isPublishedWorkOrder: Boolean = hasWorkOrderData && cbData.get("status").asInstanceOf[String] == "Published"
 
 }
