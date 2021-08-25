@@ -5,7 +5,6 @@ import org.sunbird.dp.cbpreprocessor.domain.Event
 import org.sunbird.dp.cbpreprocessor.task.CBPreprocessorConfig
 
 import java.util
-import java.util.UUID
 import scala.collection.JavaConverters._
 import scala.collection.mutable
 
@@ -16,8 +15,10 @@ import org.apache.flink.streaming.api.functions.ProcessFunction
 import org.sunbird.dp.core.job.Metrics
 // import scala.util.Try
 
-
-class CBEventsFlattener(config: CBPreprocessorConfig) extends java.io.Serializable {
+/**
+ * util for flattening cb_audit work order events
+ */
+class CBEventsFlattenerUtil extends java.io.Serializable {
 
   private val serialVersionUID = 1167435095740381669L  // TODO: update?
   val objectMapper = new ObjectMapper()
@@ -116,20 +117,6 @@ class CBEventsFlattener(config: CBPreprocessorConfig) extends java.io.Serializab
       // update new event map, put newEventMapEData as edata
       newEventMap.put("edata", newEventMapEData)
       new Event(newEventMap)
-    })
-  }
-
-  /**
-   * flatten cb_audit events and output each with cbWorkOrderRowOutputTag
-   *
-   * @param event
-   * @param context
-   * @param metrics
-   */
-  def fanOut(event: Event, context: ProcessFunction[Event, Event]#Context, metrics: Metrics): Unit = {
-    flattenedEvents(event).foreach(itemEvent => {
-      context.output(config.cbWorkOrderRowOutputTag, itemEvent)
-      metrics.incCounter(metric = config.cbWorkOrderRowMetricCount)
     })
   }
 

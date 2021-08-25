@@ -5,7 +5,7 @@ def merged_dict(dict_prefix_exclusions_list):
     use single dict, to make a copy
     """
     dict_merged = {}
-    for dict_i, prefix_i, exclusions_i in zip(dict_prefix_exclusions_list):
+    for dict_i, prefix_i, exclusions_i in dict_prefix_exclusions_list:
         exclusions_i = set() if not exclusions_i else set(exclusions_i)
         for key, val in dict_i.items():
             if key not in exclusions_i:

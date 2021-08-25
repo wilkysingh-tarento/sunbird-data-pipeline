@@ -9,10 +9,11 @@ import org.slf4j.LoggerFactory
 import org.sunbird.dp.core.job.{BaseProcessFunction, Metrics}
 import org.sunbird.dp.cbpreprocessor.domain.Event
 import org.sunbird.dp.cbpreprocessor.task.CBPreprocessorConfig
-import org.sunbird.dp.cbpreprocessor.util.CBEventsFlattener
+import org.sunbird.dp.cbpreprocessor.util.{CBEventsFlattener, CBEventsFlattenerUtil}
 
 class CBPreprocessorFunction(config: CBPreprocessorConfig,
-                             @transient var cbEventsFlattener: CBEventsFlattener = null,
+                             @transient var cbEventsFlattenerUtil: CBEventsFlattenerUtil = null,
+                             //, @transient var cbEventsFlattener: CBEventsFlattener = null,
                             )(implicit val eventTypeInfo: TypeInformation[Event])
   extends BaseProcessFunction[Event, Event](config) {
 
@@ -39,8 +40,11 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
     //  val redisConnect = new RedisConnect(config.redisHost, config.redisPort, config)
     //  dedupEngine = new DedupEngine(redisConnect, config.dedupStore, config.cacheExpirySeconds)
     // }
-    if (cbEventsFlattener == null) {
-      cbEventsFlattener = new CBEventsFlattener(config)
+    // if (cbEventsFlattener == null) {
+    //  cbEventsFlattener = new CBEventsFlattener(config)
+    // }
+    if (cbEventsFlattenerUtil == null) {
+      cbEventsFlattenerUtil = new CBEventsFlattenerUtil()
     }
   }
 
@@ -69,7 +73,11 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
     // }
 
     if (isPublishedWorkOrder) {
-      cbEventsFlattener.fanOut(event, context, metrics)
+      // cbEventsFlattener.fanOut(event, context, metrics)
+      cbEventsFlattenerUtil.flattenedEvents(event).foreach(itemEvent => {
+        context.output(config.cbWorkOrderRowOutputTag, itemEvent)
+        metrics.incCounter(metric = config.cbWorkOrderRowMetricCount)
+      })
     }
   }
 
