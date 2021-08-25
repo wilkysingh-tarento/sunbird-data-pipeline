@@ -1,0 +1,82 @@
+{
+  "actor": {
+    "id": "59c3c2b7-b32b-4d9a-9d02-220e73004d66",
+    "type": "User"
+  },
+  "eid": "CB_AUDIT",
+  "edata": {
+    "state": "Draft",
+    "props": ["WAT"],
+    "cb_object": {
+      "id": "643cb47c-3e8a-4d5e-9fd4-45302a9ae09a",
+      "type": "WorkOrder",
+      "ver": "1.0",
+      "name": "Work order - Finance wing",
+      "org": "New NHTest"
+    },
+    "cb_data": {
+      "id": "643cb47c-3e8a-4d5e-9fd4-45302a9ae09a",
+      "name": "Work order - Finance wing",
+      "deptId": "013260789496258560586",
+      "deptName": "New NHTest",
+      "status": "Draft",
+      "userIds": [
+        "3f90ed64-2cba-4e14-8844-1ec53da454f8"
+      ],
+      "createdBy": "075e3a3f-1a56-4ea3-9042-c66e2288e60c",
+      "createdAt": 1628844512397,
+      "updatedBy": "075e3a3f-1a56-4ea3-9042-c66e2288e60c",
+      "updatedAt": 1628845042921,
+      "progress": 91,
+      "errorCount": 0,
+      "rolesCount": 1,
+      "activitiesCount": 1,
+      "competenciesCount": 1,
+      "publishedPdfLink": null,
+      "signedPdfLink": null,
+      "mdo_name": "New NHTest",
+      "users_id": "3f90ed64-2cba-4e14-8844-1ec53da454f8",
+      "users_userId": "535c8d83-e5ed-4b91-82eb-89031702dcc9",
+      "users_unmappedActivities": [],
+      "users_unmappedCompetencies": [],
+      "users_userPosition": "Team management",
+      "users_positionId": "id01",
+      "users_positionDescription": "manage-teams",
+      "users_workOrderId": "9a99e795-c652-4c0d-9f9f-960c737e15f3",
+      "users_updatedAt": 1628845041770,
+      "users_updatedBy": "075e3a3f-1a56-4ea3-9042-c66e2288e60c",
+      "users_errorCount": 0,
+      "users_progress": 91,
+      "users_createdAt": 1628845041770,
+      "users_createdBy": "075e3a3f-1a56-4ea3-9042-c66e2288e60c",
+      "users_roleCompetencyList_competencyDetails_type": "COMPETENCY",
+      "users_roleCompetencyList_competencyDetails_id": "id01",
+      "users_roleCompetencyList_competencyDetails_name": "behavioural competency profiling",
+      "users_roleCompetencyList_competencyDetails_description": "behavioural competency profiling desc",
+      "users_roleCompetencyList_competencyDetails_source": null,
+      "users_roleCompetencyList_competencyDetails_status": null,
+      "users_roleCompetencyList_competencyDetails_level": "Level 1",
+      "users_roleCompetencyList_competencyDetails_additionalProperties": {
+        "competencyArea": "Area",
+        "competencyType": "Behavioural"
+      },
+      "users_roleCompetencyList_competencyDetails_children": null
+    }
+  },
+  "ver": "3.0",
+  "ets": 1629109359638,
+  "context": {
+    "channel": "013260789496258560586",
+    "pdata": {
+      "id": "dev.mdo.portal",
+      "pid": "mdo",
+      "ver": "1.0"
+    },
+    "env": "WAT"
+  },
+  "mid": "CB.b4b1a956-d8d5-48e4-8cee-0dc616823402",
+  "object": {
+    "id": "643cb47c-3e8a-4d5e-9fd4-45302a9ae09a",
+    "type": "WorkOrder"
+  }
+}

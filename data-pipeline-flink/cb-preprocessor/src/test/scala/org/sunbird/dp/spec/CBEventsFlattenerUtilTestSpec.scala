@@ -24,8 +24,9 @@ class CBEventsFlattenerUtilTestSpec extends FlatSpec with BeforeAndAfterAll {
 
   "CBEventsFlattenerUtil" should "flatten a valid work order event" in {
     val cbEvent = new Event(gson.fromJson(CBEventFixture.SAMPLE_WO_EVENT, new util.LinkedHashMap[String, Any]().getClass))
-    val expectedFlattenedEvents = gson.fromJson(CBEventFixture.SAMPLE_WO_EVENT, new util.ArrayList[util.LinkedHashMap[String, Any]]().getClass).asScala
-    val events = cbEventsFlattenerUtil.flattenedEvents(cbEvent)
+    val expectedFlattenedEvents = gson.fromJson(CBEventFixture.SAMPLE_WO_EVENT, new util.ArrayList[util.LinkedHashMap[String, Any]]().getClass)
+    val events = cbEventsFlattenerUtil.flattenedEvents(cbEvent).toList.asInstanceOf[util.ArrayList[util.LinkedHashMap[String, Any]]]
+
   }
 
 }
