@@ -38,6 +38,20 @@ def flattened_events(event):
             role_details = role_competency['roleDetails']
             # TO-MERGE: role_details, prefix='users_roleCompetencyList_roleDetails_', exclude=['childNodes']
 
+            # activities associated with this role
+            role_child_nodes = role_details['childNodes']
+            for child_node in role_child_nodes:
+                # TO-MERGE: child_node, prefix='users_roleCompetencyList_roleDetails_childNodes_', exclude=[]
+                yield merged_dict([
+                    # dict              prefix                                              exclusion
+                    (cb_data,           None,                                               ['users']),
+                    (cb_data_user,      'users_',                                           ['roleCompetencyList']),
+                    (role_competency,   'users_roleCompetencyList_',                        ['roleDetails', 'competencyDetails']),
+                    (role_details,      'users_roleCompetencyList_roleDetails_',            ['childNodes']),
+                    (child_node,        'users_roleCompetencyList_roleDetails_childNodes_', []),
+                ])
+
+            # competencies associated with this role
             competency_details = role_competency['competencyDetails']
             for competency in competency_details:
                 # TO-MERGE: competency, prefix='users_roleCompetencyList_competencyDetails_', exclude=[]
@@ -50,14 +64,3 @@ def flattened_events(event):
                     (competency,        'users_roleCompetencyList_competencyDetails_',  []),
                 ])
 
-            role_child_nodes = role_details['childNodes']
-            for child_node in role_child_nodes:
-                # TO-MERGE: child_node, prefix='users_roleCompetencyList_roleDetails_childNodes_', exclude=[]
-                yield merged_dict([
-                    # dict              prefix                                              exclusion
-                    (cb_data,           None,                                               ['users']),
-                    (cb_data_user,      'users_',                                           ['roleCompetencyList']),
-                    (role_competency,   'users_roleCompetencyList_',                        ['roleDetails', 'competencyDetails']),
-                    (role_details,      'users_roleCompetencyList_roleDetails_',            ['childNodes']),
-                    (child_node,        'users_roleCompetencyList_roleDetails_childNodes_', []),
-                ])
