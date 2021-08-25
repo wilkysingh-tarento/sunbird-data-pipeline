@@ -1,3 +1,14 @@
+"""
+usage:
+
+In [1]: from flatten import flattened_events
+In [2]: import json
+In [3]: event = json.loads(open('cb_audit.wat.json').read())
+In [5]: flat_events = list(flattened_events(event))
+In [6]: print(json.dumps(flat_events, indent=4))
+
+"""
+
 
 def merged_dict(dict_prefix_exclusions_list):
     """
