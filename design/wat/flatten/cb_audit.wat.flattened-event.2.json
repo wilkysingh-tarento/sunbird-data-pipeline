@@ -3,7 +3,7 @@
     "id": "59c3c2b7-b32b-4d9a-9d02-220e73004d66",
     "type": "User"
   },
-  "eid": "CB_AUDIT",
+  "eid": "CB_AUDIT_ITEM",
   "edata": {
     "state": "Draft",
     "props": ["WAT"],
@@ -83,7 +83,7 @@
     },
     "env": "WAT"
   },
-  "mid": "CB.b4b1a956-d8d5-48e4-8cee-0dc616823402",
+  "mid": "CB_AUDIT_ITEM:b4b1a956-d8d5-48e4-8cee-0dc616823402",
   "object": {
     "id": "643cb47c-3e8a-4d5e-9fd4-45302a9ae09a",
     "type": "WorkOrder"
