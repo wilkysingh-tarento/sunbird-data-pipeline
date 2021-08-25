@@ -61,6 +61,9 @@ class CBEventsFlattenerUtil extends java.io.Serializable {
       roleCompetencyList.forEach(roleCompetency => {
         // TO-MERGE: roleCompetency, prefix='users_roleCompetencyList_', exclude=['roleDetails','competencyDetails']
         // exclude=['roleDetails','competencyDetails'] results in no fields from this level being merged
+        val roleDetails = roleCompetency.get("roleDetails").asInstanceOf[util.Map[String, Any]]
+        // TO-MERGE: roleDetails, prefix='users_roleCompetencyList_roleDetails_', exclude=['childNodes']
+
         val competencyDetails = roleCompetency.get("competencyDetails").asInstanceOf[util.ArrayList[util.Map[String, Any]]]
         competencyDetails.forEach(competency => {
           // TO-MERGE: competency, prefix='users_roleCompetencyList_competencyDetails_', exclude=[]
@@ -69,12 +72,12 @@ class CBEventsFlattenerUtil extends java.io.Serializable {
             MapMergeParams(workOrderMap,    "",                                             List("users")),
             MapMergeParams(user,            "users_",                                       List("roleCompetencyList")),
             MapMergeParams(roleCompetency,  "users_roleCompetencyList_",                    List("roleDetails", "competencyDetails")),
+            MapMergeParams(roleDetails,     "users_roleCompetencyList_roleDetails_",        List("childNodes")),
             MapMergeParams(competency,      "users_roleCompetencyList_competencyDetails_",  List())
           ))
           flattenedList.add(newMap)
         })
-        val roleDetails = roleCompetency.get("roleDetails").asInstanceOf[util.Map[String, Any]]
-        // TO-MERGE: roleDetails, prefix='users_roleCompetencyList_roleDetails_', exclude=['childNodes']
+
         val roleChildNodes = roleDetails.get("childNodes").asInstanceOf[util.ArrayList[util.Map[String, Any]]]
         roleChildNodes.forEach(childNode => {
           // TO-MERGE: childNode, prefix='users_roleCompetencyList_roleDetails_childNodes_', exclude=[]
@@ -106,9 +109,11 @@ class CBEventsFlattenerUtil extends java.io.Serializable {
       val eventMapEData = eventMap.get("edata").asInstanceOf[util.Map[String, Any]]
       // create a shallow copy of eventMap excluding edata
       val newEventMap = mergedMap(List(MapMergeParams(eventMap, "", List("edata"))))
-      // change mid ?
-      // newEventMap.put("mid", event.mid() + "-" + UUID.randomUUID().toString)
-      // change eid
+      // store parent mid as parent_mid
+      newEventMap.put("parent_mid", newEventMap.get("mid"))
+      // generate new mid
+      newEventMap.put("mid", "CB_AUDIT_ITEM:" + util.UUID.randomUUID().toString)
+      // change eid to CB_AUDIT_ITEM
       newEventMap.put("eid", "CB_AUDIT_ITEM")
       // create a shallow copy of eventMapEData excluding cb_data
       val newEventMapEData = mergedMap(List(MapMergeParams(eventMapEData, "", List("cb_data"))))
