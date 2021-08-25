@@ -60,18 +60,16 @@
       "users_roleCompetencyList_roleDetails_updatedBy": null,
       "users_roleCompetencyList_roleDetails_archivedAt": 0,
       "users_roleCompetencyList_roleDetails_archived": false,
-      "users_roleCompetencyList_competencyDetails_type": "COMPETENCY",
-      "users_roleCompetencyList_competencyDetails_id": "id01",
-      "users_roleCompetencyList_competencyDetails_name": "behavioural competency profiling",
-      "users_roleCompetencyList_competencyDetails_description": "behavioural competency profiling desc",
-      "users_roleCompetencyList_competencyDetails_source": null,
-      "users_roleCompetencyList_competencyDetails_status": null,
-      "users_roleCompetencyList_competencyDetails_level": "Level 1",
-      "users_roleCompetencyList_competencyDetails_additionalProperties": {
-        "competencyArea": "Area",
-        "competencyType": "Behavioural"
-      },
-      "users_roleCompetencyList_competencyDetails_children": null
+      "users_roleCompetencyList_roleDetails_childNodes_type": "ACTIVITY",
+      "users_roleCompetencyList_roleDetails_childNodes_id": "id01",
+      "users_roleCompetencyList_roleDetails_childNodes_name": "",
+      "users_roleCompetencyList_roleDetails_childNodes_description": "Manager role",
+      "users_roleCompetencyList_roleDetails_childNodes_status": null,
+      "users_roleCompetencyList_roleDetails_childNodes_source": null,
+      "users_roleCompetencyList_roleDetails_childNodes_parentRole": null,
+      "users_roleCompetencyList_roleDetails_childNodes_submittedFromId": null,
+      "users_roleCompetencyList_roleDetails_childNodes_submittedToId": "",
+      "users_roleCompetencyList_roleDetails_childNodes_level": null
     }
   },
   "ver": "3.0",
