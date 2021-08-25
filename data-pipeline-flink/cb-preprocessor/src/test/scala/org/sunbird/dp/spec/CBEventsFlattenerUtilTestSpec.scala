@@ -3,7 +3,7 @@ package org.sunbird.dp.spec
 import com.google.gson.Gson
 import org.scalatest.{BeforeAndAfterAll, FlatSpec}
 import org.sunbird.dp.cbpreprocessor.domain.Event
-import org.sunbird.dp.cbpreprocessor.util.CBEventsFlattenerUtil
+import org.sunbird.dp.cbpreprocessor.util.CBEventsFlattener
 import org.sunbird.dp.fixture.CBEventFixture
 
 import java.util
@@ -12,7 +12,7 @@ import scala.collection.JavaConverters._
 class CBEventsFlattenerUtilTestSpec extends FlatSpec with BeforeAndAfterAll {
 
   val gson = new Gson()
-  val cbEventsFlattenerUtil = new CBEventsFlattenerUtil()
+  val cbEventsFlattenerUtil = new CBEventsFlattener()
 
   override def beforeAll() {
     super.beforeAll()
