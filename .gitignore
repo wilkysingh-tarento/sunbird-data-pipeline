@@ -29,3 +29,7 @@ target/
 *.iml
 **/.settings
 dependency-reduced-pom.xml
+
+__pycache__
+*.pyc
+*.pyo
