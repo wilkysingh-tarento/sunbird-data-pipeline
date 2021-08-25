@@ -7,6 +7,7 @@ import org.sunbird.dp.cbpreprocessor.util.CBEventsFlattenerUtil
 import org.sunbird.dp.fixture.CBEventFixture
 
 import java.util
+import scala.collection.JavaConverters._
 
 class CBEventsFlattenerUtilTestSpec extends FlatSpec with BeforeAndAfterAll {
 
@@ -23,7 +24,8 @@ class CBEventsFlattenerUtilTestSpec extends FlatSpec with BeforeAndAfterAll {
 
   "CBEventsFlattenerUtil" should "flatten a valid work order event" in {
     val cbEvent = new Event(gson.fromJson(CBEventFixture.SAMPLE_WO_EVENT, new util.LinkedHashMap[String, Any]().getClass))
-    val events = cbEventsFlattenerUtil.flattenedEvents(cbEvent).toList
+    val expectedFlattenedEvents = gson.fromJson(CBEventFixture.SAMPLE_WO_EVENT, new util.ArrayList[util.LinkedHashMap[String, Any]]().getClass).asScala
+    val events = cbEventsFlattenerUtil.flattenedEvents(cbEvent)
   }
 
 }
