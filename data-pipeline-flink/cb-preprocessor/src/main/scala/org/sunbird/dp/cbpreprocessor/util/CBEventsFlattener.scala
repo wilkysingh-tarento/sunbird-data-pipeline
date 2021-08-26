@@ -57,6 +57,14 @@ class CBEventsFlattener extends java.io.Serializable {
     val flattenedList = ListBuffer[WorkOrderMapData]()
     // TO-MERGE: workOrderMap, prefix=None, exclude=['users']
     val users = workOrderMap.get("users").asInstanceOf[util.ArrayList[util.Map[String, Any]]]
+
+    // if users is empty, TODO: handle this for all empty lists
+    if (users.isEmpty) {
+      val newMap = mergedMap(List(MapMergeParams(workOrderMap, "", List("users"))))
+      flattenedList.append(WorkOrderMapData(newMap, "", hasRole = false))
+      return flattenedList.toList
+    }
+
     users.forEach(user => {
       // TO-MERGE: user, prefix='wa_', exclude=['roleCompetencyList', 'unmappedActivities', 'unmappedCompetencies']
 
