@@ -26,61 +26,61 @@ def merged_dict(dict_prefix_exclusions_list):
 
 
 def flattened_events(event):
-    cb_data = event.get('edata', {}).get('cb_data', {})
+    cb_data = event.get('edata', {}).get('cb_data', {}).get('data', {})
     # TO-MERGE: cb_data, prefix=None, exclude=['users']
     cb_data_users = cb_data.get('users', [])
     for cb_data_user in cb_data_users:
         unmapped_activities = cb_data_user['unmappedActivities']
         for activity in unmapped_activities:
-            # TO-MERGE: activity, prefix='user_activity_', exclude=[]
+            # TO-MERGE: activity, prefix='wa_activity_', exclude=[]
             yield merged_dict([
-                # dict              prefix                  exclusion
-                (cb_data,           None,                   ['users']),
-                (cb_data_user,      'user_',                ['roleCompetencyList', 'unmappedActivities', 'unmappedCompetencies']),
-                (activity,          'user_activity_',       []),
+                # dict              prefix                exclusion
+                (cb_data,           None,                 ['users']),
+                (cb_data_user,      'wa_',                ['roleCompetencyList', 'unmappedActivities', 'unmappedCompetencies']),
+                (activity,          'wa_activity_',       []),
             ])
 
         unmapped_competencies = cb_data_user['unmappedCompetencies']
         for competency in unmapped_competencies:
-            # TO-MERGE: competency, prefix='user_competency_', exclude=[]
+            # TO-MERGE: competency, prefix='wa_competency_', exclude=[]
             yield merged_dict([
-                # dict              prefix                  exclusion
-                (cb_data,           None,                   ['users']),
-                (cb_data_user,      'user_',                ['roleCompetencyList', 'unmappedActivities', 'unmappedCompetencies']),
-                (competency,        'user_competency_',     []),
+                # dict              prefix                exclusion
+                (cb_data,           None,                 ['users']),
+                (cb_data_user,      'wa_',                ['roleCompetencyList', 'unmappedActivities', 'unmappedCompetencies']),
+                (competency,        'wa_competency_',     []),
             ])
 
-        # TO-MERGE: cb_data_user, prefix='user_', exclude=['roleCompetencyList', 'unmappedActivities', 'unmappedCompetencies']
+        # TO-MERGE: cb_data_user, prefix='wa_', exclude=['roleCompetencyList', 'unmappedActivities', 'unmappedCompetencies']
         role_competency_list = cb_data_user['roleCompetencyList']
         for role_competency in role_competency_list:
-            # TO-MERGE: role_competency, prefix='user_rcl_', exclude=['roleDetails','competencyDetails']
+            # TO-MERGE: role_competency, prefix='wa_rcl_', exclude=['roleDetails','competencyDetails']
             # exclude=['roleDetails','competencyDetails'] results in no fields from this level being merged
             role_details = role_competency['roleDetails']
-            # TO-MERGE: role_details, prefix='user_role_', exclude=['childNodes']
+            # TO-MERGE: role_details, prefix='wa_role_', exclude=['childNodes']
 
             # activities associated with this role
             role_child_nodes = role_details['childNodes']
             for child_node in role_child_nodes:
-                # TO-MERGE: child_node, prefix='users_activity_', exclude=[]
+                # TO-MERGE: child_node, prefix='wa_activity_', exclude=[]
                 yield merged_dict([
-                    # dict              prefix                  exclusion
-                    (cb_data,           None,                   ['users']),
-                    (cb_data_user,      'user_',                ['roleCompetencyList', 'unmappedActivities', 'unmappedCompetencies']),
-                    (role_competency,   'user_rcl_',            ['roleDetails', 'competencyDetails']),
-                    (role_details,      'user_role_',           ['childNodes']),
-                    (child_node,        'user_activity_',       []),
+                    # dict              prefix                exclusion
+                    (cb_data,           None,                 ['users']),
+                    (cb_data_user,      'wa_',                ['roleCompetencyList', 'unmappedActivities', 'unmappedCompetencies']),
+                    (role_competency,   'wa_rcl_',            ['roleDetails', 'competencyDetails']),
+                    (role_details,      'wa_role_',           ['childNodes']),
+                    (child_node,        'wa_activity_',       []),
                 ])
 
             # competencies associated with this role
             competency_details = role_competency['competencyDetails']
             for competency in competency_details:
-                # TO-MERGE: competency, prefix='users_roleCompetencyList_competencyDetails_', exclude=[]
+                # TO-MERGE: competency, prefix='wa_competency_', exclude=[]
                 yield merged_dict([
-                    # dict              prefix                  exclusion
-                    (cb_data,           None,                   ['users']),
-                    (cb_data_user,      'user_',                ['roleCompetencyList', 'unmappedActivities', 'unmappedCompetencies']),
-                    (role_competency,   'user_rcl_',            ['roleDetails', 'competencyDetails']),
-                    (role_details,      'user_role_',           ['childNodes']),
-                    (competency,        'user_competency_',     []),
+                    # dict              prefix                exclusion
+                    (cb_data,           None,                 ['users']),
+                    (cb_data_user,      'wa_',                ['roleCompetencyList', 'unmappedActivities', 'unmappedCompetencies']),
+                    (role_competency,   'wa_rcl_',            ['roleDetails', 'competencyDetails']),
+                    (role_details,      'wa_role_',           ['childNodes']),
+                    (competency,        'wa_competency_',     []),
                 ])
 
