@@ -23,10 +23,6 @@
             },
             {
               "type": "root",
-              "name": "syncts"
-            },
-            {
-              "type": "root",
               "name": "@timestamp"
             },
             {
@@ -215,12 +211,12 @@
             {
               "type": "path",
               "name": "entity_id",
-               "expr": "$.edata.cb_object.id"
+              "expr": "$.edata.cb_object.id"
             },
             {
               "type": "path",
               "name": "Type",
-               "expr": "$.edata.cb_object.type"
+              "expr": "$.edata.cb_object.type"
             },
             {
               "type": "path",
@@ -267,10 +263,6 @@
             {
               "type": "long",
               "name": "ets"
-            },
-            {
-              "type": "long",
-              "name": "syncts"
             },
             {
               "type": "string",
