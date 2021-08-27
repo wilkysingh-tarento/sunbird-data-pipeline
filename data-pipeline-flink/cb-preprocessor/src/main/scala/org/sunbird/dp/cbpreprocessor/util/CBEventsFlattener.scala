@@ -24,8 +24,6 @@ class CBEventsFlattener extends java.io.Serializable {
   private val serialVersionUID = 1167435095740381669L  // TODO: update?
 
   private case class MapMergeParams(map: util.Map[String, Any], prefix: String, exclusions: List[String])
-  private case class WorkOrderMapData(map: util.Map[String, Any], childType: String, hasRole: Boolean)
-
 
   /**
    * merge arbitrary number of maps and return a new map
@@ -51,17 +49,17 @@ class CBEventsFlattener extends java.io.Serializable {
    * return a list of flattened (denormalized) maps from workOrderMap
    *
    * @param workOrderMap
-   * @return
+   * @return List((work_order_row_map, child_type=activity|competency, has_role=true|false))
    */
-  def flattenWorkOrderEventData(workOrderMap: util.Map[String, Any]): List[WorkOrderMapData] = {
-    val flattenedList = ListBuffer[WorkOrderMapData]()
+  def flattenWorkOrderEventData(workOrderMap: util.Map[String, Any]): List[(util.Map[String, Any], String, Boolean)] = {
+    val flattenedList = ListBuffer[(util.Map[String, Any], String, Boolean)]()
     // TO-MERGE: workOrderMap, prefix=None, exclude=['users']
     val users = workOrderMap.get("users").asInstanceOf[util.ArrayList[util.Map[String, Any]]]
 
     // if users is empty, TODO: handle this for all empty lists
     if (users.isEmpty) {
       val newMap = mergedMap(List(MapMergeParams(workOrderMap, "", List("users"))))
-      flattenedList.append(WorkOrderMapData(newMap, "", hasRole = false))
+      flattenedList.append((newMap, "", false))
       return flattenedList.toList
     }
 
@@ -78,7 +76,7 @@ class CBEventsFlattener extends java.io.Serializable {
           MapMergeParams(user,            "wa_",            List("roleCompetencyList", "unmappedActivities", "unmappedCompetencies")),
           MapMergeParams(activity,        "wa_activity_",   List()),
         ))
-        flattenedList.append(WorkOrderMapData(newMap, "activity", hasRole = false))
+        flattenedList.append((newMap, "activity", false))
       })
 
       // take care of unmappedCompetencies
@@ -91,7 +89,7 @@ class CBEventsFlattener extends java.io.Serializable {
           MapMergeParams(user,          "wa_",              List("roleCompetencyList", "unmappedActivities", "unmappedCompetencies")),
           MapMergeParams(competency,    "wa_competency_",   List()),
         ))
-        flattenedList.append(WorkOrderMapData(newMap, "competency", hasRole = false))
+        flattenedList.append((newMap, "competency", false))
       })
 
       // dive into roleCompetencyList
@@ -114,7 +112,7 @@ class CBEventsFlattener extends java.io.Serializable {
             MapMergeParams(roleDetails,     "wa_role_",       List("childNodes")),
             MapMergeParams(childNode,       "wa_activity_",   List()),
           ))
-          flattenedList.append(WorkOrderMapData(newMap, "activity", hasRole = true))
+          flattenedList.append((newMap, "activity", true))
         })
 
         // competencies associated with this role
@@ -129,7 +127,7 @@ class CBEventsFlattener extends java.io.Serializable {
             MapMergeParams(roleDetails,     "wa_role_",        List("childNodes")),
             MapMergeParams(competency,      "wa_competency_",  List())
           ))
-          flattenedList.append(WorkOrderMapData(newMap, "competency", hasRole = true))
+          flattenedList.append((newMap, "competency", true))
         })
       })
     })
@@ -145,25 +143,28 @@ class CBEventsFlattener extends java.io.Serializable {
   def flattenedEvents(event: Event): Seq[(Event, String, Boolean)] = {
     val workOrderMap = event.cbData.get("data").asInstanceOf[util.Map[String, Any]]
     val eventMap = event.getMap()
-    flattenWorkOrderEventData(workOrderMap).map(flatEventData => {
-      val eventMapEData = eventMap.get("edata").asInstanceOf[util.Map[String, Any]]
-      // create a shallow copy of eventMap excluding edata
-      val newEventMap = mergedMap(List(MapMergeParams(eventMap, "", List("edata"))))
-      // store parent mid as parent_mid
-      newEventMap.put("mid_parent", newEventMap.get("mid"))
-      // generate new mid
-      newEventMap.put("mid", "CB_ITEM:" + util.UUID.randomUUID().toString)
-      // change eid to CB_AUDIT_ITEM
-      newEventMap.put("eid", "CB_ITEM")
-      // TODO: update ets and timestamp
-      // create a shallow copy of eventMapEData excluding cb_data
-      val newEventMapEData = mergedMap(List(MapMergeParams(eventMapEData, "", List("cb_data"))))
-      // update new edata, put flatWorkOrderMap as cb_data
-      newEventMapEData.put("cb_data", flatEventData.map)
-      // update new event map, put newEventMapEData as edata
-      newEventMap.put("edata", newEventMapEData)
-      (new Event(newEventMap), flatEventData.childType, flatEventData.hasRole)
-    })
+    flattenWorkOrderEventData(workOrderMap).map {
+      case (flatWorkOrderMap, childType, hasRole) => {
+        val eventMapEData = eventMap.get("edata").asInstanceOf[util.Map[String, Any]]
+        // create a shallow copy of eventMap excluding edata
+        val newEventMap = mergedMap(List(MapMergeParams(eventMap, "", List("edata"))))
+        // store parent mid as parent_mid
+        newEventMap.put("mid_parent", newEventMap.get("mid"))
+        // generate new mid
+        newEventMap.put("mid", "CB_ITEM:" + util.UUID.randomUUID().toString)
+        // change eid to CB_AUDIT_ITEM
+        newEventMap.put("eid", "CB_ITEM")
+        // TODO: update ets and timestamp
+        // create a shallow copy of eventMapEData excluding cb_data
+        val newEventMapEData = mergedMap(List(MapMergeParams(eventMapEData, "", List("cb_data"))))
+        // update new edata, put flatWorkOrderMap as cb_data
+        newEventMapEData.put("cb_data", flatWorkOrderMap)
+        // update new event map, put newEventMapEData as edata
+        newEventMap.put("edata", newEventMapEData)
+        (new Event(newEventMap), childType, hasRole)
+      }
+    }
+
   }
 
 }
