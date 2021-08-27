@@ -30,10 +30,6 @@
               "name": "@timestamp"
             },
             {
-              "type": "root",
-              "name": "syncts"
-            },
-            {
               "type": "path",
               "name": "actor_id",
               "expr": "$.actor.id"
@@ -440,10 +436,6 @@
             {
               "type": "string",
               "name": "Source"
-            },
-            {
-               "type": "long",
-               "name": "syncts"
             }
           ],
           "dimensionsExclusions": []
