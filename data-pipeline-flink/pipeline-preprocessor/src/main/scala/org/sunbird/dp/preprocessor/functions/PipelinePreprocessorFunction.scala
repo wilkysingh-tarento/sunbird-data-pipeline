@@ -63,60 +63,66 @@ class PipelinePreprocessorFunction(config: PipelinePreprocessorConfig,
   override def processElement(event: Event,
                               context: ProcessFunction[Event, Event]#Context,
                               metrics: Metrics): Unit = {
-    val isValid = telemetryValidator.validate(event, context, metrics)
-
-    if (isValid) {
-      if (event.eid().equalsIgnoreCase("LOG")) {
-        context.output(config.logEventsOutputTag, event)
-        metrics.incCounter(metric = config.logEventsRouterMetricsCount)
-      }
-      else {
-        val isUnique = if (isDuplicateCheckRequired(event.producerId())) {
-          deDuplicate[Event, Event](event.mid(), event, context, config.duplicateEventsOutputTag,
-            flagName = config.DEDUP_FLAG_NAME)(dedupEngine, metrics)
-        } else {
-          event.markSkipped(config.DEDUP_SKIP_FLAG_NAME)
-          metrics.incCounter(uniqueEventMetricCount)
-          true
+    try {
+      val isValid = telemetryValidator.validate(event, context, metrics)
+      if (isValid) {
+        if (event.eid().equalsIgnoreCase("LOG")) {
+          context.output(config.logEventsOutputTag, event)
+          metrics.incCounter(metric = config.logEventsRouterMetricsCount)
         }
-
-        if (isUnique) {
-
-          if (config.secondaryEvents.contains(event.eid())) {
-            context.output(config.denormSecondaryEventsRouteOutputTag, event)
-            metrics.incCounter(metric = config.denormSecondaryEventsRouterMetricsCount)
-          } else if ("ERROR".equalsIgnoreCase(event.eid())) {
-            // do nothing, do not send to denormPrimaryEventsRouteOutputTag
-          } else if ("CB_AUDIT".equalsIgnoreCase(event.eid())) {
-            // do nothing, do not send to denormPrimaryEventsRouteOutputTag
+        else {
+          val isUnique = if (isDuplicateCheckRequired(event.producerId())) {
+            deDuplicate[Event, Event](event.mid(), event, context, config.duplicateEventsOutputTag,
+              flagName = config.DEDUP_FLAG_NAME)(dedupEngine, metrics)
           } else {
-            // all others can be sent to denormPrimaryEventsRouteOutputTag
-            context.output(config.denormPrimaryEventsRouteOutputTag, event)
-            metrics.incCounter(metric = config.denormPrimaryEventsRouterMetricsCount)
+            event.markSkipped(config.DEDUP_SKIP_FLAG_NAME)
+            metrics.incCounter(uniqueEventMetricCount)
+            true
           }
 
-          event.eid() match {
-            case "AUDIT" =>
-              context.output(config.auditRouteEventsOutputTag, event)
-              metrics.incCounter(metric = config.auditEventRouterMetricCount)
-              metrics.incCounter(metric = config.primaryRouterMetricCount) // Since we are are sinking the AUDIT Event into primary router topic
-            case "SHARE" =>
-              shareEventsFlattener.flatten(event, context, metrics)
-              metrics.incCounter(metric = config.shareEventsRouterMetricCount)
-              metrics.incCounter(metric = config.primaryRouterMetricCount) // // Since we are are sinking the SHARE Event into primary router topic
-            case "ERROR" =>
-              context.output(config.errorEventOutputTag, event)
-              metrics.incCounter(metric = config.errorEventsRouterMetricsCount)
-            case "CB_AUDIT" =>
-              context.output(config.cbAuditRouteEventsOutputTag, event)  // cbAudit event are not routed to denorm topic
-              metrics.incCounter(metric = config.cbAuditEventRouterMetricCount) // //   metric for cb_audit events
-            case _ =>
-              context.output(config.primaryRouteEventsOutputTag, event)
-              metrics.incCounter(metric = config.primaryRouterMetricCount)
+          if (isUnique) {
+
+            if (config.secondaryEvents.contains(event.eid())) {
+              context.output(config.denormSecondaryEventsRouteOutputTag, event)
+              metrics.incCounter(metric = config.denormSecondaryEventsRouterMetricsCount)
+            } else if ("ERROR".equalsIgnoreCase(event.eid())) {
+              // do nothing, do not send to denormPrimaryEventsRouteOutputTag
+            } else if ("CB_AUDIT".equalsIgnoreCase(event.eid())) {
+              // do nothing, do not send to denormPrimaryEventsRouteOutputTag
+            } else {
+              // all others can be sent to denormPrimaryEventsRouteOutputTag
+              context.output(config.denormPrimaryEventsRouteOutputTag, event)
+              metrics.incCounter(metric = config.denormPrimaryEventsRouterMetricsCount)
+            }
+
+            event.eid() match {
+              case "AUDIT" =>
+                context.output(config.auditRouteEventsOutputTag, event)
+                metrics.incCounter(metric = config.auditEventRouterMetricCount)
+                metrics.incCounter(metric = config.primaryRouterMetricCount) // Since we are are sinking the AUDIT Event into primary router topic
+              case "SHARE" =>
+                shareEventsFlattener.flatten(event, context, metrics)
+                metrics.incCounter(metric = config.shareEventsRouterMetricCount)
+                metrics.incCounter(metric = config.primaryRouterMetricCount) // // Since we are are sinking the SHARE Event into primary router topic
+              case "ERROR" =>
+                context.output(config.errorEventOutputTag, event)
+                metrics.incCounter(metric = config.errorEventsRouterMetricsCount)
+              case "CB_AUDIT" =>
+                context.output(config.cbAuditRouteEventsOutputTag, event)  // cbAudit event are not routed to denorm topic
+                metrics.incCounter(metric = config.cbAuditEventRouterMetricCount) // //   metric for cb_audit events
+              case _ =>
+                context.output(config.primaryRouteEventsOutputTag, event)
+                metrics.incCounter(metric = config.primaryRouterMetricCount)
+            }
+
+
           }
-
-
         }
+      }
+    } catch {
+      case e: java.lang.IllegalArgumentException => {
+        logger.error(e.getMessage)
+        logger.error(e.getStackTraceString)
       }
     }
 
