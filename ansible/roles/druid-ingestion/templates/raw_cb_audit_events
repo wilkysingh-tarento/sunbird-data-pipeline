@@ -26,10 +26,6 @@
               "name": "@timestamp"
             },
             {
-              "type": "root",
-              "name": "syncts"
-            },
-            {
               "type": "path",
               "name": "actor_id",
               "expr": "$.actor.id"
@@ -242,11 +238,6 @@
               "type": "path",
               "name": "Source",
               "expr": "$.context.pdata.pid"
-            },
-            {
-              "type": "path",
-              "name": "mdo_name",
-              "expr": "$.edata.cb_data.mdo_name"
             }
           ]
         },
@@ -437,14 +428,6 @@
             {
               "type": "string",
               "name": "Source"
-            },
-            {
-              "type": "string",
-              "name": "mdo_name"
-            },
-            {
-               "type": "long",
-               "name": "syncts"
             }
           ],
           "dimensionsExclusions": []
