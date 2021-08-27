@@ -16,7 +16,7 @@
     },
     "type": {
       "id": "http://api.ekstep.org/telemetry/cb-frac-object/type",
-      "enum": ["Competency", "Activity", "Role"]
+      "enum": ["Competency", "Activity", "Role", "Position"]
     },
     "ver": {
       "id": "http://api.ekstep.org/telemetry/cb-frac-object/ver",

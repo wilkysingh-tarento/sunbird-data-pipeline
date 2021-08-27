@@ -13,7 +13,7 @@ import org.sunbird.dp.cbpreprocessor.util.CBEventsFlattener
 
 class CBPreprocessorFunction(config: CBPreprocessorConfig,
                              @transient var cbEventsFlattener: CBEventsFlattener = null,
-                             @transient var dedupEngine: DedupEngine = null,
+                             // @transient var dedupEngine: DedupEngine = null,
                             )(implicit val eventTypeInfo: TypeInformation[Event])
   extends BaseProcessFunction[Event, Event](config) {
 
@@ -25,7 +25,7 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
       config.cbAuditEventMetricCount,
       config.cbWorkOrderRowMetricCount,
       config.cbAuditFailedMetricCount
-    ) ::: deduplicationMetrics
+    )
     /*List(
       config.cbAuditEventMetricCount,
       config.workOrderEventsMetricsCount,
@@ -71,6 +71,7 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
     // }
 
     if (isPublishedWorkOrder) {
+      /*
       cbEventsFlattener.flattenedEvents(event).foreach {
         case (itemEvent, childType, hasRole) => {
           // here we can choose to route competencies and activities to different routes
@@ -78,7 +79,7 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
           metrics.incCounter(metric = config.cbWorkOrderRowMetricCount)
         }
       }
-
+      */
     }
   }
 
