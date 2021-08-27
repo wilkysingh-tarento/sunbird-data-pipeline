@@ -246,11 +246,6 @@
               "type": "path",
               "name": "Source",
               "expr": "$.context.pdata.pid"
-            },
-            {
-              "type": "path",
-              "name": "mdo_name",
-              "expr": "$.edata.cb_data.mdo_name"
             }
           ]
         },
@@ -445,10 +440,6 @@
             {
               "type": "string",
               "name": "Source"
-            },
-            {
-              "type": "string",
-              "name": "mdo_name"
             },
             {
                "type": "long",
