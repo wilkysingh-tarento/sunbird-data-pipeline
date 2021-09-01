@@ -257,7 +257,7 @@ cb-preprocessor:
       output.cb.audit.topic = {{ env_name }}.druid.cb.audit
       output.cb.work.order.row.topic = {{ env_name }}.druid.cb.work.order.row
       output.cb.work.order.position.topic = {{ env_name }}.druid.cb.work.order.position
-      groupId = {{ env_name }}-cb-preprocessor-group-3
+      groupId = {{ env_name }}-cb-preprocessor-group
     }
     task {
       consumer.parallelism = {{ cb_preprocessor_consumer_parallelism }}
