@@ -71,7 +71,6 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
     // }
 
     if (isPublishedWorkOrder) {
-      /*
       cbEventsFlattener.flattenedEvents(event).foreach {
         case (itemEvent, childType, hasRole) => {
           // here we can choose to route competencies and activities to different routes
@@ -79,7 +78,6 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
           metrics.incCounter(metric = config.cbWorkOrderRowMetricCount)
         }
       }
-      */
     }
   }
 

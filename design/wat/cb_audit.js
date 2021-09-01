@@ -7,11 +7,11 @@ let frac_event = {
   },
   "eid": "CB_AUDIT",
   "edata": {
-    "state": "Draft",  // Draft/Published etc.
+    "state": "Draft",  // Draft/Published/Verified/Unverified/Rejected etc.
     "props": ["WAT/FRAC"],
     "cb_object": {
       "id": "9a99e795-c652-4c0d-9f9f-960c737e15f3",  // Competency/Activity/Role id
-      "type": "Competency",  // Competency/Activity/Role
+      "type": "Competency",  // Competency/Activity/Role/Position
       "ver": "1.0", // 1.0 for now
       "name": "Coding",  // Competency/Activity/Role name
       "org": "ISTM",  // org, eg. ISTM

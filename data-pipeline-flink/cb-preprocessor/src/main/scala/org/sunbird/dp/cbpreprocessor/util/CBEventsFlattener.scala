@@ -1,19 +1,9 @@
 package org.sunbird.dp.cbpreprocessor.util
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.sunbird.dp.cbpreprocessor.domain.Event
-import org.sunbird.dp.cbpreprocessor.task.CBPreprocessorConfig
-
 import java.util
-import scala.collection.JavaConverters._
-import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 
-// import com.google.gson.Gson
-// import org.sunbird.dp.core.util.JSONUtil
-// import com.google.gson.Gson
-import org.apache.flink.streaming.api.functions.ProcessFunction
-import org.sunbird.dp.core.job.Metrics
 // import scala.util.Try
 
 /**
@@ -22,27 +12,46 @@ import org.sunbird.dp.core.job.Metrics
 class CBEventsFlattener extends java.io.Serializable {
 
   private val serialVersionUID = 1167435095740381669L  // TODO: update?
-
-  private case class MapMergeParams(map: util.Map[String, Any], prefix: String, exclusions: List[String])
+  private val EMPTY_ARRAY_LIST = new util.ArrayList[util.Map[String, Any]]()
+  private val EMPTY_MAP = new util.HashMap[String, Any]()
 
   /**
    * merge arbitrary number of maps and return a new map
-   * `mergedMap(List(MapMergeParams(map, "", exclusions)))` returns a shallow copy of `map` excluding `exclusions`
+   * `mergedMap(List((map, "", exclusions)))` returns a shallow copy of `map` excluding `exclusions`
    *
-   * @param mergeParamList
+   * @param mergeParamList List[(map, prefix, exclusions)]
    * @return
    */
-  def mergedMap(mergeParamList: List[MapMergeParams]): util.Map[String, Any] = {
-    val newMap = new util.HashMap[String, Any]()
-    mergeParamList.foreach(params => {
-      val exclusions = if (params.exclusions.isEmpty) Set() else params.exclusions.toSet
-      val fieldsToCopy = params.map.keySet().toArray.toSet - exclusions
-      fieldsToCopy.asInstanceOf[Set[String]].foreach(key => {
-        val mergedKey = if (params.prefix != "") key else params.prefix + key
-        newMap.put(mergedKey, params.map.get(key))
-      })
-    })
+  def mergedMap(mergeParamList: List[(util.Map[String, Any], String, Set[String])]): util.Map[String, Any] = {
+    val newMap = new util.LinkedHashMap[String, Any]()
+    mergeParamList.foreach{
+      case (map, prefix, exclusions) => {
+        // println(s"mergedMap() prefix=${prefix} exclusions=${exclusions}")
+        map.keySet().forEach(key => {
+          if (!exclusions.contains(key)) newMap.put(prefix + key, map.get(key))
+        })
+      }
+    }
     newMap
+  }
+
+  def getOrNone(map: util.Map[String, Any], key: String): Option[Any] = {
+    if (map == null || !map.containsKey(key)) return None
+    Option(map.get(key))
+  }
+
+  def getArrayListOrEmpty(map: util.Map[String, Any], key: String): util.ArrayList[util.Map[String, Any]] = {
+    getOrNone(map, key) match {
+      case Some(value) => value.asInstanceOf[util.ArrayList[util.Map[String, Any]]]
+      case None => EMPTY_ARRAY_LIST
+    }
+  }
+
+  def getMapOrEmpty(map: util.Map[String, Any], key: String): util.Map[String, Any] = {
+    getOrNone(map, key) match {
+      case Some(value) => value.asInstanceOf[util.Map[String, Any]]
+      case None => EMPTY_MAP
+    }
   }
 
   /**
@@ -54,83 +63,84 @@ class CBEventsFlattener extends java.io.Serializable {
   def flattenWorkOrderEventData(workOrderMap: util.Map[String, Any]): List[(util.Map[String, Any], String, Boolean)] = {
     val flattenedList = ListBuffer[(util.Map[String, Any], String, Boolean)]()
     // TO-MERGE: workOrderMap, prefix=None, exclude=['users']
-    val users = workOrderMap.get("users").asInstanceOf[util.ArrayList[util.Map[String, Any]]]
 
+    val users = getArrayListOrEmpty(workOrderMap, "users")
     // if users is empty, TODO: handle this for all empty lists
-    if (users.isEmpty) {
-      val newMap = mergedMap(List(MapMergeParams(workOrderMap, "", List("users"))))
-      flattenedList.append((newMap, "", false))
-      return flattenedList.toList
-    }
+//    if (users.isEmpty) {
+//      val newMap = mergedMap(List(MapMergeParams(workOrderMap, "", Set("users"))))
+//      flattenedList.append((newMap, "", false))
+//      return flattenedList.toList
+//    }
 
     users.forEach(user => {
       // TO-MERGE: user, prefix='wa_', exclude=['roleCompetencyList', 'unmappedActivities', 'unmappedCompetencies']
 
       // take care of unmappedActivities
-      val unmappedActivities = user.get("unmappedActivities").asInstanceOf[util.ArrayList[util.Map[String, Any]]]
+      val unmappedActivities = getArrayListOrEmpty(user, "unmappedActivities")
       unmappedActivities.forEach(activity => {
         // TO-MERGE: activity, prefix='wa_activity_', exclude=[]
         val newMap = mergedMap(List(
-          //             Map              Prefix            Exclusion
-          MapMergeParams(workOrderMap,    "",               List("users")),
-          MapMergeParams(user,            "wa_",            List("roleCompetencyList", "unmappedActivities", "unmappedCompetencies")),
-          MapMergeParams(activity,        "wa_activity_",   List()),
+          // Map            Prefix            Exclusion
+          (workOrderMap,    "",               Set("users")),
+          (user,            "wa_",            Set("roleCompetencyList", "unmappedActivities", "unmappedCompetencies")),
+          (activity,        "wa_activity_",   Set()),
         ))
         flattenedList.append((newMap, "activity", false))
       })
 
       // take care of unmappedCompetencies
-      val unmappedCompetencies = user.get("unmappedCompetencies").asInstanceOf[util.ArrayList[util.Map[String, Any]]]
+      val unmappedCompetencies = getArrayListOrEmpty(user, "unmappedCompetencies")
       unmappedCompetencies.forEach(competency => {
         // TO-MERGE: competency, prefix='wa_competency_', exclude=[]
         val newMap = mergedMap(List(
-          //             Map            Prefix              Exclusion
-          MapMergeParams(workOrderMap,  "",                 List("users")),
-          MapMergeParams(user,          "wa_",              List("roleCompetencyList", "unmappedActivities", "unmappedCompetencies")),
-          MapMergeParams(competency,    "wa_competency_",   List()),
+          // Map          Prefix              Exclusion
+          (workOrderMap,  "",                 Set("users")),
+          (user,          "wa_",              Set("roleCompetencyList", "unmappedActivities", "unmappedCompetencies")),
+          (competency,    "wa_competency_",   Set()),
         ))
         flattenedList.append((newMap, "competency", false))
       })
 
       // dive into roleCompetencyList
-      val roleCompetencyList = user.get("roleCompetencyList").asInstanceOf[util.ArrayList[util.Map[String, Any]]]
+      val roleCompetencyList = getArrayListOrEmpty(user, "roleCompetencyList")
       roleCompetencyList.forEach(roleCompetency => {
         // TO-MERGE: roleCompetency, prefix='wa_rcl_', exclude=['roleDetails','competencyDetails']
         // exclude=['roleDetails','competencyDetails'] results in no fields from this level being merged
-        val roleDetails = roleCompetency.get("roleDetails").asInstanceOf[util.Map[String, Any]]
+        val roleDetails = getMapOrEmpty(roleCompetency, "roleDetails")
         // TO-MERGE: roleDetails, prefix='wa_role_', exclude=['childNodes']
 
         // activities associated with this role
-        val roleChildNodes = roleDetails.get("childNodes").asInstanceOf[util.ArrayList[util.Map[String, Any]]]
+        val roleChildNodes = getArrayListOrEmpty(roleDetails, "childNodes")
         roleChildNodes.forEach(childNode => {
           // TO-MERGE: childNode, prefix='wa_activity_', exclude=[]
           val newMap = mergedMap(List(
-            //             Map              Prefix            Exclusion
-            MapMergeParams(workOrderMap,    "",               List("users")),
-            MapMergeParams(user,            "wa_",            List("roleCompetencyList", "unmappedActivities", "unmappedCompetencies")),
-            MapMergeParams(roleCompetency,  "wa_rcl_",        List("roleDetails", "competencyDetails")),
-            MapMergeParams(roleDetails,     "wa_role_",       List("childNodes")),
-            MapMergeParams(childNode,       "wa_activity_",   List()),
+            // Map            Prefix            Exclusion
+            (workOrderMap,    "",               Set("users")),
+            (user,            "wa_",            Set("roleCompetencyList", "unmappedActivities", "unmappedCompetencies")),
+            (roleCompetency,  "wa_rcl_",        Set("roleDetails", "competencyDetails")),
+            (roleDetails,     "wa_role_",       Set("childNodes")),
+            (childNode,       "wa_activity_",   Set()),
           ))
           flattenedList.append((newMap, "activity", true))
         })
 
         // competencies associated with this role
-        val competencyDetails = roleCompetency.get("competencyDetails").asInstanceOf[util.ArrayList[util.Map[String, Any]]]
+        val competencyDetails = getArrayListOrEmpty(roleCompetency, "competencyDetails")
         competencyDetails.forEach(competency => {
           // TO-MERGE: competency, prefix='wa_competency_', exclude=[]
           val newMap = mergedMap(List(
-            //             Map              Prefix             Exclusion
-            MapMergeParams(workOrderMap,    "",                List("users")),
-            MapMergeParams(user,            "wa_",             List("roleCompetencyList", "unmappedActivities", "unmappedCompetencies")),
-            MapMergeParams(roleCompetency,  "wa_rcl_",         List("roleDetails", "competencyDetails")),
-            MapMergeParams(roleDetails,     "wa_role_",        List("childNodes")),
-            MapMergeParams(competency,      "wa_competency_",  List())
+            // Map            Prefix             Exclusion
+            (workOrderMap,    "",                Set("users")),
+            (user,            "wa_",             Set("roleCompetencyList", "unmappedActivities", "unmappedCompetencies")),
+            (roleCompetency,  "wa_rcl_",         Set("roleDetails", "competencyDetails")),
+            (roleDetails,     "wa_role_",        Set("childNodes")),
+            (competency,      "wa_competency_",  Set())
           ))
           flattenedList.append((newMap, "competency", true))
         })
       })
     })
+
     flattenedList.toList
   }
 
@@ -147,7 +157,7 @@ class CBEventsFlattener extends java.io.Serializable {
       case (flatWorkOrderMap, childType, hasRole) => {
         val eventMapEData = eventMap.get("edata").asInstanceOf[util.Map[String, Any]]
         // create a shallow copy of eventMap excluding edata
-        val newEventMap = mergedMap(List(MapMergeParams(eventMap, "", List("edata"))))
+        val newEventMap = mergedMap(List((eventMap, "", Set("edata"))))
         // store parent mid as parent_mid
         newEventMap.put("mid_parent", newEventMap.get("mid"))
         // generate new mid
@@ -156,7 +166,7 @@ class CBEventsFlattener extends java.io.Serializable {
         newEventMap.put("eid", "CB_ITEM")
         // TODO: update ets and timestamp
         // create a shallow copy of eventMapEData excluding cb_data
-        val newEventMapEData = mergedMap(List(MapMergeParams(eventMapEData, "", List("cb_data"))))
+        val newEventMapEData = mergedMap(List((eventMapEData, "", Set("cb_data"))))
         // update new edata, put flatWorkOrderMap as cb_data
         newEventMapEData.put("cb_data", flatWorkOrderMap)
         // update new event map, put newEventMapEData as edata
