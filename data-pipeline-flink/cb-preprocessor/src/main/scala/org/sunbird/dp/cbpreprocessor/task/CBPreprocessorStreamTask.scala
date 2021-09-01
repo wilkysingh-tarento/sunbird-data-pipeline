@@ -25,7 +25,6 @@ class CBPreprocessorStreamTask(config: CBPreprocessorConfig, kafkaConnector: Fli
     implicit val env: StreamExecutionEnvironment = FlinkUtil.getExecutionContext(config)
     implicit val eventTypeInfo: TypeInformation[Event] = TypeExtractor.getForClass(classOf[Event])
     val kafkaConsumer = kafkaConnector.kafkaEventSource[Event](config.kafkaInputTopic)
-    kafkaConsumer.setStartFromEarliest()
 
     val eventStream: SingleOutputStreamOperator[Event] =
       env.addSource(kafkaConsumer, config.cbPreprocessorConsumer)
