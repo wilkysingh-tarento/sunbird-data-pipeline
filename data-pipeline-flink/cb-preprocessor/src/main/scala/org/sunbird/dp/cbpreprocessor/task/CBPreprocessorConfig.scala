@@ -48,7 +48,7 @@ class CBPreprocessorConfig(override val config: Config) extends BaseJobConfig(co
   // val validationSkipMetricsCount = "validation-skipped-event-count"
 
   // Consumers
-  val cbPreprocessorConsumer = "cb-preprocessor-consumer"
+  val cbPreprocessorConsumer = "cb-preprocessor-consumer-3"
 
   // Producers
   val cbAuditProducer = "cb-audit-sink"
