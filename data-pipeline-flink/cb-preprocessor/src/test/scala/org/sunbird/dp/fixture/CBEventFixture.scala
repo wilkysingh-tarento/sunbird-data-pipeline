@@ -243,6 +243,44 @@ object CBEventFixture {
       |  }
       |]""".stripMargin
 
+  val WO_EVENT_POSITIONS_RESULT: String =
+    """[
+      |  {
+      |    "id": "643cb47c-3e8a-4d5e-9fd4-45302a9ae09a",
+      |    "name": "Work order - Finance wing",
+      |    "deptId": "013260789496258560586",
+      |    "deptName": "New NHTest",
+      |    "status": "Draft",
+      |    "userIds": [
+      |      "3f90ed64-2cba-4e14-8844-1ec53da454f8"
+      |    ],
+      |    "createdBy": "075e3a3f-1a56-4ea3-9042-c66e2288e60c",
+      |    "createdAt": 1628844512397,
+      |    "updatedBy": "075e3a3f-1a56-4ea3-9042-c66e2288e60c",
+      |    "updatedAt": 1628845042921,
+      |    "progress": 91,
+      |    "errorCount": 0,
+      |    "rolesCount": 1,
+      |    "activitiesCount": 1,
+      |    "competenciesCount": 1,
+      |    "publishedPdfLink": null,
+      |    "signedPdfLink": null,
+      |    "mdo_name": "New NHTest",
+      |    "wa_id": "3f90ed64-2cba-4e14-8844-1ec53da454f8",
+      |    "wa_userId": "535c8d83-e5ed-4b91-82eb-89031702dcc9",
+      |    "wa_userPosition": "Team management",
+      |    "wa_positionId": "id01",
+      |    "wa_positionDescription": "manage-teams",
+      |    "wa_workOrderId": "9a99e795-c652-4c0d-9f9f-960c737e15f3",
+      |    "wa_updatedAt": 1628845041770,
+      |    "wa_updatedBy": "075e3a3f-1a56-4ea3-9042-c66e2288e60c",
+      |    "wa_errorCount": 0,
+      |    "wa_progress": 91,
+      |    "wa_createdAt": 1628845041770,
+      |    "wa_createdBy": "075e3a3f-1a56-4ea3-9042-c66e2288e60c"
+      |  }
+      |]""".stripMargin
+
   val WO_EVENT_NO_USERS: String =
     """{
       |  "actor": {

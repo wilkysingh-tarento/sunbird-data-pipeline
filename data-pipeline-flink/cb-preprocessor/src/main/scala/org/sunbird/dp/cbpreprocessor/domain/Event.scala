@@ -94,4 +94,12 @@ class Event(eventMap: util.Map[String, Any]) extends Events(eventMap) {
 
   def isPublishedWorkOrder: Boolean = hasWorkOrderData && cbData.get("status").asInstanceOf[String] == "Published"
 
+  def numWorkOrderPositions: Int = {
+    if (!hasWorkOrderData) return 0
+    telemetry.read[util.ArrayList[Any]](s"${EventsPath.EDATA_PATH}.cb_data.data.users") match {
+      case Some(value) => value.size()
+      case None => 0
+    }
+  }
+
 }

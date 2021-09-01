@@ -27,6 +27,13 @@ class CBEventsFlattenerTestSpec extends FlatSpec with Matchers with BeforeAndAft
     JSONUtil.mapper.setSerializationInclusion(Include.NON_NULL)
   }
 
+  def getFlattenedWorkOrderPositionJson(eventJson: String): String = {
+    val cbEvent = new Event(JSONUtil.deserialize[util.LinkedHashMap[String, Any]](eventJson))
+    val flattenedWorkOrderPositionData = new util.ArrayList[util.Map[String, Any]]()
+    cbEventsFlattener.flattenedPositionEvents(cbEvent).foreach { event => flattenedWorkOrderPositionData.add(event.cbData) }
+    JSONUtil.serialize(flattenedWorkOrderPositionData)
+  }
+
   def getFlattenedWorkOrderDataJson(eventJson: String): String = {
     val cbEvent = new Event(JSONUtil.deserialize[util.LinkedHashMap[String, Any]](eventJson))
     val flattenedWorkOrderData = new util.ArrayList[util.Map[String, Any]]()
@@ -39,6 +46,12 @@ class CBEventsFlattenerTestSpec extends FlatSpec with Matchers with BeforeAndAft
   "CBEventsFlattener" should "flatten a valid work order event" in {
     val resultJsonNode = objectMapper.readTree(getFlattenedWorkOrderDataJson(CBEventFixture.WO_EVENT))
     val expectedJsonNode = objectMapper.readTree(CBEventFixture.WO_EVENT_RESULT)
+    resultJsonNode.equals(expectedJsonNode) should be(true)
+  }
+
+  "CBEventsFlattener" should "flatten a valid work order event to position level" in {
+    val resultJsonNode = objectMapper.readTree(getFlattenedWorkOrderPositionJson(CBEventFixture.WO_EVENT))
+    val expectedJsonNode = objectMapper.readTree(CBEventFixture.WO_EVENT_POSITIONS_RESULT)
     resultJsonNode.equals(expectedJsonNode) should be(true)
   }
 

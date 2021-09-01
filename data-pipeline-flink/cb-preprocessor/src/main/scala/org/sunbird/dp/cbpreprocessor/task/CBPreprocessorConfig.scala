@@ -22,6 +22,7 @@ class CBPreprocessorConfig(override val config: Config) extends BaseJobConfig(co
   val kafkaInputTopic: String = config.getString("kafka.input.topic")
   val kafkaOutputCbAuditTopic: String = config.getString("kafka.output.cb.audit.topic")
   val kafkaOutputCbWorkOrderRowTopic: String = config.getString("kafka.output.cb.work.order.row.topic")
+  val kafkaOutputCbWorkOrderPositionTopic: String = config.getString("kafka.output.cb.work.order.position.topic")
   val kafkaFailedTopic: String = config.getString("kafka.output.failed.topic")
 
   val defaultChannel: String = config.getString("default.channel")
@@ -29,6 +30,7 @@ class CBPreprocessorConfig(override val config: Config) extends BaseJobConfig(co
   // Output tags
   val cbAuditEventsOutputTag: OutputTag[Event] = OutputTag[Event]("cb-audit-events")
   val cbWorkOrderRowOutputTag: OutputTag[Event] = OutputTag[Event]("cb-work-order-row")
+  val cbWorkOrderPositionOutputTag: OutputTag[Event] = OutputTag[Event]("cb-work-order-position")
   val cbFailedOutputTag: OutputTag[Event] = OutputTag[Event]("cb-failed-events")
 
   override val kafkaConsumerParallelism: Int = config.getInt("task.consumer.parallelism")
@@ -36,6 +38,7 @@ class CBPreprocessorConfig(override val config: Config) extends BaseJobConfig(co
 
   // Router job metrics
   val cbWorkOrderRowMetricCount = "cb-work-order-row-count"
+  val cbWorkOrderPositionMetricCount = "cb-work-order-position-count"
   val cbAuditEventMetricCount = "cb-audit-route-success-count"
   val cbAuditFailedMetricCount = "cb-audit-route-failed-count"
 
@@ -50,6 +53,7 @@ class CBPreprocessorConfig(override val config: Config) extends BaseJobConfig(co
   // Producers
   val cbAuditProducer = "cb-audit-sink"
   val cbWorkOrderRowProducer = "cb-work-order-row-sink"
+  val cbWorkOrderPositionProducer = "cb-work-order-position-sink"
   val cbFailedEventProducer = "cb-failed-events-sink"
 
   // val defaultSchemaFile = "envelope.json"

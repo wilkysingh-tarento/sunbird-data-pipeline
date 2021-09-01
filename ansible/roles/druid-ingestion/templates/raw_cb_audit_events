@@ -206,6 +206,11 @@
             },
             {
               "type": "path",
+              "name": "edata_cb_metrics_wo_position_count",
+              "expr": "$.edata.cb_metrics.wo_position_count"
+            },
+            {
+              "type": "path",
               "name": "entity_id",
               "expr": "$.edata.cb_object.id"
             },
@@ -400,6 +405,10 @@
             {
               "type": "string",
               "name": "edata_cb_object_rollup_l4"
+            },
+            {
+              "type": "long",
+              "name": "edata_cb_metrics_wo_position_count"
             },
             {
               "type": "string",

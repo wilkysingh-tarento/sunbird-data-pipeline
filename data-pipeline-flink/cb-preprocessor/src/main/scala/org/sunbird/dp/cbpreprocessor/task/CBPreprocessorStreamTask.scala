@@ -38,6 +38,12 @@ class CBPreprocessorStreamTask(config: CBPreprocessorConfig, kafkaConnector: Fli
       .name(config.cbAuditProducer).uid(config.cbAuditProducer)
       .setParallelism(config.downstreamOperatorsParallelism)
 
+    // work order position rows generated from work order events to kafkaOutputCbWorkOrderPositionTopic
+    eventStream.getSideOutput(config.cbWorkOrderPositionOutputTag)
+      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaOutputCbWorkOrderPositionTopic))
+      .name(config.cbWorkOrderPositionProducer).uid(config.cbWorkOrderPositionProducer)
+      .setParallelism(config.downstreamOperatorsParallelism)
+
     // work order rows generated from published work order events to kafkaOutputCbWorkOrderRowTopic
     eventStream.getSideOutput(config.cbWorkOrderRowOutputTag)
       .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaOutputCbWorkOrderRowTopic))

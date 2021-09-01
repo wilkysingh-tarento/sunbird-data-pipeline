@@ -1,7 +1,7 @@
 {
   "type": "kafka",
   "dataSchema": {
-    "dataSource": "cb-audit-properties",
+    "dataSource": "cb-work-order-positions",
     "parser": {
       "type": "string",
       "parseSpec": {
@@ -20,10 +20,6 @@
             {
               "type": "root",
               "name": "ets"
-            },
-            {
-              "type": "root",
-              "name": "syncts"
             },
             {
               "type": "root",
@@ -392,111 +388,6 @@
               "name": "edata_cb_data_wa_createdBy",
               "type": "path",
               "expr": "$.edata.cb_data.wa_createdBy"
-            },
-            {
-              "name": "edata_cb_data_wa_role_type",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_role_type"
-            },
-            {
-              "name": "edata_cb_data_wa_role_id",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_role_id"
-            },
-            {
-              "name": "edata_cb_data_wa_role_name",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_role_name"
-            },
-            {
-              "name": "edata_cb_data_wa_role_description",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_role_description"
-            },
-            {
-              "name": "edata_cb_data_wa_role_status",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_role_status"
-            },
-            {
-              "name": "edata_cb_data_wa_role_source",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_role_source"
-            },
-            {
-              "name": "edata_cb_data_wa_role_addedAt",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_role_addedAt"
-            },
-            {
-              "name": "edata_cb_data_wa_role_updatedAt",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_role_updatedAt"
-            },
-            {
-              "name": "edata_cb_data_wa_role_updatedBy",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_role_updatedBy"
-            },
-            {
-              "name": "edata_cb_data_wa_role_archivedAt",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_role_archivedAt"
-            },
-            {
-              "name": "edata_cb_data_wa_role_archived",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_role_archived"
-            },
-            {
-              "name": "edata_cb_data_wa_activity_type",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_activity_type"
-            },
-            {
-              "name": "edata_cb_data_wa_activity_id",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_activity_id"
-            },
-            {
-              "name": "edata_cb_data_wa_activity_name",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_activity_name"
-            },
-            {
-              "name": "edata_cb_data_wa_activity_description",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_activity_description"
-            },
-            {
-              "name": "edata_cb_data_wa_activity_status",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_activity_status"
-            },
-            {
-              "name": "edata_cb_data_wa_activity_source",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_activity_source"
-            },
-            {
-              "name": "edata_cb_data_wa_activity_parentRole",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_activity_parentRole"
-            },
-            {
-              "name": "edata_cb_data_wa_activity_submittedFromId",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_activity_submittedFromId"
-            },
-            {
-              "name": "edata_cb_data_wa_activity_submittedToId",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_activity_submittedToId"
-            },
-            {
-              "name": "edata_cb_data_wa_activity_level",
-              "type": "path",
-              "expr": "$.edata.cb_data.wa_activity_level"
             }
           ]
         },
@@ -513,10 +404,6 @@
             {
               "type": "long",
               "name": "ets"
-            },
-            {
-              "type": "long",
-              "name": "syncts"
             },
             {
               "type": "string",
@@ -811,90 +698,6 @@
             {
               "type": "string",
               "name": "edata_cb_data_wa_createdBy"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_role_type"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_role_id"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_role_name"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_role_description"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_role_status"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_role_source"
-            },
-            {
-              "type": "long",
-              "name": "edata_cb_data_wa_role_addedAt"
-            },
-            {
-              "type": "long",
-              "name": "edata_cb_data_wa_role_updatedAt"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_role_updatedBy"
-            },
-            {
-              "type": "long",
-              "name": "edata_cb_data_wa_role_archivedAt"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_role_archived"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_activity_type"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_activity_id"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_activity_name"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_activity_description"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_activity_status"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_activity_source"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_activity_parentRole"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_activity_submittedFromId"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_activity_submittedToId"
-            },
-            {
-              "type": "string",
-              "name": "edata_cb_data_wa_activity_level"
             }
           ],
           "dimensionsExclusions": []
@@ -913,7 +716,7 @@
     }
   },
   "ioConfig": {
-    "topic": "{{env}}.druid.cb.work.order.row",
+    "topic": "{{env}}.druid.cb.work.order.position",
     "consumerProperties": {
       "bootstrap.servers": "{{kafka_brokers}}"
     },

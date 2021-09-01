@@ -55,11 +55,24 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
                               context: ProcessFunction[Event, Event]#Context,
                               metrics: Metrics): Unit = {
 
-    // node, competency/role/activity/workorder state (Draft, Approved, Published)
+    // add additional work order metrics
+    val hasWorkOrderData = event.hasWorkOrderData
+    if (hasWorkOrderData) {
+      cbEventsFlattener.addWorkOrderMetrics(event)
+    }
+
+    // output to druid cb audit events topic, competency/role/activity/workorder state (Draft, Approved, Published)
     context.output(config.cbAuditEventsOutputTag, event)
     metrics.incCounter(metric = config.cbAuditEventMetricCount)
 
-    val hasWorkOrderData = event.hasWorkOrderData
+    // flatten work order events till position data and output to druid work order position topic
+    if (hasWorkOrderData) {
+      cbEventsFlattener.flattenedPositionEvents(event).foreach { itemEvent =>
+        context.output(config.cbWorkOrderPositionOutputTag, itemEvent)
+        metrics.incCounter(metric = config.cbWorkOrderPositionMetricCount)
+      }
+    }
+
     val isPublishedWorkOrder = hasWorkOrderData && event.isPublishedWorkOrder
 
     // increase counters
