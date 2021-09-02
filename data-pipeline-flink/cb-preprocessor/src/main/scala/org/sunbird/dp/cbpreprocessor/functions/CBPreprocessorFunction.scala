@@ -24,6 +24,7 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
       // config.duplicationSkippedEventMetricsCount,
       config.cbAuditEventMetricCount,
       config.cbWorkOrderRowMetricCount,
+      config.cbWorkOrderPositionMetricCount,
       config.cbAuditFailedMetricCount
     )
     /*List(
@@ -67,10 +68,10 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
 
     // flatten work order events till position data and output to druid work order position topic
     if (hasWorkOrderData) {
-      cbEventsFlattener.flattenedPositionEvents(event).foreach { itemEvent =>
+      cbEventsFlattener.flattenedPositionEvents(event).foreach(itemEvent => {
         context.output(config.cbWorkOrderPositionOutputTag, itemEvent)
         metrics.incCounter(metric = config.cbWorkOrderPositionMetricCount)
-      }
+      })
     }
 
     val isPublishedWorkOrder = hasWorkOrderData && event.isPublishedWorkOrder
