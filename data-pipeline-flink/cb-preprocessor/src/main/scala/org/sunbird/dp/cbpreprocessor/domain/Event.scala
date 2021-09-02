@@ -92,14 +92,11 @@ class Event(eventMap: util.Map[String, Any]) extends Events(eventMap) {
 
   def hasWorkOrderData: Boolean = cbData != null
 
-  def isPublishedWorkOrder: Boolean = hasWorkOrderData && cbData.get("status").asInstanceOf[String] == "Published"
+  def isPublishedWorkOrder: Boolean = telemetry.read[String](s"${EventsPath.EDATA_PATH}.cb_data.data.status").orNull == "Published"
 
   def numWorkOrderPositions: Int = {
-    if (!hasWorkOrderData) return 0
-    telemetry.read[util.ArrayList[Any]](s"${EventsPath.EDATA_PATH}.cb_data.data.users") match {
-      case Some(value) => value.size()
-      case None => 0
-    }
+    val positions = telemetry.read[util.ArrayList[Any]](s"${EventsPath.EDATA_PATH}.cb_data.data.users").orNull
+    if (positions == null) 0 else positions.size()
   }
 
 }
