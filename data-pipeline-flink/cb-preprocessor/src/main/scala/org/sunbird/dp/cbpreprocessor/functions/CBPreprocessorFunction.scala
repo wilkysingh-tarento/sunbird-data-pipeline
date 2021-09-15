@@ -56,13 +56,12 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
                               context: ProcessFunction[Event, Event]#Context,
                               metrics: Metrics): Unit = {
 
-    val isWorkOrder = event.isWorkOrder
-
     // output to druid cb audit events topic, competency/role/activity/workorder state (Draft, Approved, Published)
     context.output(config.cbAuditEventsOutputTag, event)
     metrics.incCounter(metric = config.cbAuditEventMetricCount)
 
     // flatten work order events till position data and output to druid work order position topic
+    val isWorkOrder = event.isWorkOrder
     if (isWorkOrder) {
       cbEventsFlattener.flattenedPositionEvents(event).foreach(itemEvent => {
         context.output(config.cbWorkOrderPositionOutputTag, itemEvent)
@@ -71,7 +70,6 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
     }
 
     val isPublishedWorkOrder = isWorkOrder && event.isPublishedWorkOrder
-
     if (isPublishedWorkOrder) {
       cbEventsFlattener.flattenedEvents(event).foreach {
         case (itemEvent, childType, hasRole) => {
