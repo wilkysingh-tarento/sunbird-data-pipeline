@@ -13,12 +13,9 @@ import scala.collection.mutable.ListBuffer
 class CBEventsFlattener extends java.io.Serializable {
 
   private val serialVersionUID = 1167435095740381669L  // TODO: update?
-  private val EMPTY_ARRAY_LIST = new util.ArrayList[util.Map[String, Any]]()
-  private val EMPTY_MAP = new util.HashMap[String, Any]()
 
-  def addWorkOrderMetrics(event: Event): Unit = {
-    event.getTelemetry.add("edata.cb_metrics.wo_position_count", event.numWorkOrderPositions)
-  }
+  def emptyArrayList(): util.ArrayList[util.Map[String, Any]] = { new util.ArrayList[util.Map[String, Any]]() }
+  def emptyMap(): util.HashMap[String, Any] = { new util.HashMap[String, Any]() }
 
   /**
    * merge arbitrary number of maps and return a new map
@@ -48,14 +45,14 @@ class CBEventsFlattener extends java.io.Serializable {
   def getArrayListOrEmpty(map: util.Map[String, Any], key: String): util.ArrayList[util.Map[String, Any]] = {
     getOrNone(map, key) match {
       case Some(value) => value.asInstanceOf[util.ArrayList[util.Map[String, Any]]]
-      case None => EMPTY_ARRAY_LIST
+      case None => emptyArrayList()
     }
   }
 
   def getMapOrEmpty(map: util.Map[String, Any], key: String): util.Map[String, Any] = {
     getOrNone(map, key) match {
       case Some(value) => value.asInstanceOf[util.Map[String, Any]]
-      case None => EMPTY_MAP
+      case None => emptyMap()
     }
   }
 
@@ -69,6 +66,7 @@ class CBEventsFlattener extends java.io.Serializable {
     val flattenedList = ListBuffer[util.Map[String, Any]]()
     // TO-MERGE: workOrderMap, prefix=None, exclude=['users']
     val users = getArrayListOrEmpty(workOrderMap, "users")
+
     users.forEach(user => {
       // TO-MERGE: user, prefix='wa_', exclude=['roleCompetencyList', 'unmappedActivities', 'unmappedCompetencies']
       val newMap = mergedMap(List(

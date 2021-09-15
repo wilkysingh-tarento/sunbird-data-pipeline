@@ -90,13 +90,8 @@ class Event(eventMap: util.Map[String, Any]) extends Events(eventMap) {
 
   def cbData: util.Map[String, Any] = telemetry.read[util.Map[String, Any]](s"${EventsPath.EDATA_PATH}.cb_data").orNull
 
-  def hasWorkOrderData: Boolean = cbData != null
+  def isWorkOrder: Boolean = telemetry.read[String](s"${EventsPath.EDATA_PATH}.cb_object.type").orNull == "WorkOrder"
 
   def isPublishedWorkOrder: Boolean = telemetry.read[String](s"${EventsPath.EDATA_PATH}.cb_data.data.status").orNull == "Published"
-
-  def numWorkOrderPositions: Int = {
-    val positions = telemetry.read[util.ArrayList[Any]](s"${EventsPath.EDATA_PATH}.cb_data.data.users").orNull
-    if (positions == null) 0 else positions.size()
-  }
 
 }
