@@ -144,7 +144,7 @@ class CBEventsFlattener extends java.io.Serializable {
             // Map            Prefix            Exclusion
             (workOrderMap,    "",               Set("users")),
             (user,            "wa_",            Set("roleCompetencyList", "unmappedActivities", "unmappedCompetencies")),
-            (roleCompetency,  "wa_rcl_",        Set("roleDetails", "competencyDetails")),
+              (roleCompetency,  "wa_rcl_",        Set("roleDetails", "competencyDetails")),
             (roleDetails,     "wa_role_",       Set("childNodes")),
             (childNode,       "wa_activity_",   Set()),
           ))

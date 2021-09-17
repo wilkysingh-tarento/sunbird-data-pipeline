@@ -13,7 +13,7 @@ import org.sunbird.dp.cbpreprocessor.util.CBEventsFlattener
 
 class CBPreprocessorFunction(config: CBPreprocessorConfig,
                              @transient var cbEventsFlattener: CBEventsFlattener = null,
-                             // @transient var dedupEngine: DedupEngine = null,
+                              @transient var dedupEngine: DedupEngine = null,
                             )(implicit val eventTypeInfo: TypeInformation[Event])
   extends BaseProcessFunction[Event, Event](config) {
 
@@ -38,10 +38,10 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
 
   override def open(parameters: Configuration): Unit = {
     super.open(parameters)
-//    if (dedupEngine == null) {
-//      val redisConnect = new RedisConnect(config.redisHost, config.redisPort, config)
-//      dedupEngine = new DedupEngine(redisConnect, config.dedupStore, config.cacheExpirySeconds)
-//    }
+    if (dedupEngine == null) {
+      val redisConnect = new RedisConnect(config.redisHost, config.redisPort, config)
+      dedupEngine = new DedupEngine(redisConnect, config.dedupStore, config.cacheExpirySeconds)
+    }
     if (cbEventsFlattener == null) {
       cbEventsFlattener = new CBEventsFlattener()
     }
@@ -49,50 +49,60 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
 
   override def close(): Unit = {
     super.close()
-    // dedupEngine.closeConnectionPool()
+     dedupEngine.closeConnectionPool()
   }
 
   override def processElement(event: Event,
                               context: ProcessFunction[Event, Event]#Context,
                               metrics: Metrics): Unit = {
 
-    // add additional work order metrics
-    val hasWorkOrderData = event.hasWorkOrderData
-    if (hasWorkOrderData) {
-      cbEventsFlattener.addWorkOrderMetrics(event)
-    }
 
-    // output to druid cb audit events topic, competency/role/activity/workorder state (Draft, Approved, Published)
-    context.output(config.cbAuditEventsOutputTag, event)
-    metrics.incCounter(metric = config.cbAuditEventMetricCount)
+    val isUnique =
+      deDuplicate[Event, Event](event.mid(), event, context, config.duplicateEventsOutputTag,
+        flagName = config.DEDUP_FLAG_NAME)(dedupEngine, metrics)
 
-    // flatten work order events till position data and output to druid work order position topic
-    if (hasWorkOrderData) {
-      cbEventsFlattener.flattenedPositionEvents(event).foreach(itemEvent => {
-        context.output(config.cbWorkOrderPositionOutputTag, itemEvent)
-        metrics.incCounter(metric = config.cbWorkOrderPositionMetricCount)
-      })
-    }
 
-    val isPublishedWorkOrder = hasWorkOrderData && event.isPublishedWorkOrder
+    if (isUnique) {
 
-    // increase counters
-    // if (hasWorkOrderData) {
-    //   metrics.incCounter(metric = config.workOrderEventsMetricsCount)
-    //  if (isPublishedWorkOrder) {
-    //    metrics.incCounter(metric = config.publishedWorkOrderEventsMetricsCount)
-    //  }
-    // }
 
-    if (isPublishedWorkOrder) {
-      cbEventsFlattener.flattenedEvents(event).foreach {
-        case (itemEvent, childType, hasRole) => {
-          // here we can choose to route competencies and activities to different routes
-          context.output(config.cbWorkOrderRowOutputTag, itemEvent)
-          metrics.incCounter(metric = config.cbWorkOrderRowMetricCount)
+      // add additional work order metrics
+
+      val hasWorkOrderData = event.hasWorkOrderData
+      if (hasWorkOrderData) {
+        cbEventsFlattener.addWorkOrderMetrics(event)
+      }
+
+      // output to druid cb audit events topic, competency/role/activity/workorder state (Draft, Approved, Published)
+      context.output(config.cbAuditEventsOutputTag, event)
+      metrics.incCounter(metric = config.cbAuditEventMetricCount)
+
+      // flatten work order events till position data and output to druid work order position topic
+      if (hasWorkOrderData) {
+        cbEventsFlattener.flattenedPositionEvents(event).foreach(itemEvent => {
+          context.output(config.cbWorkOrderPositionOutputTag, itemEvent)
+          metrics.incCounter(metric = config.cbWorkOrderPositionMetricCount)
+        })
+      }
+
+      val isPublishedWorkOrder = hasWorkOrderData && event.isPublishedWorkOrder
+
+      // increase counters
+      // if (hasWorkOrderData) {
+      //   metrics.incCounter(metric = config.workOrderEventsMetricsCount)
+      //  if (isPublishedWorkOrder) {
+      //    metrics.incCounter(metric = config.publishedWorkOrderEventsMetricsCount)
+      //  }
+      // }
+
+      if (isPublishedWorkOrder) {
+        cbEventsFlattener.flattenedEvents(event).foreach {
+          case (itemEvent, childType, hasRole) => {
+            // here we can choose to route competencies and activities to different routes
+            context.output(config.cbWorkOrderRowOutputTag, itemEvent)
+            metrics.incCounter(metric = config.cbWorkOrderRowMetricCount)
+          }
         }
       }
     }
   }
-
 }

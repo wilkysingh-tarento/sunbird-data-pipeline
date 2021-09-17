@@ -58,4 +58,9 @@ class CBPreprocessorConfig(override val config: Config) extends BaseJobConfig(co
 
   // val defaultSchemaFile = "envelope.json"
 
+  val dedupStore: Int = config.getInt("redis.database.duplicationstore.id")
+  val cacheExpirySeconds: Int = config.getInt("redis.database.key.expiry.seconds")
+  val duplicateEventsOutputTag: OutputTag[Event] = OutputTag[Event]("duplicate-events")
+  val DEDUP_FLAG_NAME = "cb_duplicate"
+
 }
