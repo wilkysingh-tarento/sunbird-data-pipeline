@@ -57,12 +57,12 @@ class CBEventsFlattener extends java.io.Serializable {
   }
 
   /**
-   * return a list of flattened  (denormalized) maps from workOrderMap
+   * return a list of flattened (till officer) (denormalized) maps from workOrderMap
    *
    * @param workOrderMap
-   * @return List(work_order_position_map)
+   * @return List(work_order_officer_map)
    */
-  def flattenWorkOrderPositionData(workOrderMap: util.Map[String, Any]): List[util.Map[String, Any]] = {
+  def flattenWorkOrderOfficerData(workOrderMap: util.Map[String, Any]): List[util.Map[String, Any]] = {
     val flattenedList = ListBuffer[util.Map[String, Any]]()
     // TO-MERGE: workOrderMap, prefix=None, exclude=['users']
     val users = getArrayListOrEmpty(workOrderMap, "users")
@@ -108,7 +108,7 @@ class CBEventsFlattener extends java.io.Serializable {
           // Map            Prefix            Exclusion
           (workOrderMap,    "",               Set("users")),
           (user,            "wa_",            Set("roleCompetencyList", "unmappedActivities", "unmappedCompetencies")),
-          (activity,        "wa_activity_",   Set()),
+          (activity,        "wa_activity_",   Set())
         ))
         flattenedList.append((newMap, "activity", false))
       })
@@ -121,7 +121,7 @@ class CBEventsFlattener extends java.io.Serializable {
           // Map          Prefix              Exclusion
           (workOrderMap,  "",                 Set("users")),
           (user,          "wa_",              Set("roleCompetencyList", "unmappedActivities", "unmappedCompetencies")),
-          (competency,    "wa_competency_",   Set()),
+          (competency,    "wa_competency_",   Set())
         ))
         flattenedList.append((newMap, "competency", false))
       })
@@ -144,7 +144,7 @@ class CBEventsFlattener extends java.io.Serializable {
             (user,            "wa_",            Set("roleCompetencyList", "unmappedActivities", "unmappedCompetencies")),
             (roleCompetency,  "wa_rcl_",        Set("roleDetails", "competencyDetails")),
             (roleDetails,     "wa_role_",       Set("childNodes")),
-            (childNode,       "wa_activity_",   Set()),
+            (childNode,       "wa_activity_",   Set())
           ))
           flattenedList.append((newMap, "activity", true))
         })
@@ -214,15 +214,15 @@ class CBEventsFlattener extends java.io.Serializable {
   }
 
   /**
-   * flatten work order position data in `event` and return a Seq of CB_ITEM_POS events
+   * flatten work order officer data in `event` and return a Seq of CB_ITEM_USER events
    *
    * @param event
    * @return
    */
-  def flattenedPositionEvents(event: Event): Seq[Event] = {
+  def flattenedOfficerEvents(event: Event): Seq[Event] = {
     val workOrderMap = event.cbData.get("data").asInstanceOf[util.Map[String, Any]]
     val eventMap = event.getMap()
-    flattenWorkOrderPositionData(workOrderMap).map { data => getNewCbEvent("CB_ITEM_POS", eventMap, data) }
+    flattenWorkOrderOfficerData(workOrderMap).map { data => getNewCbEvent("CB_ITEM_USER", eventMap, data) }
   }
 
 }

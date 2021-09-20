@@ -203,46 +203,6 @@
               "type": "path",
               "name": "edata_cb_object_rollup_l4",
               "expr": "$.edata.cb_object.rollup.l4"
-            },
-            {
-              "type": "path",
-              "name": "edata_cb_metrics_wo_position_count",
-              "expr": "$.edata.cb_metrics.wo_position_count"
-            },
-            {
-              "type": "path",
-              "name": "entity_id",
-              "expr": "$.edata.cb_object.id"
-            },
-            {
-              "type": "path",
-              "name": "Type",
-              "expr": "$.edata.cb_object.type"
-            },
-            {
-              "type": "path",
-              "name": "action_date",
-              "expr": "$.@timestamp"
-            },
-            {
-              "type": "path",
-              "name": "Name",
-              "expr": "$.edata.cb_object.name"
-            },
-            {
-              "type": "path",
-              "name": "Description",
-              "expr": "$.mid"
-            },
-            {
-              "type": "path",
-              "name": "Status",
-              "expr": "$.edata.state"
-            },
-            {
-              "type": "path",
-              "name": "Source",
-              "expr": "$.context.pdata.pid"
             }
           ]
         },
@@ -405,38 +365,6 @@
             {
               "type": "string",
               "name": "edata_cb_object_rollup_l4"
-            },
-            {
-              "type": "long",
-              "name": "edata_cb_metrics_wo_position_count"
-            },
-            {
-              "type": "string",
-              "name": "entity_id"
-            },
-            {
-              "type": "string",
-              "name": "Type"
-            },
-            {
-              "type": "string",
-              "name": "action_date"
-            },
-            {
-              "type": "string",
-              "name": "Name"
-            },
-            {
-              "type": "string",
-              "name": "Description"
-            },
-            {
-              "type": "string",
-              "name": "Status"
-            },
-            {
-              "type": "string",
-              "name": "Source"
             }
           ],
           "dimensionsExclusions": []

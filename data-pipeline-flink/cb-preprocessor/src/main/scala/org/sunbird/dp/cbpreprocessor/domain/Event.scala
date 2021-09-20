@@ -94,4 +94,6 @@ class Event(eventMap: util.Map[String, Any]) extends Events(eventMap) {
 
   def isPublishedWorkOrder: Boolean = telemetry.read[String](s"${EventsPath.EDATA_PATH}.cb_data.data.status").orNull == "Published"
 
+  def cbUid(): String = s"CB:${mid()}"
+
 }

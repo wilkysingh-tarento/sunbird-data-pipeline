@@ -1,7 +1,7 @@
 {
   "type": "kafka",
   "dataSchema": {
-    "dataSource": "cb-work-order-positions",
+    "dataSource": "cb-work-order-officers",
     "parser": {
       "type": "string",
       "parseSpec": {
@@ -203,41 +203,6 @@
               "type": "path",
               "name": "edata_cb_object_rollup_l4",
               "expr": "$.edata.cb_object.rollup.l4"
-            },
-            {
-              "type": "path",
-              "name": "entity_id",
-              "expr": "$.edata.cb_object.id"
-            },
-            {
-              "type": "path",
-              "name": "Type",
-              "expr": "$.edata.cb_object.type"
-            },
-            {
-              "type": "path",
-              "name": "action_date",
-              "expr": "$.@timestamp"
-            },
-            {
-              "type": "path",
-              "name": "Name",
-              "expr": "$.edata.cb_object.name"
-            },
-            {
-              "type": "path",
-              "name": "Description",
-              "expr": "$.mid"
-            },
-            {
-              "type": "path",
-              "name": "Status",
-              "expr": "$.edata.state"
-            },
-            {
-              "type": "path",
-              "name": "Source",
-              "expr": "$.context.pdata.pid"
             },
             {
               "name": "edata_cb_data_id",
@@ -553,34 +518,6 @@
             },
             {
               "type": "string",
-              "name": "entity_id"
-            },
-            {
-              "type": "string",
-              "name": "Type"
-            },
-            {
-              "type": "string",
-              "name": "action_date"
-            },
-            {
-              "type": "string",
-              "name": "Name"
-            },
-            {
-              "type": "string",
-              "name": "Description"
-            },
-            {
-              "type": "string",
-              "name": "Status"
-            },
-            {
-              "type": "string",
-              "name": "Source"
-            },
-            {
-              "type": "string",
               "name": "edata_cb_data_id"
             },
             {
@@ -716,7 +653,7 @@
     }
   },
   "ioConfig": {
-    "topic": "{{env}}.druid.cb.work.order.position",
+    "topic": "{{env}}.druid.cb.work.order.officer",
     "consumerProperties": {
       "bootstrap.servers": "{{kafka_brokers}}"
     },

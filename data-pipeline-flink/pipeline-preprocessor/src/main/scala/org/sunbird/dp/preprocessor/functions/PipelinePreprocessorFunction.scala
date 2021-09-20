@@ -71,6 +71,7 @@ class PipelinePreprocessorFunction(config: PipelinePreprocessorConfig,
         metrics.incCounter(metric = config.logEventsRouterMetricsCount)
       }
       else {
+
         val isUnique = if (isDuplicateCheckRequired(event.producerId())) {
           deDuplicate[Event, Event](event.mid(), event, context, config.duplicateEventsOutputTag,
             flagName = config.DEDUP_FLAG_NAME)(dedupEngine, metrics)
@@ -108,6 +109,7 @@ class PipelinePreprocessorFunction(config: PipelinePreprocessorConfig,
               context.output(config.errorEventOutputTag, event)
               metrics.incCounter(metric = config.errorEventsRouterMetricsCount)
             case "CB_AUDIT" =>
+              event.addAuditUid(event.eid())
               context.output(config.cbAuditRouteEventsOutputTag, event)  // cbAudit event are not routed to denorm topic
               metrics.incCounter(metric = config.cbAuditEventRouterMetricCount) // //   metric for cb_audit events
             case _ =>
@@ -116,9 +118,9 @@ class PipelinePreprocessorFunction(config: PipelinePreprocessorConfig,
           }
 
         }
+
       }
     }
-
 
   }
 

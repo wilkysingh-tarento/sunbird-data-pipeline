@@ -38,10 +38,10 @@ class CBPreprocessorStreamTask(config: CBPreprocessorConfig, kafkaConnector: Fli
       .name(config.cbAuditProducer).uid(config.cbAuditProducer)
       .setParallelism(config.downstreamOperatorsParallelism)
 
-    // work order position rows generated from work order events to kafkaOutputCbWorkOrderPositionTopic
-    eventStream.getSideOutput(config.cbWorkOrderPositionOutputTag)
-      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaOutputCbWorkOrderPositionTopic))
-      .name(config.cbWorkOrderPositionProducer).uid(config.cbWorkOrderPositionProducer)
+    // work order officer rows generated from work order events to kafkaOutputCbWorkOrderOfficerTopic
+    eventStream.getSideOutput(config.cbWorkOrderOfficerOutputTag)
+      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaOutputCbWorkOrderOfficerTopic))
+      .name(config.cbWorkOrderOfficerProducer).uid(config.cbWorkOrderOfficerProducer)
       .setParallelism(config.downstreamOperatorsParallelism)
 
     // work order rows generated from published work order events to kafkaOutputCbWorkOrderRowTopic
@@ -55,6 +55,12 @@ class CBPreprocessorStreamTask(config: CBPreprocessorConfig, kafkaConnector: Fli
       .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaFailedTopic))
       .name(config.cbFailedEventProducer).uid(config.cbFailedEventProducer)
       .setParallelism(config.downstreamOperatorsParallelism)
+
+    eventStream.getSideOutput(config.duplicateEventsOutputTag)
+      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaDuplicateTopic))
+      .name(config.duplicateEventProducer).uid(config.duplicateEventProducer)
+      .setParallelism(config.downstreamOperatorsParallelism)
+
 
     env.execute(config.jobName)
   }

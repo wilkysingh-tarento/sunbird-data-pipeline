@@ -27,11 +27,11 @@ class CBEventsFlattenerTestSpec extends FlatSpec with Matchers with BeforeAndAft
     JSONUtil.mapper.setSerializationInclusion(Include.NON_NULL)
   }
 
-  def getFlattenedWorkOrderPositionJson(eventJson: String): String = {
+  def getFlattenedWorkOrderOfficerJson(eventJson: String): String = {
     val cbEvent = new Event(JSONUtil.deserialize[util.LinkedHashMap[String, Any]](eventJson))
-    val flattenedWorkOrderPositionData = new util.ArrayList[util.Map[String, Any]]()
-    cbEventsFlattener.flattenedPositionEvents(cbEvent).foreach { event => flattenedWorkOrderPositionData.add(event.cbData) }
-    JSONUtil.serialize(flattenedWorkOrderPositionData)
+    val flattenedWorkOrderOfficerData = new util.ArrayList[util.Map[String, Any]]()
+    cbEventsFlattener.flattenedOfficerEvents(cbEvent).foreach { event => flattenedWorkOrderOfficerData.add(event.cbData) }
+    JSONUtil.serialize(flattenedWorkOrderOfficerData)
   }
 
   def getFlattenedWorkOrderDataJson(eventJson: String): String = {
@@ -49,8 +49,8 @@ class CBEventsFlattenerTestSpec extends FlatSpec with Matchers with BeforeAndAft
     resultJsonNode.equals(expectedJsonNode) should be(true)
   }
 
-  "CBEventsFlattener" should "flatten a valid work order event to position level" in {
-    val resultJsonNode = objectMapper.readTree(getFlattenedWorkOrderPositionJson(CBEventFixture.WO_EVENT))
+  "CBEventsFlattener" should "flatten a valid work order event to officer level" in {
+    val resultJsonNode = objectMapper.readTree(getFlattenedWorkOrderOfficerJson(CBEventFixture.WO_EVENT))
     val expectedJsonNode = objectMapper.readTree(CBEventFixture.WO_EVENT_POSITIONS_RESULT)
     resultJsonNode.equals(expectedJsonNode) should be(true)
   }
