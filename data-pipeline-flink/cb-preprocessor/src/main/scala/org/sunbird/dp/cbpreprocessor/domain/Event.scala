@@ -99,4 +99,7 @@ class Event(eventMap: util.Map[String, Any]) extends Events(eventMap) {
     if (positions == null) 0 else positions.size()
   }
 
+  def cbUid(): String = telemetry.read[String](keyPath = EventsPath.CB_UID).orNull
+
+
 }

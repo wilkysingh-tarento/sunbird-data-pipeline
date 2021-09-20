@@ -63,4 +63,9 @@ class CBPreprocessorConfig(override val config: Config) extends BaseJobConfig(co
   val duplicateEventsOutputTag: OutputTag[Event] = OutputTag[Event]("duplicate-events")
   val DEDUP_FLAG_NAME = "cb_duplicate"
 
+  val kafkaDuplicateTopic: String = config.getString("kafka.output.duplicate.topic")
+  val duplicateEventProducer = "duplicate-events-sink"
+
+
+
 }

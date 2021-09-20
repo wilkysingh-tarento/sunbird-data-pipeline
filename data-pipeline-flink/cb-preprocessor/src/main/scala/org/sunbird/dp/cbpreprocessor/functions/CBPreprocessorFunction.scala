@@ -58,7 +58,7 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
 
 
     val isUnique =
-      deDuplicate[Event, Event](event.mid(), event, context, config.duplicateEventsOutputTag,
+      deDuplicate[Event, Event](event.cbUid(), event, context, config.duplicateEventsOutputTag,
         flagName = config.DEDUP_FLAG_NAME)(dedupEngine, metrics)
 
 

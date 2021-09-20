@@ -56,6 +56,12 @@ class CBPreprocessorStreamTask(config: CBPreprocessorConfig, kafkaConnector: Fli
       .name(config.cbFailedEventProducer).uid(config.cbFailedEventProducer)
       .setParallelism(config.downstreamOperatorsParallelism)
 
+    eventStream.getSideOutput(config.duplicateEventsOutputTag)
+      .addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaDuplicateTopic))
+      .name(config.duplicateEventProducer).uid(config.duplicateEventProducer)
+      .setParallelism(config.downstreamOperatorsParallelism)
+
+
     env.execute(config.jobName)
   }
 }
