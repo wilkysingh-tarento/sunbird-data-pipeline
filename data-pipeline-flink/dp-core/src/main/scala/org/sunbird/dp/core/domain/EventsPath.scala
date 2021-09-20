@@ -50,5 +50,4 @@ object EventsPath {
   val TAGS_PATH ="tags"
   val OBJECT_ROLLUP_L2 = s"$OBJECT_PATH.rollup.l2"
   val L2_DATA_PATH = "l2data"
-  val CB_UID = "cb_uid"
 }

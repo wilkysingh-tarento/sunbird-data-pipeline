@@ -109,7 +109,6 @@ class PipelinePreprocessorFunction(config: PipelinePreprocessorConfig,
               context.output(config.errorEventOutputTag, event)
               metrics.incCounter(metric = config.errorEventsRouterMetricsCount)
             case "CB_AUDIT" =>
-              event.addAuditUid(event.eid())
               context.output(config.cbAuditRouteEventsOutputTag, event)  // cbAudit event are not routed to denorm topic
               metrics.incCounter(metric = config.cbAuditEventRouterMetricCount) // //   metric for cb_audit events
             case _ =>
