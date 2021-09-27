@@ -53,7 +53,7 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
         flagName = config.DEDUP_FLAG_NAME)(dedupEngine, metrics)
 
     // TODO: remove, temp fix to null org
-    event.correctCbObjectOrg()
+    // event.correctCbObjectOrg()
 
     if (isUnique) {
 
