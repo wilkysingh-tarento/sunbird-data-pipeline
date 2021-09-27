@@ -12,6 +12,8 @@ class Event(eventMap: util.Map[String, Any]) extends Events(eventMap) {
   private[this] val dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZoneUTC
   private val jobName = "CBPreprocessor"
 
+  private val CB_OBJECT_TYPE_PATH = s"${EventsPath.EDATA_PATH}.cb_object.type"
+
   override def kafkaKey(): String = {
     did()
   }
@@ -90,10 +92,23 @@ class Event(eventMap: util.Map[String, Any]) extends Events(eventMap) {
 
   def cbData: util.Map[String, Any] = telemetry.read[util.Map[String, Any]](s"${EventsPath.EDATA_PATH}.cb_data").orNull
 
-  def isWorkOrder: Boolean = telemetry.read[String](s"${EventsPath.EDATA_PATH}.cb_object.type").orNull == "WorkOrder"
+  def cbObjectType: String = telemetry.read[String](CB_OBJECT_TYPE_PATH).orNull
+
+  def isWorkOrder: Boolean = telemetry.read[String](CB_OBJECT_TYPE_PATH).orNull == "WorkOrder"
 
   def isPublishedWorkOrder: Boolean = telemetry.read[String](s"${EventsPath.EDATA_PATH}.cb_data.data.status").orNull == "Published"
 
-  def cbUid(): String = s"CB:${mid()}"
+  def cbUid: String = s"CB:${mid()}"
+
+  def correctCbObjectOrg(): Unit = {
+    if (cbObjectType == "Competency") {
+      val keyPath = s"${EventsPath.EDATA_PATH}.cb_object.org"
+      var org : String = telemetry.read[String](keyPath).orNull
+      if (org != null) org = org.trim()
+      if (org == null || org == "") {
+        telemetry.add(keyPath, "FRAC Department")
+      }
+    }
+  }
 
 }

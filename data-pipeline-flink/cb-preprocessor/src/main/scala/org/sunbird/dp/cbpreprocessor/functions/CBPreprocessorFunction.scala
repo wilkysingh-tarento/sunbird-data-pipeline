@@ -49,8 +49,11 @@ class CBPreprocessorFunction(config: CBPreprocessorConfig,
                               metrics: Metrics): Unit = {
 
     val isUnique =
-      deDuplicate[Event, Event](event.cbUid(), event, context, config.duplicateEventsOutputTag,
+      deDuplicate[Event, Event](event.cbUid, event, context, config.duplicateEventsOutputTag,
         flagName = config.DEDUP_FLAG_NAME)(dedupEngine, metrics)
+
+    // TODO: remove, temp fix to null org
+    event.correctCbObjectOrg()
 
     if (isUnique) {
 
