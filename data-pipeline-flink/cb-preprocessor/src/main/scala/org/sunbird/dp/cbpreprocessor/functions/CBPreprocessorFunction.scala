@@ -13,7 +13,7 @@ import org.sunbird.dp.cbpreprocessor.util.CBEventsFlattener
 
 class CBPreprocessorFunction(config: CBPreprocessorConfig,
                              @transient var cbEventsFlattener: CBEventsFlattener = null,
-                             @transient var dedupEngine: DedupEngine = null,
+                             @transient var dedupEngine: DedupEngine = null
                             )(implicit val eventTypeInfo: TypeInformation[Event])
   extends BaseProcessFunction[Event, Event](config) {
 
