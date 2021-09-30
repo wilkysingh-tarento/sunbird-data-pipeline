@@ -22,14 +22,17 @@ spec:
         command: ["/opt/flink/bin/standalone-job.sh"]
 {{- $job-config-key := .Release.Name }}
         args: ["start-foreground",
-               "--job-classname={{ index .Values $job-config-key.job_classname }}", 
+               "--job-classname={{ index .Values $job-config-key.job_classname }}",
+               "-Ds3.access-key={{ .Values.s3_access_key }}",
+               "-Ds3.secret-key={{ .Values.s3_secret_key }}",
+               "-Ds3.endpoint={{ .Values.s3_endpoint }}",
+               "-Ds3.path.style.access={{ .Values.s3_path_style_access }}",
                "-Djobmanager.rpc.address={{ .Release.Name }}-jobmanager",
                "-Djobmanager.rpc.port=6123",
                "-Dparallelism.default=1", 
                "-Dblob.server.port=6124", 
                "-Dqueryable-state.server.ports=6125",
                "-Djobmanager.heap.size={{ index .Values $job-config-key.job_manager_heap_size }}",
-               "-Dfs.azure.account.key.{{ .Values.azure_storage_account }}.blob.core.windows.net: {{ .Values.azure_storage_secret }}",
                "-Dconfig.file=/opt/flink/conf/{{ .Release.Name }}.conf"]
         ports:
         - containerPort: 6123

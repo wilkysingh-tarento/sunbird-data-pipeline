@@ -26,7 +26,7 @@ env_name: "{{env}}"
 kafka_brokers: "{{groups['processing-cluster-kafka']|join(':9092,')}}:9092"
 zookeepers: "{{groups['zookeeper']|join(':2181,')}}:2181"
 # Ingestion cluster
-ingestion_kafka_brokers: "{{groups['processing-cluster-kafka']|join(':9092,')}}:9092"
+ingestion_kafka_brokers: "{{groups['ingestion-cluster-kafka']|join(':9092,')}}:9092"
 secor_ingestion_kafka_brokers: "{{groups['processing-cluster-kafka']|join(',')}}"
 ingestion_zookeepers: "{{groups['zookeeper']|join(':2181,')}}:2181"
 

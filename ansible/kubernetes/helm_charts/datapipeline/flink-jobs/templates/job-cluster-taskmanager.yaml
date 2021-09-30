@@ -25,12 +25,16 @@ spec:
         workingDir: /opt/flink
         command: ["/opt/flink/bin/taskmanager.sh"]
 {{- $job-config-key := .Release.Name }}
-        args: ["start-foreground",
-          "-Djobmanager.rpc.address={{ .Release.Name }}-jobmanager",
-          "-Dtaskmanager.rpc.port=6122",
-          "-Dtaskmanager.heap.size={{ index .Values $job-config-key.task_manager_heap_size }}",
-          "-Dfs.azure.account.key.{{ .Values.azure_storage_account }}.blob.core.windows.net: {{ .Values.azure_storage_secret }}",
-          "-Dconfig.file=/opt/flink/conf/{{ .Release.Name }}.conf"]
+        args: [
+            "start-foreground",
+            "-Ds3.access-key={{ .Values.s3_access_key }}",
+            "-Ds3.secret-key={{ .Values.s3_secret_key }}",
+            "-Ds3.endpoint={{ .Values.s3_endpoint }}",
+            "-Ds3.path.style.access={{ .Values.s3_path_style_access }}",
+            "-Djobmanager.rpc.address={{ .Release.Name }}-jobmanager",
+            "-Dtaskmanager.rpc.port=6122",
+            "-Dtaskmanager.heap.size={{ index .Values $job-config-key.task_manager_heap_size }}",
+            "-Dconfig.file=/opt/flink/conf/{{ .Release.Name }}.conf"]
         ports:
         - containerPort: 6122
           name: rpc
