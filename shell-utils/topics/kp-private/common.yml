@@ -1,6 +1,20 @@
 
-ingestion_kafka_topics: ""
-ingestion_kafka_overriden_topics: ""
+ingestion_kafka_topics:
+  - name: telemetry.ingestion
+    num_of_partitions: 16
+    replication_factor: 2
+  - name: events.deviceprofile
+    num_of_partitions: 4
+    replication_factor: 1
+
+ingestion_kafka_overriden_topics:
+  - name: telemetry.ingestion
+    retention_time: 259200000
+    replication_factor: 2
+    max_message_bytes: 5242880
+  - name: events.deviceprofile
+    retention_time: 172800000
+    replication_factor: 1
 
 processing_kafka_topics:
   - name: telemetry.raw

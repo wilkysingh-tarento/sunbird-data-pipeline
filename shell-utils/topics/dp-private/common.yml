@@ -25,18 +25,6 @@ processing_kafka_topics:
   - name: analytics_metrics
     num_of_partitions: 4
     replication_factor: 2
-  - name: druid.events.error
-    num_of_partitions: 16
-    replication_factor: 2
-  - name: druid.events.log
-    num_of_partitions: 16
-    replication_factor: 2
-  - name: druid.events.summary
-    num_of_partitions: 16
-    replication_factor: 2
-  - name: druid.events.telemetry
-    num_of_partitions: 16
-    replication_factor: 2
   - name: events.deviceprofile
     num_of_partitions: 4
     replication_factor: 1
@@ -100,6 +88,21 @@ processing_kafka_topics:
   - name: telemetry.unique.secondary
     num_of_partitions: 16
     replication_factor: 2
+  - name: events.error
+    num_of_partitions: 16
+    replication_factor: 2
+  - name: events.log
+    num_of_partitions: 16
+    replication_factor: 2
+  - name: events.summary
+    num_of_partitions: 16
+    replication_factor: 2
+  - name: events.telemetry
+    num_of_partitions: 16
+    replication_factor: 2
+  - name: druid.events.error
+    num_of_partitions: 16
+    replication_factor: 2
   - name: druid.events.log
     num_of_partitions: 16
     replication_factor: 2
@@ -119,6 +122,21 @@ processing_kafka_topics:
     num_of_partitions: 16
     replication_factor: 2
   - name: druid.cb.work.order.officer
+    num_of_partitions: 16
+    replication_factor: 2
+  - name: telemetry.valid
+    num_of_partitions: 16
+    replication_factor: 2
+  - name: telemetry.sink
+    num_of_partitions: 16
+    replication_factor: 2
+  - name: telemetry.with_location
+    num_of_partitions: 16
+    replication_factor: 2
+  - name: telemetry.denorm.valid
+    num_of_partitions: 16
+    replication_factor: 2
+  - name: telemetry.log
     num_of_partitions: 16
     replication_factor: 2
 
@@ -129,18 +147,6 @@ processing_kafka_overriden_topics:
   - name: analytics_metrics
     retention_time: 172800000
     replication_factor: 2
-  - name: druid.events.error
-    retention_time: 172800000
-    replication_factor: 2
-  - name: druid.events.log
-    retention_time: 172800000
-    replication_factor: 2
-  - name: druid.events.summary
-    retention_time: 172800000
-    replication_factor: 2
-  - name: druid.events.telemetry
-    retention_time: 172800000
-    replication_factor: 2
   - name: events.deviceprofile
     retention_time: 172800000
     replication_factor: 1
@@ -204,6 +210,30 @@ processing_kafka_overriden_topics:
   - name: telemetry.unique.secondary
     retention_time: 172800000
     replication_factor: 2
+  - name: events.error
+    retention_time: 172800000
+    replication_factor: 2
+  - name: events.log
+    retention_time: 172800000
+    replication_factor: 2
+  - name: events.summary
+    retention_time: 172800000
+    replication_factor: 2
+  - name: events.telemetry
+    retention_time: 172800000
+    replication_factor: 2
+  - name: druid.events.error
+    retention_time: 172800000
+    replication_factor: 2
+  - name: druid.events.log
+    retention_time: 172800000
+    replication_factor: 2
+  - name: druid.events.summary
+    retention_time: 172800000
+    replication_factor: 2
+  - name: druid.events.telemetry
+    retention_time: 172800000
+    replication_factor: 2
   - name: telemetry.cb.audit
     retention_time: 172800000
     replication_factor: 2
@@ -216,3 +246,19 @@ processing_kafka_overriden_topics:
   - name: druid.cb.work.order.officer
     retention_time: 172800000
     replication_factor: 2
+  - name: telemetry.valid
+    retention_time: 172800000
+    replication_factor: 2
+  - name: telemetry.sink
+    retention_time: 172800000
+    replication_factor: 2
+  - name: telemetry.with_location
+    retention_time: 172800000
+    replication_factor: 2
+  - name: telemetry.denorm.valid
+    retention_time: 172800000
+    replication_factor: 2
+  - name: telemetry.log
+    retention_time: 172800000
+    replication_factor: 2
+
