@@ -31,6 +31,6 @@
       when: not hostvars['localhost']['single_cluster']
     - role: druid-ingestion
       vars:
-        ingestion_task_names: "{{ raw_ingestion_task_names }},{{ rollup_ingestion_task_names }}"
+        ingestion_task_names: "{{ raw_ingestion_task_names }}"
         overlord_host: "{{ raw_overlord_host }}"
       when: hostvars['localhost']['single_cluster']
