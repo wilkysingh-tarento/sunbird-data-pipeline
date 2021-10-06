@@ -6,4 +6,4 @@
   roles:
     - superset-provision
   vars:
-    superset_url: "{{superset_url}}"
+    superset_url: "{{input_superset_url}}"
