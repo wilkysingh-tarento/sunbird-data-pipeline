@@ -1,0 +1,12 @@
+- name: clean previous version
+      shell : |
+         if [ -d {{superset_dir}} ]
+         then rm -Rf {{superset_dir}}
+         fi
+
+
+-name : make dir
+    shell : mkdir {{superset_dir}}
+
+- name : clone repo
+  shell : cd {{superset_dir}} | git clone {{superset_url}}

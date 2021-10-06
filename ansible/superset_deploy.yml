@@ -1,0 +1,9 @@
+---
+- hosts: local
+  become: yes
+  vars_files:
+    - "{{inventory_dir}}/secrets.yml"
+  roles:
+    - superset-deploy
+  vars:
+    docker_compose_path: "{{input_docker_compose_path}}"

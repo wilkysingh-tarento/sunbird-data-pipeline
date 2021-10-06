@@ -1,0 +1,2 @@
+superset_url :"https://github.com/apache/superset.git"
+superset_dir : "/mount/data/analytics"
