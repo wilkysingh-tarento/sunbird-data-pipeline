@@ -13,7 +13,7 @@ s3_path_style_access: true
 telemetry_ingestion_topic: "{{ env }}.telemetry.ingest"
 
 secor:
-  properties: ['secor.azure', 'secor.common', 'secor', 'secor.partition', 'log4j']
+  properties: ['secor.common', 'secor', 'secor.partition', 'log4j']
   artifact_dir: /mount/secor
 
 secor_service_name:
@@ -322,9 +322,6 @@ secor_service_name:
     base_path: "learning-failed-events"
     timestamp_key: "ets"
     fallback_timestamp_key: "@timestamp"
-    azure_account_name: "{{ secor.azure.account_name }}"
-    container_name: "{{ secor.azure.container_name }}"
-    azure_account_key: "{{ secor.azure.account_key }}"
     topic: "{{ env }}.learning.events.failed"
     kafka_broker_host: "{{ ingestion_kafka_brokers }}"
     zookeeper_quorum: "{{ ingestion_zookeepers }}"
