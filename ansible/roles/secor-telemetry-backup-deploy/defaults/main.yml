@@ -8,7 +8,7 @@ s3_access_key: "{{ cephs3_storage_key }}"
 s3_secret_key: "{{ cephs3_storage_secret }}"
 s3_endpoint: "{{ cephs3_storage_endpoint }}"
 s3_region: "{{ cephs3_storage_region | default('us-east-1') }}"
-s3_path_style_access: true
+s3_path_style_access: "true"
 
 telemetry_ingestion_topic: "{{ env }}.telemetry.ingest"
 
