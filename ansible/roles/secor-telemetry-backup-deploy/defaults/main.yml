@@ -3,7 +3,9 @@ analytics_group: analytics
 analytics_user_home: /home/{{analytics_user}}
 sbin_path: "{{ analytics_user_home }}/sbin"
 
-s3_container_name: "{{ cephs3_storage_container }}"
+s3_base_path: "secor"
+
+s3_container_name: "{{ cephs3_dp_storage_container }}"
 s3_access_key: "{{ cephs3_storage_key }}"
 s3_secret_key: "{{ cephs3_storage_secret }}"
 s3_endpoint: "{{ cephs3_storage_endpoint }}"

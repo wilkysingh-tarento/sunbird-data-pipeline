@@ -28,7 +28,8 @@ secor.swift.container=logsContainer
 # END MUST SET #
 ################
 
-kafka.seed.broker.host={{ secor_service_name[item[0]].kafka_broker_host }}
+# kafka.seed.broker.host={{ secor_service_name[item[0]].kafka_broker_host }}
+kafka.seed.broker.host=192.168.3.8
 kafka.seed.broker.port=9092
 
 zookeeper.quorum={{ secor_service_name[item[0]].zookeeper_quorum }}
