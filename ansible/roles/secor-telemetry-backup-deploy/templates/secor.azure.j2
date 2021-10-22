@@ -7,6 +7,11 @@ include=secor.properties
 # MUST SET #
 ############
 
+
+# Choose what to fill according to the service you are using
+# in the choice option you can fill S3, GS, Swift or Azure
+# cloud.service=Azure
+
 # Microsoft Azure blob storage default endpoint protocol 
 # secor.azure.endpoints.protocol=https
 
@@ -17,10 +22,12 @@ include=secor.properties
 
 # Microsoft Azure blob storage container name. Container is a grouping of a set
 # of blobs. https://msdn.microsoft.com/en-us/library/dd135715.aspx
-# secor.azure.container.name=
+# secor.azure.container.name=secor
 
 # Microsoft Azure blob storage path where files are stored within the container.
-# secor.azure.path=
+# Azure path where sequence files are stored.
+# secor.azure.path={{ secor_service_name[item[0]].base_path }}
+
 
 ################
 # END MUST SET #
