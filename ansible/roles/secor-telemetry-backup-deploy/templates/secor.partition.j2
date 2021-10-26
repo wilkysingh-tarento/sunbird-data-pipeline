@@ -22,14 +22,8 @@ secor.kafka.group={{ secor_service_name[item[0]].consumer_group }}
 # Parser class that extracts s3 partitions from consumed messages.
 secor.message.parser.class={{ secor_service_name[item[0]].message_parser }}
 
-# S3 path where sequence files are stored.
-secor.s3.path=
-
 # Swift path where sequence files are stored.
 secor.swift.path=secor_dev/partition
-
-# Azure path where sequence files are stored.
-secor.azure.path={{ secor_service_name[item[0]].base_path }}
 
 # Local path where sequence files are stored before they are uploaded to s3.
 secor.local.path=/mount/{{ item.0 }}/message_logs/partition
@@ -49,19 +43,5 @@ secor.partition.prefix.identifier={{ secor_service_name[item[0]].partition_prefi
 secor.partition.prefix.mapping={{ secor_service_name[item[0]].partition_prefix_mapping }}
 
 secor.max.file.age.policy=oldest
-
-# Output file pattern excluding prefix. Defaults to topic/partition/generation_kafkaPartition_fmOffset.gz.
-# Available placeholders are 
-# topic - The topic name the data is being fetched
-# partition - The partition name
-# generation - Generation
-# kafkaPartition - The kafka partition
-# fmOffset - First Message offset in the file.
-# randomHex - A 4 character random hex to append to the file name
-# currentTimestamp - Time of upload in epoch format
-# currentTime - Time of upload in HH-mm format
-# currentDate - Time of upload in YYYYMMDD format
-# folder - Folder to use based on message id map lookup
-secor.s3.output_file_pattern={{ secor_service_name[item[0]].output_file_pattern }}
 
 secor.partition.message.channel.identifier={{ secor_service_name[item[0]].message_channel_identifier }}

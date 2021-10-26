@@ -8,7 +8,7 @@ azure_account_key: "{{sunbird_private_storage_account_key}}"
 telemetry_ingestion_topic: "{{ env }}.telemetry.ingest"
 
 secor:
-  properties: ['secor.azure', 'secor.common', 'secor', 'secor.partition', 'log4j']
+  properties: ['secor.azure', 'secor.aws', 'secor.common', 'secor', 'secor.partition', 'log4j']
   artifact_dir: /mount/secor
 
 secor_service_name:
