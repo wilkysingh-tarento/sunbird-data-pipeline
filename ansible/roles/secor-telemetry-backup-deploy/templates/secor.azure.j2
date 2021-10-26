@@ -1,32 +1,35 @@
 include=secor.properties
 
+
+# Choose what to fill according to the service you are using
+# in the choice option you can fill S3, GS, Swift or Azure
+cloud.service=Azure
+
+# Azure path where sequence files are stored.
+secor.azure.path={{ secor_service_name[item[0]].base_path }}
+
 # Configure upload manager class to use Azure blob storage upload manager
-# secor.upload.manager.class=com.pinterest.secor.uploader.AzureUploadManager
+secor.upload.manager.class=com.pinterest.secor.uploader.AzureUploadManager
 
 ############
 # MUST SET #
 ############
 
-
-# Choose what to fill according to the service you are using
-# in the choice option you can fill S3, GS, Swift or Azure
-# cloud.service=Azure
-
 # Microsoft Azure blob storage default endpoint protocol 
-# secor.azure.endpoints.protocol=https
+secor.azure.endpoints.protocol=https
 
 # Microsoft Azure authentication credentials.
 # https://azure.microsoft.com/en-us/documentation/articles/storage-create-storage-account
-# secor.azure.account.name=
-# secor.azure.account.key=
+secor.azure.account.name=
+secor.azure.account.key=
 
 # Microsoft Azure blob storage container name. Container is a grouping of a set
 # of blobs. https://msdn.microsoft.com/en-us/library/dd135715.aspx
-# secor.azure.container.name=secor
+secor.azure.container.name=secor
 
 # Microsoft Azure blob storage path where files are stored within the container.
 # Azure path where sequence files are stored.
-# secor.azure.path={{ secor_service_name[item[0]].base_path }}
+secor.azure.path={{ secor_service_name[item[0]].base_path }}
 
 
 ################
