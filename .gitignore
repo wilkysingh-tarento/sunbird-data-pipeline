@@ -28,3 +28,4 @@ target/
 *.iml
 **/.settings
 dependency-reduced-pom.xml
+/pom.xml
