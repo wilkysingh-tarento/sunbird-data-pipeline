@@ -13,7 +13,8 @@ import scala.collection.mutable
 
 case class UserReadResult(result: java.util.HashMap[String, Any], responseCode: String, params: Params)
 case class Response(firstName: String, lastName: String, encEmail: String, encPhone: String, language: java.util.List[String], rootOrgId: String, profileUserType: java.util.HashMap[String, String],
-                    userLocations: java.util.ArrayList[java.util.Map[String, AnyRef]], rootOrg: RootOrgInfo, userId: String, framework: java.util.LinkedHashMap[String, java.util.List[String]])
+                    userLocations: java.util.ArrayList[java.util.Map[String, AnyRef]], rootOrg: RootOrgInfo, userId: String, framework: java.util.LinkedHashMap[String, java.util.List[String]],
+                    organisations:  java.util.ArrayList[java.util.Map[String, AnyRef]], identifier: String)
 case class RootOrgInfo(orgName: String)
 case class Params(msgid: String, err: String, status: String, errmsg: String)
 
@@ -102,7 +103,21 @@ object UserMetadataUpdater {
         config.rootOrgId -> response.rootOrgId,
         config.phone -> response.encPhone,
         config.email -> response.encEmail,
-        config.userId -> response.userId)
+        config.userId -> response.userId,
+        config.identifier -> response.identifier
+      )
+
+      //added organisations details
+      val organisations = response.organisations
+      var seq =1
+        if(null != organisations && !organisations.isEmpty) {
+        organisations.forEach(data => {
+          seq += 1
+          userCacheData.put(config.organisationId+seq, data.getOrDefault("organisationId", "").asInstanceOf[String])
+          userCacheData.put(config.orgName+seq, data.getOrDefault("orgName", "").asInstanceOf[String])
+        })
+      }
+
 
     } else if (config.userReadApiErrors.contains(userReadRes.responseCode.toUpperCase) && userReadRes.params.status.equalsIgnoreCase("USER_ACCOUNT_BLOCKED")) { //Skip the events for which response is 400 Bad request
       logger.info(s"User Read API has response as ${userReadRes.responseCode.toUpperCase} for user: ${userId}")
