@@ -15,7 +15,7 @@ s3_path_style_access: "true"
 telemetry_ingestion_topic: "{{ env }}.telemetry.ingest"
 
 secor:
-  properties: ['secor.aws', 'secor.common', 'secor', 'secor.partition', 'log4j']
+  properties: ['secor.common', 'secor', 'secor.partition', 'log4j']
   artifact_dir: /mount/secor
 
 secor_service_name:
