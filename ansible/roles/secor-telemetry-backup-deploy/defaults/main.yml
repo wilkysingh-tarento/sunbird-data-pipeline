@@ -48,7 +48,7 @@ secor_service_name:
     kafka_broker_host: "{{groups['processing-cluster-kafka']|join(':9092,')}}:9092"
     zookeeper_quorum: "{{groups['processing-cluster-zookeepers']|join(':2181,')}}:2181"
     max_file_size: "100000000"
-    max_file_age: "14400"
+    max_file_age: "600"
     ostrich_port: "9994"
     partition_prefix_enabled: "false"
     partition_prefix_key: ""
