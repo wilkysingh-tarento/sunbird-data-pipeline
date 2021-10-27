@@ -136,132 +136,132 @@ class DenormalizationStreamTaskTestSpec extends BaseTestSpec {
     user2Data.get("subject").asInstanceOf[util.List[String]].asScala should be(List("English"))
     user2Data.get("state") should be("Telangana")
 
-//
-//    event = DenormEventsSink.values("mid3")
-//    event.flags().get("device_denorm").asInstanceOf[Boolean] should be (true)
-//    event.flags().get("user_denorm").asInstanceOf[Boolean] should be (false)
-//    event.flags().get("content_denorm").asInstanceOf[Boolean] should be (true)
-//    event.flags().get("coll_denorm").asInstanceOf[Boolean] should be (true)
-//    event.flags().get("loc_denorm").asInstanceOf[Boolean] should be (true)
-//
-//    event.getMap().get("collectiondata").asInstanceOf[util.Map[String, Any]].get("contenttype") should be("Asset")
-//    Option(event.getMap().get("collectiondata").asInstanceOf[util.Map[String, Any]].get("contentType")) should be (None)
-//    event.getMap().get("collectiondata").asInstanceOf[util.Map[String, Any]].get("contenttype") should be("Asset")
-//    event.getMap().get("collectiondata").asInstanceOf[util.Map[String, Any]].get("framework") should be("NCF")
-//    event.getMap().get("collectiondata").asInstanceOf[util.Map[String, Any]].get("name") should be("do_312526125187809280139355")
-//    event.getMap().get("collectiondata").asInstanceOf[util.Map[String, Any]].get("lastupdatedon") should be(1489169400448L)
-//
-//    event.getMap().get("derivedlocationdata").asInstanceOf[util.Map[String, Any]].get("district") should be("Raigad")
-//    event.getMap().get("derivedlocationdata").asInstanceOf[util.Map[String, Any]].get("state") should be("Maharashtra")
-//    event.getMap().get("derivedlocationdata").asInstanceOf[util.Map[String, Any]].get("from") should be("user-declared")
-//
-//    val device3Data = event.getMap().get("devicedata").asInstanceOf[util.Map[String, Any]]
-//    device3Data.get("firstaccess") should be (1578972432419L)
-//    val deviceSpecData = device3Data.get("devicespec").asInstanceOf[util.Map[String, Any]]
-//    deviceSpecData.get("edisk") should be ("25.42")
-//    deviceSpecData.get("make") should be ("Samsung SM-J400F")
-//    val userDeclaredLocationData = device3Data.get("userdeclared").asInstanceOf[util.Map[String, Any]]
-//    userDeclaredLocationData.get("district") should be ("Raigad")
-//    userDeclaredLocationData.get("state") should be ("Maharashtra")
-//
-//    event = DenormEventsSink.values("mid4")
-//    event.flags().get("device_denorm").asInstanceOf[Boolean] should be (true)
-//    event.flags().get("user_denorm").asInstanceOf[Boolean] should be (true)
-//    event.flags().get("dialcode_denorm").asInstanceOf[Boolean] should be (true)
-//    event.flags().get("content_denorm").asInstanceOf[Boolean] should be (false)
-//    event.flags().get("loc_denorm").asInstanceOf[Boolean] should be (true)
-//    Option(event.flags().get("coll_denorm")) should be (None)
-//
-//    event = DenormEventsSink.values("mid5")
-//    event.flags().get("device_denorm").asInstanceOf[Boolean] should be (true)
-//    event.flags().get("user_denorm").asInstanceOf[Boolean] should be (false)
-//    event.flags().get("loc_denorm").asInstanceOf[Boolean] should be (true)
-//    event.flags().get("dialcode_denorm").asInstanceOf[Boolean] should be (true)
-//    Option(event.flags().get("content_denorm")) should be (None)
-//    Option(event.flags().get("location_denorm")) should be (None)
-//
-//    event.getMap().get("dialcodedata").asInstanceOf[util.Map[String, Any]].get("batchcode") should be("jkpublisher.20180801T122031")
-//    event.getMap().get("dialcodedata").asInstanceOf[util.Map[String, Any]].get("channel") should be("01254592085869363222")
-//    event.getMap().get("dialcodedata").asInstanceOf[util.Map[String, Any]].get("generatedon") should be(1.571999041881E12)
-//    event.getMap().get("dialcodedata").asInstanceOf[util.Map[String, Any]].get("publishedon") should be(1533130913695L)
-//
-//    // TODO: Complete the assertions
-//    event = DenormEventsSink.values("mid6")
-//    event = DenormEventsSink.values("mid7")
-//    event = DenormEventsSink.values("mid8")
-//    event.flags().get("coll_denorm").asInstanceOf[Boolean] should be (true)
-//    event.flags().get("l2_denorm").asInstanceOf[Boolean] should be (true)
-//    val l2Data = event.getMap().get("l2data").asInstanceOf[util.Map[String, Any]]
-//    l2Data should not be null
-//
-//    l2Data.get("contenttype") should be("TextBook")
-//    l2Data.get("mimetype") should be("application/vnd.ekstep.content-collection")
-//    l2Data.get("contenttype") should be("TextBook")
-//    l2Data.get("channel") should be("0123221617357783046602")
-//    l2Data.get("board") should be("State (Maharashtra)")
-//    l2Data.get("name") should be("test")
-//    l2Data.get("framework") should be("mh_k-12_1")
-//    event = DenormEventsSink.values("mid9")
-//    // Location Denorm Metrics Assertion
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.locCacheHit}").getValue() should be (7)
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.locCacheMiss}").getValue() should be (4)
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.locTotal}").getValue() should be (11)
-//
-//    // Content Denorm Metrics Assertion
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.contentCacheHit}").getValue() should be (4)
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.contentCacheMiss}").getValue() should be (3)
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.contentTotal}").getValue() should be (7)
-//
-//    // User Denorm Metrics Assertion
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.userCacheHit}").getValue() should be (4)
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.userCacheMiss}").getValue() should be (4)
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.userTotal}").getValue() should be (8)
-//
-//    // Dialcode Denorm Metrics Assertion
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.dialcodeCacheHit}").getValue() should be (2)
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.dialcodeCacheMiss}").getValue() should be (1)
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.dialcodeTotal}").getValue() should be (3)
-//
-//    // Device Denorm Metrics Assertion
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.deviceCacheHit}").getValue() should be (7)
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.deviceCacheMiss}").getValue() should be (2)
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.deviceTotal}").getValue() should be (9)
-//
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.eventsExpired}").getValue() should be (1)
-//    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.eventsSkipped}").getValue() should be (2) // Skipped INTERRUPT event
-//
-//  }
-//
-//  it should " test the optional fields in denorm config " in {
-//    val config = ConfigFactory.load("test2.conf")
-//    val denormConfig: DenormalizationConfig = new DenormalizationConfig(config, "DenormTest")
-//    denormConfig.ignorePeriodInMonths should be (6)
-//    denormConfig.userLoginInTypeDefault should be ("Google")
-//    denormConfig.userSignInTypeDefault should be ("Default")
-//    denormConfig.summaryFilterEvents.size should be (2)
-//    denormConfig.summaryFilterEvents.contains("ME_WORKFLOW_SUMMARY") should be (true)
-//    denormConfig.summaryFilterEvents.contains("ME_RANDOM_SUMMARY") should be (true)
-//  }
-//
-//}
-//
-//class InputSource extends SourceFunction[Event] {
-//
-//  override def run(ctx: SourceContext[Event]) {
-//    val gson = new Gson()
-//    EventFixture.telemetrEvents.foreach(f => {
-//      val eventMap = gson.fromJson(f, new util.HashMap[String, Any]().getClass)
-//      ctx.collect(new Event(eventMap))
-//    })
-//  }
-//
-//  override def cancel() = {}
-//}
-//
-//class DerivedEventSource extends SourceFunction[Event] {
-//  override def run(ctx: SourceContext[Event]) {
-//    val gson = new Gson()
-//  }
+
+    event = DenormEventsSink.values("mid3")
+    event.flags().get("device_denorm").asInstanceOf[Boolean] should be (true)
+    event.flags().get("user_denorm").asInstanceOf[Boolean] should be (false)
+    event.flags().get("content_denorm").asInstanceOf[Boolean] should be (true)
+    event.flags().get("coll_denorm").asInstanceOf[Boolean] should be (true)
+    event.flags().get("loc_denorm").asInstanceOf[Boolean] should be (true)
+
+    event.getMap().get("collectiondata").asInstanceOf[util.Map[String, Any]].get("contenttype") should be("Asset")
+    Option(event.getMap().get("collectiondata").asInstanceOf[util.Map[String, Any]].get("contentType")) should be (None)
+    event.getMap().get("collectiondata").asInstanceOf[util.Map[String, Any]].get("contenttype") should be("Asset")
+    event.getMap().get("collectiondata").asInstanceOf[util.Map[String, Any]].get("framework") should be("NCF")
+    event.getMap().get("collectiondata").asInstanceOf[util.Map[String, Any]].get("name") should be("do_312526125187809280139355")
+    event.getMap().get("collectiondata").asInstanceOf[util.Map[String, Any]].get("lastupdatedon") should be(1489169400448L)
+
+    event.getMap().get("derivedlocationdata").asInstanceOf[util.Map[String, Any]].get("district") should be("Raigad")
+    event.getMap().get("derivedlocationdata").asInstanceOf[util.Map[String, Any]].get("state") should be("Maharashtra")
+    event.getMap().get("derivedlocationdata").asInstanceOf[util.Map[String, Any]].get("from") should be("user-declared")
+
+    val device3Data = event.getMap().get("devicedata").asInstanceOf[util.Map[String, Any]]
+    device3Data.get("firstaccess") should be (1578972432419L)
+    val deviceSpecData = device3Data.get("devicespec").asInstanceOf[util.Map[String, Any]]
+    deviceSpecData.get("edisk") should be ("25.42")
+    deviceSpecData.get("make") should be ("Samsung SM-J400F")
+    val userDeclaredLocationData = device3Data.get("userdeclared").asInstanceOf[util.Map[String, Any]]
+    userDeclaredLocationData.get("district") should be ("Raigad")
+    userDeclaredLocationData.get("state") should be ("Maharashtra")
+
+    event = DenormEventsSink.values("mid4")
+    event.flags().get("device_denorm").asInstanceOf[Boolean] should be (true)
+    event.flags().get("user_denorm").asInstanceOf[Boolean] should be (true)
+    event.flags().get("dialcode_denorm").asInstanceOf[Boolean] should be (true)
+    event.flags().get("content_denorm").asInstanceOf[Boolean] should be (false)
+    event.flags().get("loc_denorm").asInstanceOf[Boolean] should be (true)
+    Option(event.flags().get("coll_denorm")) should be (None)
+
+    event = DenormEventsSink.values("mid5")
+    event.flags().get("device_denorm").asInstanceOf[Boolean] should be (true)
+    event.flags().get("user_denorm").asInstanceOf[Boolean] should be (false)
+    event.flags().get("loc_denorm").asInstanceOf[Boolean] should be (true)
+    event.flags().get("dialcode_denorm").asInstanceOf[Boolean] should be (true)
+    Option(event.flags().get("content_denorm")) should be (None)
+    Option(event.flags().get("location_denorm")) should be (None)
+
+    event.getMap().get("dialcodedata").asInstanceOf[util.Map[String, Any]].get("batchcode") should be("jkpublisher.20180801T122031")
+    event.getMap().get("dialcodedata").asInstanceOf[util.Map[String, Any]].get("channel") should be("01254592085869363222")
+    event.getMap().get("dialcodedata").asInstanceOf[util.Map[String, Any]].get("generatedon") should be(1.571999041881E12)
+    event.getMap().get("dialcodedata").asInstanceOf[util.Map[String, Any]].get("publishedon") should be(1533130913695L)
+
+    // TODO: Complete the assertions
+    event = DenormEventsSink.values("mid6")
+    event = DenormEventsSink.values("mid7")
+    event = DenormEventsSink.values("mid8")
+    event.flags().get("coll_denorm").asInstanceOf[Boolean] should be (true)
+    event.flags().get("l2_denorm").asInstanceOf[Boolean] should be (true)
+    val l2Data = event.getMap().get("l2data").asInstanceOf[util.Map[String, Any]]
+    l2Data should not be null
+
+    l2Data.get("contenttype") should be("TextBook")
+    l2Data.get("mimetype") should be("application/vnd.ekstep.content-collection")
+    l2Data.get("contenttype") should be("TextBook")
+    l2Data.get("channel") should be("0123221617357783046602")
+    l2Data.get("board") should be("State (Maharashtra)")
+    l2Data.get("name") should be("test")
+    l2Data.get("framework") should be("mh_k-12_1")
+    event = DenormEventsSink.values("mid9")
+    // Location Denorm Metrics Assertion
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.locCacheHit}").getValue() should be (7)
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.locCacheMiss}").getValue() should be (4)
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.locTotal}").getValue() should be (11)
+
+    // Content Denorm Metrics Assertion
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.contentCacheHit}").getValue() should be (4)
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.contentCacheMiss}").getValue() should be (3)
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.contentTotal}").getValue() should be (7)
+
+    // User Denorm Metrics Assertion
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.userCacheHit}").getValue() should be (4)
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.userCacheMiss}").getValue() should be (4)
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.userTotal}").getValue() should be (8)
+
+    // Dialcode Denorm Metrics Assertion
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.dialcodeCacheHit}").getValue() should be (2)
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.dialcodeCacheMiss}").getValue() should be (1)
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.dialcodeTotal}").getValue() should be (3)
+
+    // Device Denorm Metrics Assertion
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.deviceCacheHit}").getValue() should be (7)
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.deviceCacheMiss}").getValue() should be (2)
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.deviceTotal}").getValue() should be (9)
+
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.eventsExpired}").getValue() should be (1)
+    BaseMetricsReporter.gaugeMetrics(s"${denormConfig.jobName}.${denormConfig.eventsSkipped}").getValue() should be (2) // Skipped INTERRUPT event
+
+  }
+
+  it should " test the optional fields in denorm config " in {
+    val config = ConfigFactory.load("test2.conf")
+    val denormConfig: DenormalizationConfig = new DenormalizationConfig(config, "DenormTest")
+    denormConfig.ignorePeriodInMonths should be (6)
+    denormConfig.userLoginInTypeDefault should be ("Google")
+    denormConfig.userSignInTypeDefault should be ("Default")
+    denormConfig.summaryFilterEvents.size should be (2)
+    denormConfig.summaryFilterEvents.contains("ME_WORKFLOW_SUMMARY") should be (true)
+    denormConfig.summaryFilterEvents.contains("ME_RANDOM_SUMMARY") should be (true)
+  }
+
+}
+
+class InputSource extends SourceFunction[Event] {
+
+  override def run(ctx: SourceContext[Event]) {
+    val gson = new Gson()
+    EventFixture.telemetrEvents.foreach(f => {
+      val eventMap = gson.fromJson(f, new util.HashMap[String, Any]().getClass)
+      ctx.collect(new Event(eventMap))
+    })
+  }
+
+  override def cancel() = {}
+}
+
+class DerivedEventSource extends SourceFunction[Event] {
+  override def run(ctx: SourceContext[Event]) {
+    val gson = new Gson()
+  }
 
   override def cancel() = {}
 }
