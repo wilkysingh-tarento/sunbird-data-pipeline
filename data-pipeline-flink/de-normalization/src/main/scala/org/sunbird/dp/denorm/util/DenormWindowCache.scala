@@ -5,6 +5,8 @@ import org.sunbird.dp.core.cache.RedisConnect
 import org.sunbird.dp.denorm.functions.EventsMetadata
 import org.sunbird.dp.denorm.task.DenormalizationConfig
 import redis.clients.jedis.Response
+import scala.collection.JavaConverters._
+
 
 import scala.collection.mutable.{Map => MMap}
 
@@ -66,7 +68,7 @@ class DenormWindowCache(config: DenormalizationConfig, contentRedis: RedisConnec
         userMap.keySet.foreach {
             userId => userMap.put(userId, userPipeline.hgetAll(userId))
         }
-        logger.info(s"Cached user data: ${userMap.keys} data: ${userMap.values}")
+        logger.info(s"Cached user data: ${userMap.keys} data: ${userMap.values.toString()}")
     }
 
     private def getDialcodeCacheData(dialcodeMap: MMap[String, AnyRef]) = {
