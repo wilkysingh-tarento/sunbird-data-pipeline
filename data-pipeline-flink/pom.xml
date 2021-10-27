@@ -94,6 +94,6 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		<defaultGoal>install</defaultGoal>
+		<defaultGoal>package</defaultGoal>
 	</build>
 </project>
