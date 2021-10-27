@@ -1,5 +1,6 @@
 package org.sunbird.dp.denorm.util
 
+import org.slf4j.LoggerFactory
 import org.sunbird.dp.core.cache.RedisConnect
 import org.sunbird.dp.denorm.functions.EventsMetadata
 import org.sunbird.dp.denorm.task.DenormalizationConfig
@@ -14,6 +15,8 @@ class DenormWindowCache(config: DenormalizationConfig, contentRedis: RedisConnec
     private val devicePipeline = deviceRedis.getConnection(config.deviceStore).pipelined()
     private val userPipeline = userRedis.getConnection(config.userStore).pipelined()
     private val dialcodePipeline = dialcodeRedis.getConnection(config.dialcodeStore).pipelined()
+    private[this] val logger = LoggerFactory.getLogger(classOf[DenormWindowCache])
+
 
     def close(): Unit = {
         contentPipeline.close()
@@ -63,6 +66,7 @@ class DenormWindowCache(config: DenormalizationConfig, contentRedis: RedisConnec
         userMap.keySet.foreach {
             userId => userMap.put(userId, userPipeline.hgetAll(userId))
         }
+        logger.info(s"Cached user data: ${userMap.keys} data: ${userMap.values}")
     }
 
     private def getDialcodeCacheData(dialcodeMap: MMap[String, AnyRef]) = {

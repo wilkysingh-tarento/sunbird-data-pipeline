@@ -112,9 +112,9 @@ object UserMetadataUpdater {
       var seq =1
         if(null != organisations && !organisations.isEmpty) {
         organisations.forEach(data => {
-          seq += 1
           userCacheData.put(config.organisationId+seq, data.getOrDefault("organisationId", "").asInstanceOf[String])
           userCacheData.put(config.orgName+seq, data.getOrDefault("orgName", "").asInstanceOf[String])
+          seq += 1
         })
       }
 
