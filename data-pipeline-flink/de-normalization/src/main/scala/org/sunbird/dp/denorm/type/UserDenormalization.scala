@@ -1,6 +1,5 @@
 package org.sunbird.dp.denorm.`type`
 
-import org.slf4j.LoggerFactory
 
 import scala.collection.mutable.Map
 import org.sunbird.dp.core.cache.{DataCache, RedisConnect}
@@ -13,7 +12,6 @@ import scala.collection.JavaConverters._
 import scala.collection.mutable
 
 class UserDenormalization(config: DenormalizationConfig) {
-  private[this] val logger = LoggerFactory.getLogger(classOf[UserDenormalization])
 
 
   def denormalize(event: Event, cacheData: CacheResponseData, metrics: Metrics) = {
@@ -25,8 +23,6 @@ class UserDenormalization(config: DenormalizationConfig) {
       metrics.incCounter(config.userTotal)
       val userData: mutable.Map[String, AnyRef] =
         cacheData.user.map(f => {(f._1.toLowerCase().replace("_", ""), f._2)})
-
-      logger.info(s"Cached user data: ${cacheData.user.keys} data: ${cacheData.user.asJava}")
 
 
 
