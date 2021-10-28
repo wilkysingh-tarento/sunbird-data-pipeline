@@ -87,7 +87,7 @@ kafka.consumer.auto.offset.reset=smallest
 # high level consumers. Check PartitionAssignor.scala in kafa 821 module for
 # the differences between the two.
 # In kafka 811, only range strategy is supported.
-kafka.partition.assignment.strategy=range
+kafka.partition.assignment.strategy=range  # TODO
 
 # Max number of retries during rebalance.
 kafka.rebalance.max.retries=
@@ -133,7 +133,7 @@ kafka.useTimestamp=false
 # for 0.10 build profile. Basically, it will be `Kafka8MessageTimestamp` for 0.8 kafka and `Kafka10MessageTimestamp`
 # for 0.10 kafka. Fully classified names are `com.pinterest.secor.timestamp.Kafka8MessageTimestamp` and
 # `com.pinterest.secor.timestamp.Kafka10MessageTimestamp`.
-kafka.message.timestamp.className=com.pinterest.secor.timestamp.Kafka10MessageTimestamp
+kafka.message.timestamp.className=com.pinterest.secor.timestamp.Kafka10MessageTimestamp  # TODO
 
 # Secor generation is a version that should be incremented during non-backwards-compatible
 # Secor releases. Generation number is one of the components of generated log file names.
