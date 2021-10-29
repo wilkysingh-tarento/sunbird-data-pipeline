@@ -33,6 +33,7 @@ postgres_max_connections: 2
 azure_account: "{{ sunbird_private_storage_account_name }}"
 azure_secret: "{{ sunbird_private_storage_account_key }}"
 flink_container_name: dev-data-store
+flink_dp_storage_container: "{{ cephs3_dp_storage_container }}"
 checkpoint_interval: 60000
 checkpoint_pause_between_seconds: 5000
 checkpoint_compression_enabled: true

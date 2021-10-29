@@ -87,7 +87,7 @@ base_config: |
       statebackend {
         blob {
           storage {
-            account = "{{ cephs3_dp_storage_container }}"
+            account = "{{ flink_dp_storage_container }}"
             container = "{{ flink_container_name }}"
             checkpointing.dir = "checkpoint"
           }
