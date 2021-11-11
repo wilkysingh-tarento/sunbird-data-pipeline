@@ -397,4 +397,5 @@ secor_service_name:
     service_description: "Pipeline metrics events backup"
     service_monitor_schedule_hr: "23"
     service_monitor_schedule_min: "50"
+    message_channel_identifier: ""
     message_parser: "com.pinterest.secor.parser.PatternDateMessageParser"
