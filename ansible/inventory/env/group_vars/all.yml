@@ -75,7 +75,7 @@ sbin_path: "{{ analytics_user_home }}/sbin"
 
 # Secor vars
 secor:
-  properties: ['secor.azure', 'secor.common', 'secor', 'secor.partition', 'log4j']
+  properties: ['secor.common', 'secor', 'secor.partition', 'log4j']
   artifact_dir: /mount/secor
   azure:
     account_name: "{{sunbird_private_storage_account_name}}"
