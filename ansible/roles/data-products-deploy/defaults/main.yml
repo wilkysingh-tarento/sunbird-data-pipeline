@@ -2,11 +2,19 @@ analytics_user: analytics
 analytics_group: analytics
 spark_output_temp_dir: /mount/data/analytics/tmp/
 
+# TODO: testing-revert - localhost
+#bucket: "dev-data-store"
+#kafka_broker_host: "{{groups['processing-cluster-kafka'][0]}}:9092"
+#ingestion_kafka_broker_host: "{{groups['ingestion-cluster-kafka'][0]}}:9092"
+#brokerlist: "{{groups['processing-cluster-kafka']|join(':9092,')}}:9092"
+#zookeeper: "{{groups['processing-cluster-zookeepers']|join(':2181,')}}:2181"
 bucket: "dev-data-store"
-kafka_broker_host: "{{groups['processing-cluster-kafka'][0]}}:9092"
-ingestion_kafka_broker_host: "{{groups['ingestion-cluster-kafka'][0]}}:9092"
-brokerlist: "{{groups['processing-cluster-kafka']|join(':9092,')}}:9092"
-zookeeper: "{{groups['processing-cluster-zookeepers']|join(':2181,')}}:2181"
+kafka_broker_host: "localhost:9092"
+ingestion_kafka_broker_host: "localhost:9092"
+brokerlist: "localhost:9092"
+zookeeper: "localhost:2181"
+# TODO: testing-revert
+
 dp_username: dp-monitor
 analytics_job_queue_topic: "{{ env }}.analytics.job_queue"
 topic: "{{ env }}.telemetry.derived"
@@ -21,6 +29,7 @@ druid_rollup_broker_host: "{{groups['raw-broker'][0]}}"
 hierarchySearchServiceUrl: "{{ proto }}://{{ domain_name }}/action/content"
 hierarchySearchServicEndpoint: /v3/hierarchy/
 
+# TODO: testing-revert
 # s3_storage_endpoint: "{{ cephs3_storage_endpoint }}"
 # s3_storage_key: "{{ cephs3_storage_key }}"
 # s3_storage_secret: "{{ cephs3_storage_secret }}"
@@ -30,6 +39,7 @@ s3_storage_endpoint: "https://static.karmayogiprod.nic.in"
 s3_storage_key: ""
 s3_storage_secret: ""
 s3_storage_container: "igotlogs"
+# TODO: testing-revert
 
 user_table_keyspace: "sunbird"
 course_keyspace: "sunbird_courses"

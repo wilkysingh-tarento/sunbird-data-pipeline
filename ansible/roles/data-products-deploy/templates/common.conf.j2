@@ -19,16 +19,23 @@ s3_like_storage_key="{{ s3_storage_key }}"
 s3_like_storage_secret="{{ s3_storage_secret }}"
 s3_like_storage_container="{{ s3_storage_container }}"
 s3_like_path_style_access="true"
+# TODO: testing-revert
+s3service.region="us-east-1"
+# TODO: testing-revert
 
 lp.contentmodel.versionkey="jd5ECm/o0BXwQCe8PfZY1NoUkB9HN41QjA80p22MKyRIcP5RW4qHw8sZztCzv87M"
 
 # Joblog Kafka appender config for cluster execution
 log.appender.kafka.enable="false"
-log.appender.kafka.broker_host="{{groups['processing-cluster-kafka'][0]}}:9092"
+# TODO: testing-revert
+log.appender.kafka.broker_host="localhost:9092"
+# TODO: testing-revert
 log.appender.kafka.topic="{{ env }}.druid.events.log"
 
 # Kafka connection configuration
-kafka.consumer.brokerlist="{{groups['processing-cluster-kafka'][0]}}:9092"
+# TODO: testing-revert
+kafka.consumer.brokerlist="localhost:9092"
+# TODO: testing-revert
 kafka.consumer.topic="{{ env }}.analytics.job_queue"
 no_of_jobs=42
 
