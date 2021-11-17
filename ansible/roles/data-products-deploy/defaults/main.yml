@@ -8,7 +8,7 @@ spark_output_temp_dir: /mount/data/analytics/tmp/
 #ingestion_kafka_broker_host: "{{groups['ingestion-cluster-kafka'][0]}}:9092"
 #brokerlist: "{{groups['processing-cluster-kafka']|join(':9092,')}}:9092"
 #zookeeper: "{{groups['processing-cluster-zookeepers']|join(':2181,')}}:2181"
-bucket: "dev-data-store"
+bucket: "igotlogs"
 kafka_broker_host: "localhost:9092"
 ingestion_kafka_broker_host: "localhost:9092"
 brokerlist: "localhost:9092"
