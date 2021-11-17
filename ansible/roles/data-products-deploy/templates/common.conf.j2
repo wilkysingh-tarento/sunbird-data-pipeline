@@ -9,8 +9,9 @@ spark.cassandra.connection.host="{{groups['dp-cassandra'][0]}}"
 cassandra.keyspace_prefix="{{ cassandra_keyspace_prefix }}"
 cassandra.hierarchy_store_prefix="{{ cassandra_hierarchy_store_prefix }}"
 
-storage.key.config="s3_like_storage_endpoint"
-storage.secret.config="s3_like_storage_endpoint"
+storage.key.config="s3_like_storage_key"
+storage.secret.config="s3_like_storage_secret"
+
 reports.storage.key.config="reports_azure_storage_key"
 reports.storage.secret.config="reports_azure_storage_secret"
 
@@ -19,9 +20,7 @@ s3_like_storage_key="{{ s3_storage_key }}"
 s3_like_storage_secret="{{ s3_storage_secret }}"
 s3_like_storage_container="{{ s3_storage_container }}"
 s3_like_path_style_access="true"
-# TODO: testing-revert
-s3service.region="us-east-1"
-# TODO: testing-revert
+s3_like_region="us-east-1"
 
 lp.contentmodel.versionkey="jd5ECm/o0BXwQCe8PfZY1NoUkB9HN41QjA80p22MKyRIcP5RW4qHw8sZztCzv87M"
 
@@ -63,7 +62,7 @@ default.consumption.app.id="no_value"
 default.channel.id="in.ekstep"
 default.creation.app.id="no_value"
 
-cloud_storage_type="azure"
+cloud_storage_type="cephs3"
 
 
 # Media Service Type
