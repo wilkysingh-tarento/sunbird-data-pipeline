@@ -158,6 +158,18 @@ class DataCache(val config: BaseJobConfig, val redisConnect: RedisConnect, val d
     }
   }
 
+  def hinCr(orgName :String): Unit = {
+    try {
+      redisConnection.hincrBy("mdo", orgName, 1)
+    } catch {
+      case ex@(_: JedisConnectionException | _: JedisException) => {
+        println("dataCache")
+        logger.error("Exception when inserting data to redis cache", ex)
+        this.redisConnection.close()
+      }
+    }
+  }
+
 }
 
 // $COVERAGE-ON$

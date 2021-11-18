@@ -11,6 +11,9 @@ import org.sunbird.dp.core.util.JSONUtil
 import org.sunbird.dp.usercache.domain.Event
 import org.sunbird.dp.usercache.task.UserCacheUpdaterConfigV2
 import org.sunbird.dp.usercache.util.UserMetadataUpdater
+import org.sunbird.dp.usercache.util.UserRegistrationUpdater
+
+
 
 import scala.collection.JavaConverters.mapAsJavaMap
 import scala.collection.mutable
@@ -49,6 +52,11 @@ class UserCacheUpdaterFunctionV2(config: UserCacheUpdaterConfigV2)(implicit val 
             case "CREATE" | "CREATED" | "UPDATE" | "UPDATED" => {
               UserMetadataUpdater.execute(id, event, metrics, config, dataCache, restUtil)
             }
+            case "CREATE" | "CREATED" => {
+              val org_name = userData.getOrElse("response.rootOrg.orgName", "").asInstanceOf[String]
+              UserRegistrationUpdater.execute(userData, org_name,dataCache)
+            }
+
             case _ => {
               logger.info(s"Invalid event state name either it should be(Create/Created/Update/Updated) but found $name for ${event.mid()}")
               metrics.incCounter(config.skipCount)
@@ -66,6 +74,10 @@ class UserCacheUpdaterFunctionV2(config: UserCacheUpdaterConfigV2)(implicit val 
           }
         }).getOrElse(metrics.incCounter(config.skipCount))
       }).getOrElse(metrics.incCounter(config.skipCount))
+
+
+      ///////////////////////
+
     } catch {
       case ex: Exception => {
         ex.printStackTrace()
