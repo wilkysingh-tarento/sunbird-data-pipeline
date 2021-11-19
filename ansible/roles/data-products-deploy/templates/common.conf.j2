@@ -9,18 +9,23 @@ spark.cassandra.connection.host="{{groups['dp-cassandra'][0]}}"
 cassandra.keyspace_prefix="{{ cassandra_keyspace_prefix }}"
 cassandra.hierarchy_store_prefix="{{ cassandra_hierarchy_store_prefix }}"
 
-storage.key.config="cephs3_storage_key"
-storage.secret.config="cephs3_storage_secret"
+# TODO: testing
+cloud_storage_type="s3"
+cloud_storage_endpoint="{{ s3_storage_endpoint }}"
 
-reports.storage.key.config="reports_azure_storage_key"
-reports.storage.secret.config="reports_azure_storage_secret"
+storage.key.config="aws_storage_key"
+storage.secret.config="aws_storage_secret"
 
-cephs3_storage_endpoint="{{ s3_storage_endpoint }}"
-cephs3_storage_key="{{ s3_storage_key }}"
-cephs3_storage_secret="{{ s3_storage_secret }}"
-cephs3_storage_container="{{ s3_storage_container }}"
-cephs3_path_style_access="true"
-cephs3_region="us-east-1"
+reports.storage.key.config="aws_storage_key"
+reports.storage.secret.config="aws_storage_secret"
+
+aws_storage_key="{{ s3_storage_key }}"
+aws_storage_secret="{{ s3_storage_secret }}"
+
+# cephs3_storage_container="{{ s3_storage_container }}"
+# cephs3_path_style_access="true"
+# cephs3_region="us-east-1"
+# TODO: testing
 
 lp.contentmodel.versionkey="jd5ECm/o0BXwQCe8PfZY1NoUkB9HN41QjA80p22MKyRIcP5RW4qHw8sZztCzv87M"
 
@@ -62,7 +67,7 @@ default.consumption.app.id="no_value"
 default.channel.id="in.ekstep"
 default.creation.app.id="no_value"
 
-cloud_storage_type="cephs3"
+
 
 
 # Media Service Type

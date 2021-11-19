@@ -9,7 +9,7 @@
   async: 3600
   poll: 10
   tags:
-    - dataproducts-spark-cluster 
+    - dataproducts-spark-cluster
 
 - name: Unarchive Ed Data Products
   become: yes
