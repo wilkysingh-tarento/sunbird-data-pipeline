@@ -1,5 +1,5 @@
 storage-service.request-signature-version=AWS4-HMAC-SHA256
-s3service.s3-endpoint=static.karmayogiprod.nic.in
+s3service.s3-endpoint={{ cephs3_storage_endpoint | regex_replace('^[a-z]+://(.*)$', '\\1') }}
 s3service.disable-dns-buckets=true
 s3service.https-only=true
 s3service.default-bucket-location=us-east-1
