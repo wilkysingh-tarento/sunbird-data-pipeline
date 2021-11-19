@@ -9,37 +9,25 @@ spark.cassandra.connection.host="{{groups['dp-cassandra'][0]}}"
 cassandra.keyspace_prefix="{{ cassandra_keyspace_prefix }}"
 cassandra.hierarchy_store_prefix="{{ cassandra_hierarchy_store_prefix }}"
 
-# TODO: testing
 cloud_storage_type="s3"
-cloud_storage_endpoint="{{ s3_storage_endpoint }}"
-
+cloud_storage_endpoint="{{ s3_storage_endpoint | regex_replace('^[a-z]+://(.*)$', '\\1') }}"
+cloud_storage_endpoint_with_protocol="{{ s3_storage_endpoint }}"
 storage.key.config="aws_storage_key"
 storage.secret.config="aws_storage_secret"
-
 reports.storage.key.config="aws_storage_key"
 reports.storage.secret.config="aws_storage_secret"
-
 aws_storage_key="{{ s3_storage_key }}"
 aws_storage_secret="{{ s3_storage_secret }}"
-
-# cephs3_storage_container="{{ s3_storage_container }}"
-# cephs3_path_style_access="true"
-# cephs3_region="us-east-1"
-# TODO: testing
 
 lp.contentmodel.versionkey="jd5ECm/o0BXwQCe8PfZY1NoUkB9HN41QjA80p22MKyRIcP5RW4qHw8sZztCzv87M"
 
 # Joblog Kafka appender config for cluster execution
 log.appender.kafka.enable="false"
-# TODO: testing-revert
-log.appender.kafka.broker_host="localhost:9092"
-# TODO: testing-revert
+log.appender.kafka.broker_host="{{ kafka_broker_host }}"
 log.appender.kafka.topic="{{ env }}.druid.events.log"
 
 # Kafka connection configuration
-# TODO: testing-revert
-kafka.consumer.brokerlist="localhost:9092"
-# TODO: testing-revert
+kafka.consumer.brokerlist="{{ brokerlist }}"
 kafka.consumer.topic="{{ env }}.analytics.job_queue"
 no_of_jobs=42
 
@@ -126,7 +114,7 @@ cloud.container.reports="reports"
 # course metrics container in azure
 course.metrics.cassandra.sunbirdKeyspace="sunbird"
 course.metrics.cassandra.sunbirdCoursesKeyspace="sunbird_courses"
-course.metrics.cassandra.sunbirdHierarchyStore="{{ cassandra_hierarchy_store_keyspace }}"
+course.metrics.cassandra.sunbirdHierarchyStore="{{cassandra_hierarchy_store_keyspace}}"
 course.metrics.cloud.objectKey=""
 course.metrics.cassandra.input.consistency="QUORUM"
 es.host="http://{{groups['core-es'][0]}}"
