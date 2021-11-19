@@ -35,7 +35,7 @@ hierarchySearchServicEndpoint: /v3/hierarchy/
 # s3_storage_secret: "{{ cephs3_storage_secret }}"
 # s3_storage_container: "{{ cephs3_dp_storage_container }}"
 
-s3_storage_endpoint: "https://static.karmayogiprod.nic.in"
+s3_storage_endpoint: "static.karmayogiprod.nic.in"
 s3_storage_key: ""
 s3_storage_secret: ""
 s3_storage_container: "igotlogs"
