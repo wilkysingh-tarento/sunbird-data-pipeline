@@ -25,11 +25,8 @@ object UserRegistrationUpdater {
 
   def execute(userData :mutable.Map[String, AnyRef], RootOrgName : String, dataCache: DataCache): mutable.Map[String, AnyRef] = {
     val OrgName = RootOrgName
-    val count =  1
     dataCache.hinCr(OrgName)
-    userData+=("incCount" -> count+1.asInstanceOf[String])
-
-
+    userData+=("incCount" ->true)
   }
 
 

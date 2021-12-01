@@ -53,8 +53,10 @@ class UserCacheUpdaterFunctionV2(config: UserCacheUpdaterConfigV2)(implicit val 
               UserMetadataUpdater.execute(id, event, metrics, config, dataCache, restUtil)
             }
             case "CREATE" | "CREATED" => {
-              val org_name = userData.getOrElse("response.rootOrg.orgName", "").asInstanceOf[String]
-              UserRegistrationUpdater.execute(userData, org_name,dataCache)
+              if(event.getPid == "learner-service"){
+                val org_name = userData.getOrElse("response.rootOrg.orgName", "").asInstanceOf[String]
+                UserRegistrationUpdater.execute(userData, org_name,dataCache)
+              }
             }
 
             case _ => {
