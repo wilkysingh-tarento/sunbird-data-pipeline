@@ -160,7 +160,7 @@ class DataCache(val config: BaseJobConfig, val redisConnect: RedisConnect, val d
 
   def hinCr(orgName :String): Unit = {
     try {
-      redisConnection.hincrBy("mdo_meta", orgName, 1)
+      redisConnection.hincrBy("mdo_registration_meta", orgName, 1)
     } catch {
       case ex@(_: JedisConnectionException | _: JedisException) => {
         println("dataCache")
