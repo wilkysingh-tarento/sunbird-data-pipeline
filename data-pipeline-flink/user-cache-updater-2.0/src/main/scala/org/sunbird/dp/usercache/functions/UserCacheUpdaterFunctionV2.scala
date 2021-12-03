@@ -43,7 +43,8 @@ class UserCacheUpdaterFunctionV2(config: UserCacheUpdaterConfigV2)(implicit val 
     metrics.incCounter(config.totalEventsCount)
     val userId = event.getId
     try {
-      Option(userId).map(id => {
+      if(event.getPid == "learner-service"){
+        Option(userId).map(id => {
         Option(event.getState).map(name => {
           val userData: mutable.Map[String, AnyRef] = name.toUpperCase match {
             case "CREATE" | "CREATED" | "UPDATE" | "UPDATED" => {
@@ -66,7 +67,12 @@ class UserCacheUpdaterFunctionV2(config: UserCacheUpdaterConfigV2)(implicit val 
           }
         }).getOrElse(metrics.incCounter(config.skipCount))
       }).getOrElse(metrics.incCounter(config.skipCount))
-    } catch {
+    }
+      else {
+        logger.info("non learner-service events skipped for user cache updater")
+      }
+    }
+    catch {
       case ex: Exception => {
         ex.printStackTrace()
         logger.info(s"Processing event for user: ${userId} having mid: ${event.mid()}")

@@ -38,5 +38,8 @@ class Event(eventMap: util.Map[String, Any]) extends Events(eventMap) {
   def isValid(userReadRes: UserReadResult) = {
     if (userReadRes.responseCode.toUpperCase.equalsIgnoreCase("OK") && !userReadRes.result.isEmpty && userReadRes.result.containsKey("response")) true else false
   }
+  def getPid: String = {
+    telemetry.read[String]("context.pdata.pid").getOrElse(null)
+  }
 
 }
