@@ -158,12 +158,12 @@ class DataCache(val config: BaseJobConfig, val redisConnect: RedisConnect, val d
     }
   }
 
-  def hinCr(path: String, orgName :String, counter:Int): Unit = {
+  def hIncBy(key: String, field: String, value: Long): Unit = {
     try {
-      redisConnection.hincrBy(path, orgName, counter)
+      redisConnection.hincrBy(key, field, value)
     } catch {
       case ex@(_: JedisConnectionException | _: JedisException) => {
-        logger.error("Exception while updating user registration count", ex)
+        logger.error(s"Exception while incrementing count key=${key}, field=${field}, value=${value}", ex)
         this.redisConnection.close()
       }
     }

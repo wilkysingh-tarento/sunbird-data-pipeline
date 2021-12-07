@@ -732,6 +732,7 @@ user-cache-updater-v2:
     user.valid.key = "Validated"
     user.read.url.fields = "locations,organisations"
     user.read.api.error = ["CLIENT_ERROR"]
+    user.redis.registration-count.path = "mdo_registered_officer_count"
 
   flink-conf: |+
     jobmanager.memory.flink.size: {{ flink_job_names['user-cache-updater-v2'].jobmanager_memory }}
