@@ -158,6 +158,17 @@ class DataCache(val config: BaseJobConfig, val redisConnect: RedisConnect, val d
     }
   }
 
+  def hinCr(path: String, orgName :String, counter:Int): Unit = {
+    try {
+      redisConnection.hincrBy(path, orgName, counter)
+    } catch {
+      case ex@(_: JedisConnectionException | _: JedisException) => {
+        logger.error("Exception while updating user registration count", ex)
+        this.redisConnection.close()
+      }
+    }
+  }
+
 }
 
 // $COVERAGE-ON$
