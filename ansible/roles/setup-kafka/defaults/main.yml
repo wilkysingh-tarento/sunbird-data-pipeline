@@ -140,7 +140,9 @@ processing_kafka_overriden_topics:
   - name: telemetry.with_location
     retention_time: 172800000
     replication_factor: 1
-
+  - name: pipeline_metrics
+    retention_time: 259200000
+    replication_factor: 1
 
 processing_kafka_topics:
   - name: analytics.job_queue
@@ -261,5 +263,8 @@ processing_kafka_topics:
     num_of_partitions: 1
     replication_factor: 1
   - name: telemetry.with_location
+    num_of_partitions: 1
+    replication_factor: 1
+  - name: pipeline_metrics
     num_of_partitions: 1
     replication_factor: 1
