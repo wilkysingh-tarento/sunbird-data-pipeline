@@ -10,6 +10,4 @@ script_dir: "{{ sbin_path }}"
 secor:
   properties: ['secor.common', 'secor', 'secor.partition']
   artifact_dir: /mount/secor
-  artifact_ver: "0.29"
-  artifact_name: "secor"
   channel: "#monitor-sunbirddev-lpa"
