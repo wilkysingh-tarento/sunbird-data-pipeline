@@ -49,7 +49,6 @@ secor:
   properties: ['secor.azure', 'secor.common', 'secor', 'secor.partition', 'log4j']
   artifact_dir: /mount/secor
   artifact_ver: "0.29"
-  artifact_name: "secor"
   azure:
     account_name: "{{sunbird_private_storage_account_name}}"
     account_key: "{{sunbird_private_storage_account_key}}"
