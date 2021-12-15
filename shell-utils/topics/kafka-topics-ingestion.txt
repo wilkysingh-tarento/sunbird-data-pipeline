@@ -1,0 +1,3 @@
+# topic                       partitions  replicas    retention_time
+telemetry.ingestion           16          2           -1
+events.deviceprofile          1           1           -1

@@ -1,0 +1,35 @@
+{
+  "actor": {
+    "id": "59c3c2b7-b32b-4d9a-9d02-220e73004d66",
+    "type": "User"
+  },
+  "eid": "CB_AUDIT",
+  "edata": {
+    "state": "Draft",
+    "props": ["WAT/FRAC"],
+    "cb_object": {
+      "id": "9a99e795-c652-4c0d-9f9f-960c737e15f3",
+      "type": "Competency",
+      "ver": "1.0",
+      "name": "Tech",
+      "org": "ISTM",
+      "sub_type": "Functional"
+    }
+  },
+  "ver": "3.0",
+  "ets": 1629109359638,
+  "context": {
+    "channel": "013260789496258560586",
+    "pdata": {
+      "id": "dev.FRac.portal",
+      "pid": "FRac",
+      "ver": "1.0"
+    },
+    "env": "WAT"
+  },
+  "mid": "CB.d0152fb1-cd84-4309-882a-88b1df0e1648",
+  "object": {
+    "id": "9a99e795-c652-4c0d-9f9f-960c737e15f3",
+    "type": "Competency"
+  }
+}

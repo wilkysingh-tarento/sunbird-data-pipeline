@@ -1,8 +1,8 @@
 package org.sunbird.dp.extractor.functions
 
 import java.util
-
 import org.sunbird.dp.core.util.JSONUtil
+import redis.clients.jedis.exceptions.JedisConnectionException
 // import com.google.gson.Gson
 import org.apache.flink.api.common.typeinfo.TypeInformation
 import org.apache.flink.configuration.Configuration
@@ -48,12 +48,13 @@ class DeduplicationFunction(config: TelemetryExtractorConfig, @transient var ded
         flagName = "extractor_duplicate")(dedupEngine, metrics)
       metrics.incCounter(config.successBatchCount)
     } catch {
-      case jedisEx: JedisException => {
+      case jedisEx@(_: JedisConnectionException | _: JedisException) => {
         logger.info("Exception when retrieving data from redis " + jedisEx.getMessage)
         dedupEngine.getRedisConnection.close()
         throw jedisEx
       }
       case ex: Exception => {
+        logger.error("Unexpected Error", ex)
         metrics.incCounter(config.failedBatchCount)
         context.output(config.failedBatchEventOutputTag, batchEvents)
       }
