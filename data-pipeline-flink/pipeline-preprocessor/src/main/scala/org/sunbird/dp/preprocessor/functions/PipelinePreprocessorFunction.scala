@@ -57,7 +57,8 @@ class PipelinePreprocessorFunction(config: PipelinePreprocessorConfig,
   }
 
   def isDuplicateCheckRequired(producerId: String): Boolean = {
-    config.includedProducersForDedup.contains(producerId)
+    true
+    // config.includedProducersForDedup.contains(producerId) // commented to de-dupe everything
   }
 
   override def processElement(event: Event,
