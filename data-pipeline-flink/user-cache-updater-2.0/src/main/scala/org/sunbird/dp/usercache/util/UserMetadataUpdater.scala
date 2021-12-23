@@ -104,10 +104,9 @@ object UserMetadataUpdater {
         config.email -> response.encEmail,
         config.userId -> response.userId)
 
-
       // update user registration count
       event.getState.toUpperCase match {
-        case "CREATE" | "CREATED" => dataCache.hIncBy(config.userRegistrationCountPath, response.rootOrgId, 1)
+        case "CREATE" | "CREATED" => dataCache.hIncByWithRetry(config.userRegistrationCountPath, response.rootOrgId, 1)
       }
 
     } else if (config.userReadApiErrors.contains(userReadRes.responseCode.toUpperCase) && userReadRes.params.status.equalsIgnoreCase("USER_ACCOUNT_BLOCKED")) { //Skip the events for which response is 400 Bad request
@@ -121,6 +120,7 @@ object UserMetadataUpdater {
     userCacheData
   }
 
+  // TODO: check if this is the issue
   def removeEmptyFields(key: String, dataCache: DataCache, userMetaData: mutable.Map[String, AnyRef]):Unit = {
     val redisRec = dataCache.hgetAllWithRetry(key)
     val removableKeys = redisRec.keySet.diff(userMetaData.keySet)

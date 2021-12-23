@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory
 import org.sunbird.dp.core.cache.{DedupEngine, RedisConnect}
 import org.sunbird.dp.core.job.{BaseProcessFunction, Metrics}
 import org.sunbird.dp.extractor.task.TelemetryExtractorConfig
-import redis.clients.jedis.exceptions.JedisException
+import redis.clients.jedis.exceptions.{JedisConnectionException, JedisException}
 
 class DeduplicationFunction(config: TelemetryExtractorConfig, @transient var dedupEngine: DedupEngine = null)
                            (implicit val stringTypeInfo: TypeInformation[String])
