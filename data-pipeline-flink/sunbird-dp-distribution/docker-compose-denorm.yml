@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+
+  jobmanager-te:
+    build: .
+    ports:
+      - "8081:8081"
+    command: >
+      /opt/flink/bin/standalone-job.sh start-foreground
+      --job-classname=org.sunbird.dp.usercache.task.UserCacheUpdaterStreamTaskV2
+      -Djobmanager.rpc.address=jobmanager-te
+      -Djobmanager.rpc.port=6123
+      -Dparallelism.default=1
+      -Dblob.server.port=6124
+      -Dqueryable-state.server.ports=6125
+      -Djobmanager.memory.process.size=1024m
+      -Djobmanager.memory.jvm-overhead.min=32m
+      -Djobmanager.memory.jvm-overhead.max=64m
+      -Djobmanager.memory.jvm-overhead.fraction=0.1
+      --config.file.path /config/telemetry-extractor-comb.conf
+
+  taskmanager-te:
+    build: .
+    depends_on:
+      - jobmanager-te
+    command: >
+      /opt/flink/bin/taskmanager.sh start-foreground
+      -Djobmanager.rpc.address=jobmanager-te
+      -Dtaskmanager.rpc.port=6122
+      -Dtaskmanager.memory.process.size=512m
+      -Dtaskmanager.memory.jvm-overhead.min=32m
+      -Dtaskmanager.memory.jvm-overhead.max=64m
+      -Dtaskmanager.memory.jvm-overhead.fraction=0.1

@@ -105,9 +105,9 @@ object UserMetadataUpdater {
         config.userId -> response.userId)
 
       // update user registration count
-      event.getState.toUpperCase match {
-        case "CREATE" | "CREATED" => dataCache.hIncByWithRetry(config.userRegistrationCountPath, response.rootOrgId, 1)
-      }
+      // event.getState.toUpperCase match {
+      //   case "CREATE" | "CREATED" => dataCache.hIncByWithRetry(config.userRegistrationCountPath, response.rootOrgId, 1)
+      // }
 
     } else if (config.userReadApiErrors.contains(userReadRes.responseCode.toUpperCase) && userReadRes.params.status.equalsIgnoreCase("USER_ACCOUNT_BLOCKED")) { //Skip the events for which response is 400 Bad request
       logger.info(s"User Read API has response as ${userReadRes.responseCode.toUpperCase} for user: ${userId}")

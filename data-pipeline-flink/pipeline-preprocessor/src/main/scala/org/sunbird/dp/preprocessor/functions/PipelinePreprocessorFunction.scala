@@ -61,6 +61,16 @@ class PipelinePreprocessorFunction(config: PipelinePreprocessorConfig,
     // config.includedProducersForDedup.contains(producerId) // commented to de-dupe everything
   }
 
+  def addHubField(event: Event): Unit = {
+    val clientEventTypes = Set("IMPRESSION", "INTERACT", "START", "END")
+    val envHubMap = Map("learn" -> "learn", "course" -> "learn", "discuss" -> "discuss", "network" -> "network",
+      "careers" -> "careers", "competency" -> "competency", "events" -> "events")
+    if (clientEventTypes.contains(event.eid().toUpperCase())) {
+      val hub = envHubMap.getOrElse(event.env.toLowerCase(), "other")
+      event.updateHub(hub)
+    }
+  }
+
   override def processElement(event: Event,
                               context: ProcessFunction[Event, Event]#Context,
                               metrics: Metrics): Unit = {
@@ -83,6 +93,9 @@ class PipelinePreprocessorFunction(config: PipelinePreprocessorConfig,
         }
 
         if (isUnique) {
+
+          // add hub info
+          addHubField(event)
 
           if (config.secondaryEvents.contains(event.eid())) {
             context.output(config.denormSecondaryEventsRouteOutputTag, event)
