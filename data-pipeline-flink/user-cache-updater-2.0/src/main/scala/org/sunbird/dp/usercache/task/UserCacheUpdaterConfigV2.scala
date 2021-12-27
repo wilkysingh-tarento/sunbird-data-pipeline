@@ -16,7 +16,6 @@ class UserCacheUpdaterConfigV2(override val config: Config) extends BaseJobConfi
 
   // Kafka Topics Configuration
   val inputTopic: String = config.getString("kafka.input.topic")
-  // TODO: check if this is the issue
   val userFields: List[String] = if (config.hasPath("user.redis.removeable-fields"))
     config.getStringList("user.redis.removeable-fields").asInstanceOf[List[String]]
   else List[String]("state", "district", "block", "cluster", "schooludisecode", "schoolname")

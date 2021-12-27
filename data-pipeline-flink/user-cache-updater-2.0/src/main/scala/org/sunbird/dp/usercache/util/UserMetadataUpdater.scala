@@ -121,7 +121,6 @@ object UserMetadataUpdater {
     userCacheData
   }
 
-  // TODO: check if this is the issue
   def removeEmptyFields(key: String, dataCache: DataCache, userMetaData: mutable.Map[String, AnyRef]):Unit = {
     val redisRec = dataCache.hgetAllWithRetry(key)
     val removableKeys = redisRec.keySet.diff(userMetaData.keySet)
