@@ -25,7 +25,7 @@
 
 - name: Unarchive secor libraries
   unarchive:
-    src: "{{ analytics_user_home }}/secor-{{ secor.artifact_ver }}-bin.tar.gz"
+    src: "{{ analytics_user_home }}/{{ secor.artifact_file_name }}"
     dest: "/mount/{{ item.key }}"
     copy: no
     owner: "{{ analytics_user }}"

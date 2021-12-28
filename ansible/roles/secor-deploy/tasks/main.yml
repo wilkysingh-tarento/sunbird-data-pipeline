@@ -10,7 +10,7 @@
 - name: Finding the old artifact name 
   find:
     paths: "{{ analytics_user_home }}"
-    patterns: secor-*-SNAPSHOT-bin.tar.gz
+    patterns: "{{ secor.artifact_file_pattern }}"
   register: file_name
 
 - name: Remove the old artifacts
@@ -25,4 +25,4 @@
     owner: "{{ analytics_user }}"
     group: "{{ analytics_user }}"
   with_fileglob:
-    - "artifacts/target/secor-{{ secor.artifact_ver }}-bin.tar.gz"
+    - "artifacts/target/{{ secor.artifact_file_name }}"
