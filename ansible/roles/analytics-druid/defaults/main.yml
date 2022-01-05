@@ -5,15 +5,14 @@ zookeeper_group: "groups[{{ cluster }}-zookeeper]"
 
 druid_user: druid
 druid_directory: "/data"
-druid_version: "0.21.1"
+druid_version: "0.22.1"
 
 druid_url: "https://archive.apache.org/dist/druid/{{druid_version}}/apache-druid-{{druid_version}}-bin.tar.gz"
-# druid_url: "https://downloads.apache.org/druid/0.21.1/apache-druid-0.21.1-bin.tar.gz"
 
 druid_folder: "{{ druid_directory }}/apache-druid-{{ druid_version }}"
 druid_symlink: "{{ druid_directory }}/druid"
 druid_path: "{{ druid_symlink }}/"
-druid_checksum: "a68c63ddf92a0939315bd8b79fbdd5fae712e888d1a0e0466f0a87a8e8f1270d70fc5dcc0ec64e076391576be29da1cce88f7c5cf725c31418601e4eee8fa354"
+druid_checksum: "716b83e07a76b5c9e0e26dd49028ca088bde81befb070989b41e71f0e8082d11a26601f4ac1e646bf099a4bc7420bdfeb9f7450d6da53d2a6de301e08c3cab0d"
 
 #Common Varibles
 
