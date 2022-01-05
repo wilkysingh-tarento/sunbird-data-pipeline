@@ -1,4 +1,8 @@
 
+druid_storage_type: "s3"
+druid_extensions_list: '"druid-s3-extensions", "graphite-emitter", "postgresql-metadata-storage", "druid-kafka-indexing-service"'
+
+
 default_druid_configs:
   raw:
     #Druid Postgres Details
@@ -14,18 +18,29 @@ default_druid_configs:
     #Logging the indexing logs to azure
     druid_log_azure_container: "{{ druid_azure_container_name }}"
     druid_log_azure_folder: "druidlogs"
+    #Druid S3 Details
+    s3_access_key: "{{ cephs3_storage_key }}"
+    s3_secret_key: "{{ cephs3_storage_secret }}"
+    s3_bucket: "{{ cephs3_storage_container }}"
+    s3_endpoint: "{{ cephs3_storage_endpoint }}"
+    s3_segment_dir: "druid/raw/segments"
+    s3_path_like_access: true
+    s3_v4_sign_region: "us-east-1"
+    #Logging the indexing logs to s3
+    s3_logging_bucket: "{{ cephs3_storage_container }}"
+    s3_indexer_logs_dir: "druid/raw/stage/indexing_logs"
     #Druid coordinator node configuration
-    druid_coordinator_min_heap_size: 1024m
-    druid_coordinator_max_heap_size: 2048m
+    druid_coordinator_min_heap_size: 2048m
+    druid_coordinator_max_heap_size: 5120m
     druid_coordinator_period: PT30S
     druid_coordinator_startDelay: PT30S
     druid_coordinator_balance_strategy: diskNormalized
     #Druid overlord node configuration
     druid_overlord_min_heap_size: 1024m
-    druid_overlord_max_heap_size: 2048m
+    druid_overlord_max_heap_size: 2560m
     #Druid broker node configuration
-    druid_broker_min_heap_size: 1024m
-    druid_broker_max_heap_size: 2048m
+    druid_broker_min_heap_size: 2048m
+    druid_broker_max_heap_size: 5120m
     druid_broker_max_direct_size: 2560m
     druid_broker_http_numConnections: 5
     druid_broker_server_http_numThread: 25
@@ -33,14 +48,14 @@ default_druid_configs:
     druid_broker_processing_threads: 2
     druid_broker_processing_num_merge_buffers: 2
     #Druid historical node configuration
-    druid_historical_min_heap_size: 2048m
+    druid_historical_min_heap_size: 2560m
     druid_historical_max_heap_size: 5120m
-    druid_historical_max_direct_size: 2560m
+    druid_historical_max_direct_size: 5120m
     druid_historical_http_numConnections: 5
     druid_historical_server_http_numThread: 25
-    druid_historical_processing_bufferBytes: 134217728
+    druid_historical_processing_bufferBytes: 536870912
     druid_historical_processing_num_merge_buffers: 2
-    druid_historical_processing_threads: 2
+    druid_historical_processing_threads: 7
     druid_historical_enable_cache: true
     druid_historical_cache_size: 3221225472
     druid_historical_cache_expiry: 3600000
@@ -86,7 +101,18 @@ default_druid_configs:
     #Logging the indexing logs to azure
     druid_log_azure_container: "{{ druid_azure_container_name }}"
     druid_log_azure_folder: "druidlogs"
-    # Druid coordinator node configuration
+    #Druid S3 Details
+    s3_access_key: "{{ cephs3_storage_key }}"
+    s3_secret_key: "{{ cephs3_storage_secret }}"
+    s3_bucket: "{{ cephs3_storage_container }}"
+    s3_endpoint: "{{ cephs3_storage_endpoint }}"
+    s3_segment_dir: "druid/rollup/segments"
+    s3_path_like_access: true
+    s3_v4_sign_region: "us-east-1"
+    #Logging the indexing logs to s3
+    s3_logging_bucket: "{{ cephs3_storage_container }}"
+    s3_indexer_logs_dir: "druid/rollup/stage/indexing_logs"
+
     druid_coordinator_min_heap_size: 128m
     druid_coordinator_max_heap_size: 128m
     druid_coordinator_period: PT30S
