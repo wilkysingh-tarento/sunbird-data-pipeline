@@ -31,13 +31,14 @@
 		<module>assessment-aggregator</module>
 		<module>user-cache-updater-2.0</module>
 		<module>cb-preprocessor</module>
+		<module>rating</module>
 	</modules>
 
 	<properties>
 		<!-- maven specific properties -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<scala.maj.version>2.12</scala.maj.version>
-		<scala.version>2.12.11</scala.version>
+		<scala.version>2.12.10</scala.version>
 		<flink.version>1.13.0</flink.version>
 		<kafka.version>2.4.0</kafka.version>
 		<java.target.runtime>11</java.target.runtime>
