@@ -1,7 +1,5 @@
 package org.sunbird.dp.rating.task
 
-import com.google.gson.JsonObject
-
 import java.io.File
 import com.typesafe.config.ConfigFactory
 import org.apache.flink.api.common.typeinfo.TypeInformation
@@ -13,11 +11,9 @@ import org.sunbird.dp.core.util.FlinkUtil
 import org.sunbird.dp.rating.domain.Event
 import org.sunbird.dp.rating.function.RatingFunction
 
-import java.util
-
 class RatingTask(config: RatingConfig, kafkaConnector: FlinkKafkaConnector) {
 
-//  private val serialVersionUID = -7729362727131516112Lz
+  private val serialVersionUID = -7729362727131516112Lz
 
   def process(): Unit = {
 
@@ -33,9 +29,6 @@ class RatingTask(config: RatingConfig, kafkaConnector: FlinkKafkaConnector) {
     stream.getSideOutput(config.issueOutputTag).addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaIssueTopic))
       .name(config.issueEventSink).uid(config.issueEventSink)
       .setParallelism(config.ratingParallelism)
-//    stream.getSideOutput(config.issueOutputTag).addSink(kafkaConnector.kafkaStringSink[Event](config.kafkaIssueTopic))
-//      .name(config.issueEventSink).uid(config.issueEventSink)
-//      .setParallelism(config.ratingParallelism)
     env.execute(config.jobName)
   }
 
@@ -56,4 +49,3 @@ object RatingTask {
   }
 }
 
-// $COVERAGE-ON$
