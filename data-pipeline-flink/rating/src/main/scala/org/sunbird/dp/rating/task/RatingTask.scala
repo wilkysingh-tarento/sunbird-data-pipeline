@@ -13,7 +13,7 @@ import org.sunbird.dp.rating.function.RatingFunction
 
 class RatingTask(config: RatingConfig, kafkaConnector: FlinkKafkaConnector) {
 
-  private val serialVersionUID = -7729362727131516112Lz
+  private val serialVersionUID = -7729362727131516112L
 
   def process(): Unit = {
 

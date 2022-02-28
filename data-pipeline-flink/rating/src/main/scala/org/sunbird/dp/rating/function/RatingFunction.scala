@@ -22,13 +22,13 @@ class RatingFunction(config: RatingConfig, @transient var cassandraUtil: Cassand
   private var restUtil: RestUtil = _
 
   override def metricsList(): List[String] = {
-    List(config.userCacheHit, config.skipCount, config.successCount, config.totalEventsCount, config.apiReadMissCount, config.apiReadSuccessCount)
+    List()
   }
 
   override def open(parameters: Configuration): Unit = {
     super.open(parameters)
     cassandraUtil = new CassandraUtil(config.dbHost, config.dbPort)
-    restUtil = new RestUtil()
+//    restUtil = new RestUtil()
   }
 
 

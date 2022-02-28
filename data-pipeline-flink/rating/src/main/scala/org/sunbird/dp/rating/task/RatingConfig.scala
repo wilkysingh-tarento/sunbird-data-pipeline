@@ -14,17 +14,6 @@ class RatingConfig (override val config: Config) extends BaseJobConfig(config, "
   // Kafka Topics Configuration
   val inputTopic: String = config.getString("kafka.input.topic")
 
-  // User cache updater job metrics
-  val userCacheHit = "user-cache-hit"
-  val skipCount = "skipped-message-count"
-  val successCount = "success-message-count"
-  val dbReadSuccessCount = "db-read-success-count"
-  val dbReadMissCount = "db-read-miss-count"
-  val apiReadSuccessCount = "api-read-success-count"
-  val apiReadMissCount = "api-read-miss-count"
-  val totalEventsCount ="total-audit-events-count"
-
-
   // rating specific
   val ratingParallelism: Int = config.getInt("task.rating.parallelism")
   val kafkaIssueTopic: String = config.getString("kafka.output.topic")
