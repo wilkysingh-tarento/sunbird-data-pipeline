@@ -35,10 +35,16 @@ class Event(eventMap: util.Map[String, Any]) extends Events(eventMap) {
   def prevValues: util.Map[String, AnyRef] = {
     telemetry.read[util.Map[String, AnyRef]]("prevValues").getOrElse(null)
   }
+//def prevValues: Values = {
+//  telemetry.read[Values]("prevValues").getOrElse(null)
+//}
 
   def updatedValues: util.Map[String, AnyRef] = {
     telemetry.read[util.Map[String, AnyRef]]("updatedValues").getOrElse(null)
   }
+//def updatedValues: Values = {
+//  telemetry.read[Values]("updatedValues").getOrElse(null)
+//}
 
   def markFailed(errorMsg: String): Unit = {
     telemetry.addFieldIfAbsent(EventsPath.FLAGS_PATH, new util.HashMap[String, Boolean])
@@ -46,5 +52,17 @@ class Event(eventMap: util.Map[String, Any]) extends Events(eventMap) {
     telemetry.add("metadata.validation_error", errorMsg)
     telemetry.add("metadata.src", jobName)
   }
+//  class Values() {
+//    var updatedOn: String = ""
+//    //var rating: Float = 0.1f
+//    var review: String = ""
+//
+//    def rating: Float = {
+//      telemetry.read[Float]("rating").get
+//    }
+//  }
+  
+  }
 
-}
+
+ 

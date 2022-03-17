@@ -26,9 +26,14 @@ class RatingTask(config: RatingConfig, kafkaConnector: FlinkKafkaConnector) {
       env.addSource(source, config.RatingConsumer).uid(config.RatingConsumer).rebalance()
       .process(new RatingFunction(config)).setParallelism(config.ratingParallelism)
       .name(config.ratingFunction).uid(config.ratingFunction)
-    stream.getSideOutput(config.issueOutputTag).addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaIssueTopic))
-      .name(config.issueEventSink).uid(config.issueEventSink)
-      .setParallelism(config.ratingParallelism)
+      
+//    var eventJson = stream.flatMap( raw => JsonMethods.parse(raw).toOption)
+//      .map(_.extract[Event])
+//    stream.getSideOutput(config.issueOutputTag).addSink(kafkaConnector.kafkaEventSink[Event](config.kafkaIssueTopic))
+//      .name(config.issueEventSink).uid(config.issueEventSink)
+//      .setParallelism(config.ratingParallelism)
+    
+    
     env.execute(config.jobName)
   }
 
