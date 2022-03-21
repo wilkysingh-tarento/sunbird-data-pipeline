@@ -22,14 +22,19 @@ class RatingConfig (override val config: Config) extends BaseJobConfig(config, "
   val issueOutputTag: OutputTag[Event] = OutputTag[Event]("rated-events")
 
   //Cassandra
-  val courseTable: String = config.getString("lms-cassandra.course_table")
-  val ratingsTable: String = config.getString("lms-cassandra.ratings_table")
-  val dbKeyspace: String = config.getString("lms-cassandra.keyspace")
-  val dbHost: String = config.getString("lms-cassandra.host")
-  val dbPort: Int = config.getInt("lms-cassandra.port")
+  val courseTable: String = config.getString("ext-cassandra.course_table")
+  val ratingsTable: String = config.getString("ext-cassandra.ratings_table")
+  val ratingsSummaryTable: String = config.getString("ext-cassandra.ratings_summary_table")
+  val ratingsLookupTable: String = config.getString("ext-cassandra.ratings_lookup_table")
+  val dbKeyspace: String = config.getString("ext-cassandra.keyspace")
+  val dbHost: String = config.getString("ext-cassandra.host")
+  val dbPort: Int = config.getInt("ext-cassandra.port")
 
   // constants
+  val courseId = "courseid"
   val userId = "userid"
+  val activityId = "activity_id"
+  val activityType = "activity_type"
 
   // Consumers
   val RatingConsumer = "rating-consumer"
