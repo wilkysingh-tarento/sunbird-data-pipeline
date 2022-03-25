@@ -19,7 +19,7 @@ class RatingConfig (override val config: Config) extends BaseJobConfig(config, "
   val kafkaIssueTopic: String = config.getString("kafka.output.topic")
   val issueEventSink = "rating-issue-event-sink"
   val issueOutputTagName = "rating-issue-events"
-  val issueOutputTag: OutputTag[Event] = OutputTag[Event]("rated-events")
+  val failedEvent: OutputTag[Event] = OutputTag[Event]("failed-rating-events")
 
   //Cassandra
   val courseTable: String = config.getString("ext-cassandra.course_table")
