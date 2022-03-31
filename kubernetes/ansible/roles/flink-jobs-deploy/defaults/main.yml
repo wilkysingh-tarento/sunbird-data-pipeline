@@ -109,6 +109,12 @@ summary_denorm_operators_parallelism: 1
 summary_denorm_duplication_key_expiry_seconds: 3600
 summary_denorm_key_expiry_seconds: 3600
 
+### rating related vars
+rating_consumer_parallelism: 1
+rating_operators_parallelism: 1
+rating_key_expiry_seconds: 3600
+
+
 ### Druid-validator related vars
 druid_validator_consumer_parallelism: 1
 druid_validator_operators_parallelism: 1
@@ -187,6 +193,19 @@ flink_job_names:
     max_replica: 2
   cb-preprocessor:
     job_class_name: 'org.sunbird.dp.cbpreprocessor.task.CBPreprocessorStreamTask'
+    replica: 1
+    jobmanager_memory: 1024m
+    taskmanager_memory: 1024m
+    taskmanager_process_memory: 1700m
+    jobmanager_process_memory: 1600m
+    taskslots: 1
+    cpu_requests: 0.3
+    scale_enabled: true
+    scale_target_value: 500000
+    min_replica: 1
+    max_replica: 2
+  rating:
+    job_class_name: 'org.sunbird.dp.rating.task.RatingTask'
     replica: 1
     jobmanager_memory: 1024m
     taskmanager_memory: 1024m

@@ -67,6 +67,11 @@ scale_properties:
     scale_target_value: {{ flink_job_names['device-profile-updater'].scale_target_value | default(0) }}
     min_replica: {{ flink_job_names['device-profile-updater'].min_replica | default(1) }}
     max_replica: {{ flink_job_names['device-profile-updater'].max_replica | default(2) }}
+  rating:
+    enabled: {{ flink_job_names['rating'].scale_enabled | lower}}
+    scale_target_value: {{ flink_job_names['rating'].scale_target_value | default(0) }}
+    min_replica: {{ flink_job_names['rating'].min_replica | default(1) }}
+    max_replica: {{ flink_job_names['rating'].max_replica | default(2) }}
   ingest-router:
     enabled: {{ flink_job_names['ingest-router'].scale_enabled | lower}}
     scale_target_value: {{ flink_job_names['ingest-router'].scale_target_value }}
@@ -550,6 +555,60 @@ summary-denormalization:
     heartbeat.interval: 5000
     taskmanager.memory.process.size: {{ flink_job_names['summary-denormalization'].taskmanager_process_memory }}
     jobmanager.memory.process.size: {{ flink_job_names['summary-denormalization'].jobmanager_process_memory }}
+
+ rating:
+   rating: |+
+    include file("/data/flink/conf/base-config.conf")
+    kafka {
+      input.topic = {{ env_name }}.rating.event
+      output.topic = {{ env_name }}.rating.failedRating
+      groupId = {{ env_name }}-rating-group
+    }
+    skip.events = ["INTERRUPT"]
+    permit.eid=["AUDIT"]
+    task {
+      consumer.parallelism = {{ rating_consumer_parallelism }}
+      downstream.operators.parallelism = {{ rating_operators_parallelism  }}
+    }
+    redis {
+      database {
+        duplicationstore.id = 9
+        key.expiry.seconds = {{ rating_key_expiry_seconds }}
+      }
+    }
+    # redis-metadata
+    redis-meta {
+      database {
+        devicestore.id = 2
+        userstore.id = 12
+        contentstore.id = 5
+        dialcodestore.id = 6
+        key.expiry.seconds = {{ rating_key_expiry_seconds }}
+      }
+      content.host = {{ redis_meta_content_host }}
+      device.host = {{ redis_meta_device_host }}
+      user.host = {{ redis_meta_user_host }}
+      dialcode.host = {{ redis_meta_dialcode_host }}
+      content.port = {{ redis_meta_content_port }}
+      device.port = {{ redis_meta_device_port }}
+      user.port = {{ redis_meta_user_port }}
+      dialcode.port = {{ redis_meta_dialcode_port }}
+    }
+    # config version
+    user_denorm_version = v2
+
+  flink-conf: |+
+    jobmanager.memory.flink.size: {{ flink_job_names['rating'].jobmanager_memory }}
+    taskmanager.memory.flink.size: {{ flink_job_names['rating'].taskmanager_memory }}
+    taskmanager.numberOfTaskSlots: {{ flink_job_names['rating'].taskslots }}
+    parallelism.default: 1
+    jobmanager.execution.failover-strategy: region
+    taskmanager.memory.network.fraction: 0.1
+    scheduler-mode: reactive
+    heartbeat.timeout: 8000
+    heartbeat.interval: 5000
+    taskmanager.memory.process.size: {{ flink_job_names['rating'].taskmanager_process_memory }}
+    jobmanager.memory.process.size: {{ flink_job_names['rating'].jobmanager_process_memory }}
 
 druid-validator:
   druid-validator: |+
