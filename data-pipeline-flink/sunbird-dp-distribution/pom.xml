@@ -80,6 +80,12 @@
             <version>1.0.0</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>org.sunbird.dp.jobs</groupId>
+            <artifactId>rating</artifactId>
+            <version>1.0.0</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>
